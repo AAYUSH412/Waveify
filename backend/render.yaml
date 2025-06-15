@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: waveify-api
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: waveify-api
+          property: port
+    healthCheckPath: /api/health
+    numInstances: 1
+    disk:
+      name: waveify-disk
+      size: 1GB
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+      targetMemoryPercent: 80
+      targetCPUPercent: 80
