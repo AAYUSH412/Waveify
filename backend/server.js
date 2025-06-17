@@ -59,7 +59,8 @@ app.use(cors({
       'http://localhost:3001',
       'http://localhost:4000',
       'https://waveify.vercel.app',
-      'https://waveify.com'
+      'https://waveify.com',
+      'https://waveify.onrender.com'
     ];
     
     if (NODE_ENV === 'development' || allowedOrigins.some(allowed => 
