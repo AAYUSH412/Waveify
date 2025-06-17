@@ -15,10 +15,15 @@ if (NODE_ENV === 'production') {
   app.set('trust proxy', 1); // Trust first proxy
 }
 
-// Security middleware
+// Security middleware - UPDATED to fix CORS issues
 app.use(helmet({
   contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  // IMPORTANT: Configure these headers to allow cross-origin requests
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginOpenerPolicy: false,
+  // Remove X-Frame-Options restriction for API endpoints
+  frameguard: false
 }));
 
 // Compression middleware
@@ -48,7 +53,7 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 
-// CORS configuration
+// CORS configuration - UPDATED
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -58,6 +63,8 @@ app.use(cors({
       'http://localhost:3000',
       'http://localhost:3001',
       'http://localhost:4000',
+      'http://127.0.0.1:3000', // Add this for local development
+      'http://127.0.0.1:3001', // Add this for local development
       'https://waveify.vercel.app',
       'https://waveify.com',
       'https://waveify.onrender.com'
@@ -72,10 +79,29 @@ app.use(cors({
     }
   },
   credentials: false,
-  methods: ['GET', 'HEAD', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
+  methods: ['GET', 'HEAD', 'OPTIONS', 'POST'], // Added POST if needed
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Added X-Requested-With
+  optionsSuccessStatus: 200,
+  // Explicitly handle preflight requests
+  preflightContinue: false
 }));
+
+// Additional CORS headers middleware for API routes
+app.use('/api', (req, res, next) => {
+  // Set additional headers that might be needed
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  
+  next();
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -88,9 +114,9 @@ app.use((req, res, next) => {
   const forwardedFor = req.headers['x-forwarded-for'];
   
   if (NODE_ENV === 'production') {
-    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip} ${forwardedFor ? `(forwarded: ${forwardedFor})` : ''}`);
+    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip} ${forwardedFor ? `(forwarded: ${forwardedFor})` : ''} - Origin: ${req.headers.origin || 'none'}`);
   } else {
-    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip}`);
+    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip} - Origin: ${req.headers.origin || 'none'}`);
   }
   next();
 });
@@ -145,7 +171,8 @@ app.use((error, req, res, next) => {
   if (error.message === 'Not allowed by CORS') {
     return res.status(403).json({
       error: 'CORS Error',
-      message: 'This origin is not allowed to access the API'
+      message: 'This origin is not allowed to access the API',
+      origin: req.headers.origin
     });
   }
   
