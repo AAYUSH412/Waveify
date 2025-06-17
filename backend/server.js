@@ -10,6 +10,11 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
+// Trust proxy in production (required for Render, Vercel, Railway, etc.)
+if (NODE_ENV === 'production') {
+  app.set('trust proxy', 1); // Trust first proxy
+}
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -29,6 +34,16 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  // Skip rate limiting for health checks
+  skip: (req) => req.path === '/health' || req.path === '/api/health',
+  // Custom key generator for better production support
+  keyGenerator: (req) => {
+    // In production, use the real IP from proxy headers
+    // In development, use the connection IP
+    return NODE_ENV === 'production' 
+      ? req.ip || req.connection.remoteAddress 
+      : req.connection.remoteAddress;
+  }
 });
 
 app.use('/api', limiter);
@@ -41,12 +56,15 @@ app.use(cors({
     
     const allowedOrigins = [
       'http://localhost:3000',
+      'http://localhost:3001',
       'http://localhost:4000',
       'https://waveify.vercel.app',
       'https://waveify.com'
     ];
     
-    if (NODE_ENV === 'development' || allowedOrigins.includes(origin)) {
+    if (NODE_ENV === 'development' || allowedOrigins.some(allowed => 
+      typeof allowed === 'string' ? allowed === origin : allowed.test(origin)
+    )) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -61,6 +79,20 @@ app.use(cors({
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request logging middleware
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  const ip = NODE_ENV === 'production' ? (req.ip || req.connection.remoteAddress) : req.connection.remoteAddress;
+  const forwardedFor = req.headers['x-forwarded-for'];
+  
+  if (NODE_ENV === 'production') {
+    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip} ${forwardedFor ? `(forwarded: ${forwardedFor})` : ''}`);
+  } else {
+    console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${ip}`);
+  }
+  next();
+});
 
 // Home page
 app.get('/', (req, res) => {
@@ -99,6 +131,7 @@ app.use('*', (req, res) => {
       typing: '/api/typing',
       badge: '/api/badge',
       loader: '/api/loader',
+      terminal: '/api/terminal',
       health: '/api/health'
     }
   });

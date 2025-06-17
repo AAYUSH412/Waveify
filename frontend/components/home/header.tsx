@@ -24,8 +24,8 @@ export function Header() {
     { name: "Features", href: "#features" },
     { name: "Templates", href: "#templates" },
     { name: "Pricing", href: "#pricing" },
-    { name: "Docs", href: "#docs" },
-    { name: "GitHub", href: "#github" },
+    { name: "Docs", href: "/docs" },
+    { name: "GitHub", href: "https://github.com/AAYUSH412/Waveify" },
   ]
 
   return (
@@ -92,9 +92,10 @@ export function Header() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
             >
-              <Link
+            <Link
                 href={item.href}
                 className="text-sm font-medium transition-colors hover:text-primary relative group"
+                {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.name}
                 <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
@@ -148,6 +149,7 @@ export function Header() {
                     href={item.href}
                     className="text-sm font-medium transition-colors hover:text-primary block py-2"
                     onClick={() => setIsMenuOpen(false)}
+                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
                     {item.name}
                   </Link>

@@ -168,6 +168,15 @@ http://localhost:4000/api
 - `GET /api/badge/styles` - Available badge styles
 - `GET /api/badge/colors` - Available badge colors
 
+#### 💻 Terminal API
+- `GET /api/terminal` - Generate terminal command simulations
+- `GET /api/terminal/modern` - Modern macOS-style terminal
+- `GET /api/terminal/matrix` - Matrix-inspired green terminal
+- `GET /api/terminal/cyberpunk` - Futuristic neon terminal
+- `GET /api/terminal/retro` - Vintage CRT monitor style
+- `GET /api/terminal/themes` - Available terminal themes
+- `GET /api/terminal/examples` - Example command sets
+
 #### ⏳ Loader API
 - `GET /api/loader` - Generate loading animations
 - `GET /api/loader/types` - Available loader types
