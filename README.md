@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Waveify Banner](http://localhost:4000/api/wave?color=%23007CF0&height=150&speed=4&width=1200&amplitude=30&frequency=3)
+![Waveify Banner](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&speed=4&width=1200&amplitude=30&frequency=3)
 
 [![GitHub stars](https://img.shields.io/github/stars/aayushvaghela/Waveify?style=social)](https://github.com/aayushvaghela/Waveify/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/aayushvaghela/Waveify?style=social)](https://github.com/aayushvaghela/Waveify/network/members)
@@ -11,7 +11,7 @@
 
 *Transform your GitHub READMEs with stunning animated SVG banners - no design skills required!*
 
-[✨ Live Demo](http://localhost:4000) • [📚 API Docs](./docs/API.md) • [🚀 Quick Start](#-quick-start) • [🤝 Contributing](./docs/CONTRIBUTING.md)
+[✨ Live Demo](https://waveify.onrender.com) • [📚 API Docs](./docs/API.md) • [🚀 Quick Start](#-quick-start) • [🤝 Contributing](./docs/CONTRIBUTING.md)
 
 </div>
 
@@ -38,23 +38,23 @@
 
 ### 1. Basic Wave Animation
 ```markdown
-![Wave](http://localhost:4000/api/wave?color=%23007CF0&height=150&width=1200)
+![Wave](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&width=1200)
 ```
-![Wave Example](http://localhost:4000/api/wave?color=%23007CF0&height=150&width=1200&amplitude=20&frequency=2)
+![Wave Example](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&width=1200&amplitude=20&frequency=2)
 
 ### 2. Typing Animation
 ```markdown
-![Typing](http://localhost:4000/api/typing?text=Welcome%20to%20my%20project&fontSize=24&color=%23333)
+![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20my%20project&fontSize=24&color=%23333)
 ```
 
 ### 3. Custom Badge
 ```markdown
-![Badge](http://localhost:4000/api/badge?label=Status&message=Awesome&color=brightgreen&style=modern)
+![Badge](https://waveify.onrender.com/api/badge?label=Status&message=Awesome&color=brightgreen&style=modern)
 ```
 
 ### 4. Loading Animation
 ```markdown
-![Loader](http://localhost:4000/api/loader?type=dots&color=blue&speed=1.5)
+![Loader](https://waveify.onrender.com/api/loader?type=dots&color=blue&speed=1.5)
 ```
 
 ---
@@ -65,26 +65,26 @@
 
 | Style | Example | URL |
 |-------|---------|-----|
-| **Classic Wave** | ![Classic](http://localhost:4000/api/wave?color=%23007CF0&height=80&width=600&amplitude=15) | `/api/wave?color=%23007CF0` |
-| **Sine Wave** | ![Sine](http://localhost:4000/api/wave/sine?color=%23ff0066&height=80&width=600&frequency=3) | `/api/wave/sine?color=%23ff0066` |
-| **Neon Wave** | ![Neon](http://localhost:4000/api/wave/neon?color=%2300ff99&height=80&width=600) | `/api/wave/neon?color=%2300ff99` |
-| **Glitch Wave** | ![Glitch](http://localhost:4000/api/wave/glitch?color=%23ff3366&height=80&width=600) | `/api/wave/glitch?color=%23ff3366` |
+| **Classic Wave** | ![Classic](https://waveify.onrender.com/api/wave?color=%23007CF0&height=80&width=600&amplitude=15) | `/api/wave?color=%23007CF0` |
+| **Sine Wave** | ![Sine](https://waveify.onrender.com/api/wave/sine?color=%23ff0066&height=80&width=600&frequency=3) | `/api/wave/sine?color=%23ff0066` |
+| **Neon Wave** | ![Neon](https://waveify.onrender.com/api/wave/neon?color=%2300ff99&height=80&width=600) | `/api/wave/neon?color=%2300ff99` |
+| **Glitch Wave** | ![Glitch](https://waveify.onrender.com/api/wave/glitch?color=%23ff3366&height=80&width=600) | `/api/wave/glitch?color=%23ff3366` |
 
 ### Typing Animations
 
 | Style | Example | URL |
 |-------|---------|-----|
-| **Classic** | ![Classic Typing](http://localhost:4000/api/typing?text=Hello%20World&fontSize=18&width=300&height=50) | `/api/typing?text=Hello%20World` |
-| **Neon** | ![Neon Typing](http://localhost:4000/api/typing/neon?text=Cyberpunk%20Style&fontSize=18&width=350&height=50) | `/api/typing/neon?text=Cyberpunk%20Style` |
-| **Matrix** | ![Matrix Typing](http://localhost:4000/api/typing/matrix?text=Follow%20the%20white%20rabbit&fontSize=16&width=400&height=50) | `/api/typing/matrix?text=Follow%20the%20white%20rabbit` |
+| **Classic** | ![Classic Typing](https://waveify.onrender.com/api/typing?text=Hello%20World&fontSize=18&width=300&height=50) | `/api/typing?text=Hello%20World` |
+| **Neon** | ![Neon Typing](https://waveify.onrender.com/api/typing/neon?text=Cyberpunk%20Style&fontSize=18&width=350&height=50) | `/api/typing/neon?text=Cyberpunk%20Style` |
+| **Matrix** | ![Matrix Typing](https://waveify.onrender.com/api/typing/matrix?text=Follow%20the%20white%20rabbit&fontSize=16&width=400&height=50) | `/api/typing/matrix?text=Follow%20the%20white%20rabbit` |
 
 ### Dynamic Badges
 
 | Style | Example | URL |
 |-------|---------|-----|
-| **Modern** | ![Modern Badge](http://localhost:4000/api/badge?label=Build&message=Passing&color=success&style=modern) | `/api/badge?style=modern` |
-| **Gradient** | ![Gradient Badge](http://localhost:4000/api/badge?label=Version&message=v1.0.0&color=blue&style=gradient) | `/api/badge?style=gradient` |
-| **Neon** | ![Neon Badge](http://localhost:4000/api/badge?label=Status&message=Online&color=green&style=neon) | `/api/badge?style=neon` |
+| **Modern** | ![Modern Badge](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success&style=modern) | `/api/badge?style=modern` |
+| **Gradient** | ![Gradient Badge](https://waveify.onrender.com/api/badge?label=Version&message=v1.0.0&color=blue&style=gradient) | `/api/badge?style=gradient` |
+| **Neon** | ![Neon Badge](https://waveify.onrender.com/api/badge?label=Status&message=Online&color=green&style=neon) | `/api/badge?style=neon` |
 
 ---
 
@@ -113,7 +113,7 @@
    npm run dev
    ```
 
-   The API will be available at `http://localhost:4000`
+   The API will be available at `https://waveify.onrender.com`
 
 ### Frontend Setup
 
@@ -136,7 +136,7 @@
 
 ### Base URL
 ```
-http://localhost:4000/api
+https://waveify.onrender.com/api
 ```
 
 ### Available Endpoints
@@ -286,28 +286,28 @@ Waveify/
 ### GitHub README Enhancement
 ```markdown
 <!-- Project Header -->
-![Header](http://localhost:4000/api/wave?color=%23667eea&height=200&width=1200&amplitude=30)
+![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=200&width=1200&amplitude=30)
 
 <!-- Project Stats -->
-![Build Status](http://localhost:4000/api/badge?label=Build&message=Passing&color=success)
-![Version](http://localhost:4000/api/badge?label=Version&message=v2.1.0&color=blue)
-![License](http://localhost:4000/api/badge?label=License&message=MIT&color=green)
+![Build Status](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success)
+![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue)
+![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=green)
 
 <!-- Dynamic Typing -->
-![Typing](http://localhost:4000/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22)
+![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22)
 
 <!-- Loading States -->
-![Loading](http://localhost:4000/api/loader?type=dots&color=purple&speed=1.2)
+![Loading](https://waveify.onrender.com/api/loader?type=dots&color=purple&speed=1.2)
 ```
 
 ### Documentation Headers
 ```markdown
-![API Docs](http://localhost:4000/api/wave/neon?color=%2300ff88&height=120&text=API%20Documentation)
+![API Docs](https://waveify.onrender.com/api/wave/neon?color=%2300ff88&height=120&text=API%20Documentation)
 ```
 
 ### Project Banners
 ```markdown
-![Project Banner](http://localhost:4000/api/typing/matrix?text=Entering%20the%20Matrix...&fontSize=24&width=500)
+![Project Banner](https://waveify.onrender.com/api/typing/matrix?text=Entering%20the%20Matrix...&fontSize=24&width=500)
 ```
 
 ---
@@ -430,7 +430,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repo if you found it helpful!**
 
-![Footer Wave](http://localhost:4000/api/wave?color=%23667eea&height=100&width=1200&amplitude=15&frequency=4)
+![Footer Wave](https://waveify.onrender.com/api/wave?color=%23667eea&height=100&width=1200&amplitude=15&frequency=4)
 
 *Made with ❤️ by [Aayush Vaghela](https://github.com/aayushvaghela)*
 
