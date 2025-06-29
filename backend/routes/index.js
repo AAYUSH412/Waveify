@@ -4,7 +4,6 @@ import typingRoutes from './typing.js';
 import badgeRoutes from './badge.js';
 import loaderRoutes from './loader.js';
 import terminalRoutes from './terminal.js';
-import statsRoutes from './stats.js';
 import healthRoutes from './health.js';
 
 const router = express.Router();
@@ -15,7 +14,6 @@ router.use('/typing', typingRoutes);
 router.use('/badge', badgeRoutes);
 router.use('/loader', loaderRoutes);
 router.use('/terminal', terminalRoutes);
-router.use('/stats', statsRoutes);
 router.use('/health', healthRoutes);
 
 export default router;

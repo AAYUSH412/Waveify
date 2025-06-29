@@ -176,18 +176,6 @@ export default function hometemplate() {
             </div>
 
             <div class="endpoint-card">
-                <h3 class="endpoint-title">📊 GitHub Stats</h3>
-                <p class="endpoint-desc">Beautiful GitHub profile statistics with live data</p>
-                <div class="endpoint-url">/api/stats</div>
-                <div class="params">
-                    <strong>Parameters:</strong> username (required), metrics, theme, animation, width, height
-                </div>
-                <div class="example">
-                    <img src="/api/stats?username=octocat&theme=dark&metrics=stars,repos,followers,commits&width=700&height=300" alt="Stats Example">
-                </div>
-            </div>
-
-            <div class="endpoint-card">
                 <h3 class="endpoint-title">❤️ Health Check</h3>
                 <p class="endpoint-desc">API status and health monitoring</p>
                 <div class="endpoint-url">/api/health</div>

@@ -159,7 +159,6 @@ app.use('*', (req, res) => {
       badge: '/api/badge',
       loader: '/api/loader',
       terminal: '/api/terminal',
-      stats: '/api/stats',
       health: '/api/health'
     }
   });
