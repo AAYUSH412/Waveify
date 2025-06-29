@@ -58,7 +58,7 @@ export const metadata = {
     shortcut: "/favicon.svg",
     apple: "/apple-icon.png",
   },
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   metadataBase: new URL("https://waveify.vercel.app"),
 }
 
@@ -83,7 +83,7 @@ export default function RootLayout({
     <head>
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <link rel="apple-touch-icon" href="/apple-icon.png" />
-      <link rel="manifest" href="/manifest.json" />
+      <link rel="manifest" href="/manifest.webmanifest" />
       <meta name="google-site-verification" content="zt9A_STXvRGIDDkpA_-eOL3Wx0dsu2o4UxtnZy9l2o4" />
     </head>
       <body className={inter.className}>
