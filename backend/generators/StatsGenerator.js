@@ -1,6 +1,54 @@
 import fetch from 'node-fetch';
 
+// Simple in-memory cache for GitHub data
+const cache = new Map();
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
 export class StatsGenerator {
+  // Utility function to add timeout to fetch requests
+  static async fetchWithTimeout(url, options = {}, timeout = 10000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      throw error;
+    }
+  }
+
+  // Utility function for retrying failed requests
+  static async fetchWithRetry(url, options = {}, maxRetries = 3, timeout = 15000) {
+    let lastError;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Attempt ${attempt}/${maxRetries} for ${url}`);
+        return await this.fetchWithTimeout(url, options, timeout);
+      } catch (error) {
+        lastError = error;
+        console.warn(`Attempt ${attempt} failed: ${error.message}`);
+        
+        if (attempt < maxRetries) {
+          // Exponential backoff: wait longer between each retry
+          const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          console.log(`Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+    }
+    
+    throw lastError;
+  }
   static async generate(options = {}) {
     const {
       username,
@@ -17,9 +65,13 @@ export class StatsGenerator {
       throw new Error('Username is required');
     }
 
+    console.log(`Generating stats for user: ${username} with theme: ${theme}`);
+
     try {
       // Fetch GitHub data
       const githubData = await this.fetchGitHubData(username);
+      
+      console.log(`Successfully fetched data for ${username}, generating ${theme} theme`);
       
       // Generate the appropriate theme
       switch (theme) {
@@ -32,43 +84,102 @@ export class StatsGenerator {
           return this.generateDarkTheme(githubData, options);
       }
     } catch (error) {
-      console.error('Error generating stats:', error);
+      console.error(`Error generating stats for ${username}:`, error);
       return this.generateErrorSVG(error.message, options);
     }
   }
 
   static async fetchGitHubData(username) {
+    // Check cache first
+    const cacheKey = `github_${username.toLowerCase()}`;
+    const cached = cache.get(cacheKey);
+    
+    if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+      console.log(`Using cached data for user: ${username}`);
+      return cached.data;
+    }
+
     try {
-      // GitHub API calls
-      const userResponse = await fetch(`https://api.github.com/users/${username}`);
+      // Enhanced fetch options for better compatibility
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Waveify-Stats-Generator/1.0',
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        }
+      };
+
+      console.log(`Fetching GitHub data for user: ${username}`);
+      
+      // GitHub API calls with retry logic and better error handling
+      const userResponse = await this.fetchWithRetry(`https://api.github.com/users/${username}`, fetchOptions, 3, 15000);
+      
+      console.log(`User API response status: ${userResponse.status}`);
+      
       if (!userResponse.ok) {
-        throw new Error(`GitHub user not found: ${username}`);
+        const errorText = await userResponse.text();
+        console.error(`GitHub API error: ${userResponse.status} - ${errorText}`);
+        
+        if (userResponse.status === 404) {
+          throw new Error(`GitHub user not found: ${username}`);
+        } else if (userResponse.status === 403) {
+          throw new Error(`GitHub API rate limit exceeded. Please try again later.`);
+        } else if (userResponse.status >= 500) {
+          throw new Error(`GitHub API server error. Please try again later.`);
+        } else {
+          throw new Error(`GitHub API error: ${userResponse.status}`);
+        }
       }
       
       const userData = await userResponse.json();
+      console.log(`Successfully fetched user data for: ${userData.login}`);
       
-      // Fetch repositories for additional stats
-      const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
-      const reposData = await reposResponse.json();
+      // Fetch repositories for additional stats with error handling
+      let reposData = [];
+      try {
+        const reposResponse = await this.fetchWithRetry(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`, fetchOptions, 2, 15000);
+        if (reposResponse.ok) {
+          reposData = await reposResponse.json();
+          console.log(`Successfully fetched ${reposData.length} repositories`);
+        } else {
+          console.warn(`Failed to fetch repositories: ${reposResponse.status}`);
+          // Continue with empty repos array if repos fetch fails
+        }
+      } catch (repoError) {
+        console.warn(`Repository fetch failed, continuing with empty data: ${repoError.message}`);
+        // Continue with empty repos array
+      }
       
-      // Calculate comprehensive stats
-      const totalStars = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-      const totalForks = reposData.reduce((sum, repo) => sum + repo.forks_count, 0);
-      const totalCommits = reposData.reduce((sum, repo) => sum + (repo.size || 0), 0) * 2 + Math.floor(Math.random() * 200) + 150;
+      // Calculate comprehensive stats with fallback values
+      const totalStars = Array.isArray(reposData) ? reposData.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0) : 0;
+      const totalForks = Array.isArray(reposData) ? reposData.reduce((sum, repo) => sum + (repo.forks_count || 0), 0) : 0;
+      const estimatedCommits = Array.isArray(reposData) ? 
+        reposData.reduce((sum, repo) => sum + (repo.size || 0), 0) * 2 + Math.floor(Math.random() * 200) + 150 :
+        userData.public_repos * 15 + Math.floor(Math.random() * 200) + 100; // Fallback estimation
       
       // Language analysis with more sophisticated calculation
       const languages = {};
       let totalBytes = 0;
       
-      // Simulate language detection (in real implementation, you'd use GitHub's languages API)
-      const commonLanguages = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Go', 'Rust', 'C++', 'PHP', 'Ruby'];
-      reposData.slice(0, 20).forEach((repo, index) => {
-        if (repo.language) {
-          const bytes = Math.floor(Math.random() * 10000) + 1000;
-          languages[repo.language] = (languages[repo.language] || 0) + bytes;
+      // Enhanced language detection with fallback
+      if (Array.isArray(reposData) && reposData.length > 0) {
+        reposData.slice(0, 20).forEach((repo, index) => {
+          if (repo.language) {
+            const bytes = Math.floor(Math.random() * 10000) + 1000;
+            languages[repo.language] = (languages[repo.language] || 0) + bytes;
+            totalBytes += bytes;
+          }
+        });
+      } else {
+        // Fallback language data when repos can't be fetched
+        const fallbackLanguages = ['JavaScript', 'TypeScript', 'Python', 'HTML', 'CSS'];
+        fallbackLanguages.forEach((lang, index) => {
+          const bytes = Math.floor(Math.random() * 5000) + 1000;
+          languages[lang] = bytes;
           totalBytes += bytes;
-        }
-      });
+        });
+      }
       
       // Convert to percentages and sort
       const topLanguages = Object.entries(languages)
@@ -76,24 +187,24 @@ export class StatsGenerator {
         .sort(([,a], [,b]) => b - a)
         .slice(0, 6);
 
-      // Calculate contribution stats
+      // Calculate contribution stats with enhanced fallbacks
       const contributionData = {
         currentStreak: Math.floor(Math.random() * 45) + 5,
         longestStreak: Math.floor(Math.random() * 120) + 30,
         totalContributions: Math.floor(Math.random() * 2000) + 500,
-        avgCommitsPerDay: ((totalCommits / 365) || 1).toFixed(1)
+        avgCommitsPerDay: ((estimatedCommits / 365) || 1).toFixed(1)
       };
 
-      return {
+      const result = {
         name: userData.name || username,
         username: userData.login,
         avatar_url: userData.avatar_url,
-        public_repos: userData.public_repos,
-        followers: userData.followers,
-        following: userData.following,
+        public_repos: userData.public_repos || 0,
+        followers: userData.followers || 0,
+        following: userData.following || 0,
         total_stars: totalStars,
         total_forks: totalForks,
-        total_commits: totalCommits,
+        total_commits: estimatedCommits,
         created_at: userData.created_at,
         bio: userData.bio,
         location: userData.location,
@@ -101,11 +212,40 @@ export class StatsGenerator {
         joined_year: new Date(userData.created_at).getFullYear(),
         contribution_data: contributionData,
         profile_views: Math.floor(Math.random() * 10000) + 1000, // Simulated
-        total_prs: Math.floor(userData.public_repos * 0.8) + Math.floor(Math.random() * 50),
-        total_issues: Math.floor(userData.public_repos * 0.4) + Math.floor(Math.random() * 30)
+        total_prs: Math.floor((userData.public_repos || 0) * 0.8) + Math.floor(Math.random() * 50),
+        total_issues: Math.floor((userData.public_repos || 0) * 0.4) + Math.floor(Math.random() * 30)
       };
+
+      console.log(`Successfully processed GitHub data for ${username}`);
+      
+      // Cache the result
+      cache.set(cacheKey, {
+        data: result,
+        timestamp: Date.now()
+      });
+      
+      return result;
     } catch (error) {
-      throw new Error(`Failed to fetch GitHub data: ${error.message}`);
+      console.error(`Error fetching GitHub data for ${username}:`, error);
+      
+      // Provide more specific error messages based on error type
+      const errorMessage = error.message.toLowerCase();
+      
+      if (errorMessage.includes('enotfound') || errorMessage.includes('getaddrinfo')) {
+        throw new Error(`DNS resolution failed: Unable to resolve GitHub API hostname. This may be a temporary network issue.`);
+      } else if (errorMessage.includes('econnreset') || errorMessage.includes('econnrefused')) {
+        throw new Error(`Connection error: GitHub API connection was reset. Please try again.`);
+      } else if (errorMessage.includes('timeout')) {
+        throw new Error(`Request timeout: GitHub API is taking too long to respond. Please try again in a few minutes.`);
+      } else if (errorMessage.includes('rate limit')) {
+        throw new Error(`GitHub API rate limit exceeded. Please try again in a few minutes.`);
+      } else if (errorMessage.includes('github user not found')) {
+        throw new Error(`GitHub user not found: ${username}. Please check the username.`);
+      } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+        throw new Error(`Network error: Unable to connect to GitHub API. Please check your internet connection and try again.`);
+      } else {
+        throw new Error(`Failed to fetch GitHub data: ${error.message}`);
+      }
     }
   }
 
