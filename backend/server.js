@@ -65,9 +65,8 @@ app.use(cors({
       'http://localhost:4000',
       'http://127.0.0.1:3000', // Add this for local development
       'http://127.0.0.1:3001', // Add this for local development
-      'https://waveify.vercel.app',
-      'https://waveify.com',
-      'https://waveify.onrender.com'
+      'https://waveify.onrender.com',
+      'https://waveipfy.vercel.app'
     ];
     
     if (NODE_ENV === 'development' || allowedOrigins.some(allowed => 
