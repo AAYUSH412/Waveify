@@ -183,9 +183,8 @@ export class WaveifyAPI {
   }
 
   // Loader Generator APIs
-  generateLoader(config: LoaderConfig = {}, subtype?: string): string {
-    const endpoint = subtype ? `loader/${subtype}` : 'loader'
-    return this.buildUrl(endpoint, config)
+  generateLoader(config: LoaderConfig = {}): string {
+    return this.buildUrl('loader', config)
   }
 
   // Utility methods

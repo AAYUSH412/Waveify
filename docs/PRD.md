@@ -181,7 +181,6 @@ phase: number         // Phase offset
 /api/badge      // Animated status badges
 /api/typing     // Typewriter text animation
 /api/progress   // Progress bars
-/api/stats      // GitHub stats visualization
 ```
 
 ### Phase 3 Features (Months 4-6) 🚀

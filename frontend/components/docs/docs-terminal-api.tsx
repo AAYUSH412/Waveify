@@ -176,7 +176,8 @@ export function DocsTerminalApi() {
                       <img 
                         src={theme.url}
                         alt={`${theme.name} Terminal`}
-                        className="w-full h-auto"
+                        className="w-full max-w-2xl h-auto mx-auto border rounded-md shadow-sm"
+                        style={{ maxHeight: '300px', objectFit: 'contain' }}
                       />
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -320,7 +321,7 @@ export function DocsTerminalApi() {
                   <img 
                     src="https://waveify.onrender.com/api/terminal?commands=%5B%22git%20clone%20https%3A//github.com/user/awesome-project.git%22%2C%20%22cd%20awesome-project%22%2C%20%22npm%20install%22%2C%20%22npm%20run%20dev%22%5D&theme=modern&width=700&height=250"
                     alt="Development Workflow"
-                    className="w-full h-auto"
+                    className="w-fit h-auto"
                   />
                 </div>
                 <div>

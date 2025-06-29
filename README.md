@@ -23,9 +23,11 @@
 
 ### ✨ Key Features
 
-- 🌊 **Animated Wave Patterns** - 10+ wave styles (sine, square, sawtooth, neon, glitch, etc.)
-- ⌨️ **Typing Animations** - 8+ typing effects (classic, neon, rainbow, matrix, etc.)
-- 🏷️ **Dynamic Badges** - Custom badges with animations and modern styling
+- 🌊 **Animated Wave Patterns** - 10+ wave styles (sine, square, sawtooth, neon, glitch, plasma, etc.)
+- ⌨️ **Typing Animations** - 8+ typing effects (classic, neon, rainbow, matrix, terminal, etc.)
+- 🏷️ **Dynamic Badges** - Custom badges with 10+ styles and animations
+- 💻 **Terminal Simulations** - Beautiful terminal interfaces with multiple themes
+- 📊 **GitHub Stats Cards** - Animated profile statistics with modern themes
 - ⏳ **Loading Animations** - Elegant loaders and spinners
 - 🎨 **Full Customization** - Colors, sizes, speeds, and effects
 - 🚀 **Zero Dependencies** - Just URL-based implementation
@@ -57,6 +59,16 @@
 ![Loader](https://waveify.onrender.com/api/loader?type=dots&color=blue&speed=1.5)
 ```
 
+### 5. Terminal Simulation
+```markdown
+![Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20install%20waveify&theme=modern)
+```
+
+### 6. GitHub Stats Card
+```markdown
+![Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=dark)
+```
+
 ---
 
 ## 🎨 API Examples
@@ -85,6 +97,22 @@
 | **Modern** | ![Modern Badge](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success&style=modern) | `/api/badge?style=modern` |
 | **Gradient** | ![Gradient Badge](https://waveify.onrender.com/api/badge?label=Version&message=v1.0.0&color=blue&style=gradient) | `/api/badge?style=gradient` |
 | **Neon** | ![Neon Badge](https://waveify.onrender.com/api/badge?label=Status&message=Online&color=green&style=neon) | `/api/badge?style=neon` |
+
+### Terminal Simulations
+
+| Theme | Example | URL |
+|-------|---------|-----|
+| **Modern** | ![Modern Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20start&theme=modern&width=600&height=80) | `/api/terminal?theme=modern` |
+| **Matrix** | ![Matrix Terminal](https://waveify.onrender.com/api/terminal?commands=ls%20-la&theme=matrix&width=600&height=80) | `/api/terminal?theme=matrix` |
+| **Cyberpunk** | ![Cyberpunk Terminal](https://waveify.onrender.com/api/terminal?commands=hack%20mainframe&theme=cyberpunk&width=600&height=80) | `/api/terminal?theme=cyberpunk` |
+
+### GitHub Stats Cards
+
+| Theme | Example | URL |
+|-------|---------|-----|
+| **Dark** | ![Dark Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=dark&width=400&height=200) | `/api/stats?theme=dark` |
+| **Light** | ![Light Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=light&width=400&height=200) | `/api/stats?theme=light` |
+| **Auto** | ![Auto Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=auto&width=400&height=200) | `/api/stats?theme=auto` |
 
 ---
 
@@ -180,6 +208,14 @@ https://waveify.onrender.com/api
 #### ⏳ Loader API
 - `GET /api/loader` - Generate loading animations
 - `GET /api/loader/types` - Available loader types
+
+#### 📊 Stats API
+- `GET /api/stats` - Generate GitHub profile statistics
+- `GET /api/stats/dark` - Dark theme stats card
+- `GET /api/stats/light` - Light theme stats card  
+- `GET /api/stats/auto` - Auto theme (system preference)
+- `GET /api/stats/metrics` - Available metrics list
+- `GET /api/stats/examples` - Usage examples
 
 ### Query Parameters
 
@@ -285,29 +321,56 @@ Waveify/
 
 ### GitHub README Enhancement
 ```markdown
-<!-- Project Header -->
+<!-- Project Header with Wave Animation -->
 ![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=200&width=1200&amplitude=30)
 
-<!-- Project Stats -->
-![Build Status](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success)
-![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue)
-![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=green)
+<!-- Project Stats with Modern Badges -->
+![Build Status](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success&style=modern)
+![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue&style=gradient)
+![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=green&style=pill)
 
-<!-- Dynamic Typing -->
-![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22)
+<!-- Dynamic Typing Introduction -->
+![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22&style=gradient)
 
-<!-- Loading States -->
+<!-- Installation Commands in Terminal Style -->
+![Installation](https://waveify.onrender.com/api/terminal?commands=npm%20install%20myproject&theme=modern&width=600)
+
+<!-- GitHub Profile Stats -->
+![GitHub Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=dark&metrics=commits,prs,stars,repos)
+
+<!-- Loading States for Dynamic Content -->
 ![Loading](https://waveify.onrender.com/api/loader?type=dots&color=purple&speed=1.2)
 ```
 
 ### Documentation Headers
 ```markdown
+<!-- API Documentation Header -->
 ![API Docs](https://waveify.onrender.com/api/wave/neon?color=%2300ff88&height=120&text=API%20Documentation)
+
+<!-- Terminal Examples -->
+![Terminal Example](https://waveify.onrender.com/api/terminal?commands=curl%20-X%20GET%20api.example.com/users&theme=cyberpunk)
 ```
 
-### Project Banners
+### Project Showcases
 ```markdown
+<!-- Project Banner with Typing -->
 ![Project Banner](https://waveify.onrender.com/api/typing/matrix?text=Entering%20the%20Matrix...&fontSize=24&width=500)
+
+<!-- Feature Highlights -->
+![Features](https://waveify.onrender.com/api/badge?label=Features&message=10%2B%20APIs&color=purple&style=neon&animated=true)
+
+<!-- Tech Stack Badges -->
+![Node.js](https://waveify.onrender.com/api/badge?label=Node.js&message=18%2B&color=green&style=modern)
+![React](https://waveify.onrender.com/api/badge?label=React&message=18.0&color=blue&style=gradient)
+![TypeScript](https://waveify.onrender.com/api/badge?label=TypeScript&message=Ready&color=blue&style=modern)
+```
+
+### Profile Customization
+```markdown
+<!-- Personal GitHub Profile -->
+![Profile Header](https://waveify.onrender.com/api/wave/plasma?color=%23ff6b6b&height=180&width=1000)
+![About Me](https://waveify.onrender.com/api/typing?text=Hi%20there!%20I'm%20a%20Full%20Stack%20Developer&fontSize=20&style=rainbow)
+![My Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=auto&animation=countUp)
 ```
 
 ---
@@ -353,42 +416,52 @@ For detailed contributing guidelines, see [CONTRIBUTING.md](./docs/CONTRIBUTING.
 ## 📈 Roadmap
 
 ### Phase 1: Core Features ✅
-- [x] Wave animations
-- [x] Typing animations  
-- [x] Basic badges
-- [x] Loading animations
-- [x] API documentation
+- [x] Wave animations (10+ styles)
+- [x] Typing animations (8+ effects)
+- [x] Basic badges with modern styling
+- [x] Loading animations and spinners
+- [x] Terminal simulations with themes
+- [x] GitHub stats cards with live data
+- [x] API documentation and examples
 
 ### Phase 2: Enhanced Features 🚧
-- [ ] More animation types
-- [ ] Custom themes
-- [ ] Animation presets
-- [ ] Batch generation
-- [ ] API rate limiting
+- [x] Advanced badge styles (gradient, neon, glass)
+- [x] Terminal themes (modern, matrix, cyberpunk, retro)
+- [x] Animated GitHub profile statistics
+- [ ] Custom animation presets and templates
+- [ ] Batch generation and export tools
+- [ ] Enhanced error handling and validation
+- [ ] Performance optimizations and caching
 
 ### Phase 3: Advanced Features 📋
 - [ ] User accounts & saved configurations
-- [ ] Custom fonts support
-- [ ] SVG optimization
-- [ ] Analytics dashboard
-- [ ] Enterprise features
+- [ ] Custom fonts and typography support
+- [ ] SVG optimization and compression
+- [ ] Real-time collaboration features
+- [ ] Analytics dashboard for usage metrics
+- [ ] Enterprise features and white-labeling
+- [ ] API rate limiting improvements
 
 ### Phase 4: Platform Expansion 🎯
-- [ ] WordPress plugin
-- [ ] Browser extension
-- [ ] Mobile app
-- [ ] Desktop application
-- [ ] API marketplace
+- [ ] WordPress plugin for easy integration
+- [ ] Browser extension for quick generation
+- [ ] Mobile app for on-the-go creation
+- [ ] Desktop application with offline support
+- [ ] API marketplace and third-party integrations
+- [ ] Documentation site with interactive examples
 
 ---
 
 ## 📊 Performance
 
 - **Response Time**: < 200ms (90th percentile)
-- **SVG Size**: Average 2-5KB per animation
+- **SVG Size**: Average 2-8KB per animation (optimized)
 - **Cache Duration**: 1 hour for optimal performance
 - **Rate Limiting**: 100 requests per 15 minutes per IP
 - **Uptime**: 99.9% SLA target
+- **Global CDN**: Optimized delivery worldwide
+- **Concurrent Users**: Supports 1000+ simultaneous requests
+- **API Endpoints**: 6 main APIs with 30+ sub-endpoints
 
 ---
 
@@ -406,8 +479,7 @@ For detailed contributing guidelines, see [CONTRIBUTING.md](./docs/CONTRIBUTING.
 
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/aayushvaghela/Waveify/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/aayushvaghela/Waveify/discussions)
-- 📧 **Contact**: [aayush@waveify.com](mailto:aayush@waveify.com)
-- 💬 **Community**: [Discord Server](https://discord.gg/waveify)
+- 📧 **Contact**: [aayushvaghela12@gmail.com](mailto:aayushvaghela12@gmail.com)
 - 🐦 **Updates**: [@WaveifyAPI](https://twitter.com/WaveifyAPI)
 
 ---

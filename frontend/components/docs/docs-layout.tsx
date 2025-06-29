@@ -40,6 +40,23 @@ const navigationItems = [
     ]
   },
   {
+    title: "Terminal API",
+    items: [
+      { title: "Terminal Themes", href: "#terminal-api", icon: Terminal },
+      { title: "Parameters", href: "#terminal-parameters", icon: Terminal },
+      { title: "Command Types", href: "#terminal-commands", icon: Terminal },
+      { title: "Examples", href: "#terminal-examples", icon: Terminal },
+    ]
+  },
+  {
+    title: "Loader API",
+    items: [
+      { title: "Loader Types", href: "#loader-api", icon: Zap },
+      { title: "Customization", href: "#loader-customization", icon: Zap },
+      { title: "Examples", href: "#loader-examples", icon: Zap },
+    ]
+  },
+  {
     title: "Badge API",
     items: [
       { title: "Custom Badges", href: "#badge-custom", icon: Tags },

@@ -16,7 +16,7 @@ First off, thank you for considering contributing to Waveify! It's people like y
 
 ## 🤝 Code of Conduct
 
-This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [aayush@waveify.com](mailto:aayush@waveify.com).
+This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [aayushvaghela12@gmail.com](mailto:aayushvaghela12@gmail.com).
 
 ### Our Pledge
 
@@ -360,8 +360,7 @@ Contributors are recognized in several ways:
 
 - **GitHub Issues** - For bug reports and feature requests
 - **GitHub Discussions** - For questions and general discussion
-- **Email** - [aayush@waveify.com](mailto:aayush@waveify.com) for security issues
-- **Discord** - [Join our community](https://discord.gg/waveify) (coming soon)
+- **Email** - [aayushvaghela12@gmail.com](mailto:aayushvaghela12@gmail.com) for security issues
 
 ### Development Questions
 

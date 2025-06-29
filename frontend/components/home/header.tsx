@@ -4,12 +4,13 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,8 +23,14 @@ export function Header() {
 
   const navItems = [
     { name: "Features", href: "#features" },
-    { name: "Templates", href: "#templates" },
-    { name: "Pricing", href: "#pricing" },
+    { name: "Generators", href: "#generators", submenu: [
+        { name: "Wave Generator", href: "/generator/wave" },
+        { name: "Typing Generator", href: "/generator/typing" },
+        { name: "Badge Generator", href: "/generator/badge" },
+        { name: "Terminal Generator", href: "/generator/terminal" },
+        { name: "Loader Generator", href: "/generator/loader" },
+      ]
+    },
     { name: "Docs", href: "/docs" },
     { name: "GitHub", href: "https://github.com/AAYUSH412/Waveify" },
   ]
@@ -91,15 +98,53 @@ export function Header() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
+              className="relative"
             >
-            <Link
-                href={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary relative group"
-                {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {item.name}
-                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-              </Link>
+              {item.submenu ? (
+                <div 
+                  className="relative"
+                  onMouseEnter={() => setOpenSubmenu(item.name)}
+                  onMouseLeave={() => setOpenSubmenu(null)}
+                >
+                  <button className="text-sm font-medium transition-colors hover:text-primary relative group flex items-center gap-1">
+                    {item.name}
+                    <ChevronDown className="h-3 w-3" />
+                    <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {openSubmenu === item.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg p-2 z-50"
+                      >
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            href={subItem.href}
+                            className="block px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            onClick={() => setOpenSubmenu(null)}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  href={item.href}
+                  className="text-sm font-medium transition-colors hover:text-primary relative group"
+                  {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {item.name}
+                  <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                </Link>
+              )}
             </motion.div>
           ))}
         </motion.nav>
@@ -145,14 +190,34 @@ export function Header() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.1 }}
                 >
-                  <Link
-                    href={item.href}
-                    className="text-sm font-medium transition-colors hover:text-primary block py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {item.name}
-                  </Link>
+                  {item.submenu ? (
+                    <div>
+                      <div className="text-sm font-medium py-2 border-b border-border/50 mb-2">
+                        {item.name}
+                      </div>
+                      <div className="pl-4 space-y-2">
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            href={subItem.href}
+                            className="block text-sm text-muted-foreground hover:text-primary transition-colors py-1"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="text-sm font-medium transition-colors hover:text-primary block py-2"
+                      onClick={() => setIsMenuOpen(false)}
+                      {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
               <motion.div

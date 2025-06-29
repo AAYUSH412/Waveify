@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -41,17 +43,15 @@ export function WaveGenerator() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors ${
-      theme === 'dark' ? 'bg-gray-950' : 'bg-gray-50'
-    }`}>
-      <div className="h-full flex flex-col lg:flex-row gap-6 p-6">
+    <div className="h-full w-full overflow-hidden">
+      <div className="flex flex-col lg:flex-row h-full gap-6 p-6">
         {/* Left Panel - Controls */}
-        <div className="lg:w-1/3 space-y-6">
-          <Card className={`transition-colors ${
-            theme === 'dark' 
-              ? 'bg-gray-900 border-gray-800' 
-              : 'bg-white border-gray-200'
-          }`}>
+        <div className="lg:w-1/3 lg:max-w-sm flex-shrink-0 space-y-6 overflow-y-auto">
+            <Card className={`transition-colors ${
+              theme === 'dark' 
+                ? 'bg-gray-900 border-gray-800' 
+                : 'bg-white border-gray-200'
+            } w-full`}>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -139,17 +139,19 @@ export function WaveGenerator() {
         </div>
 
         {/* Right Panel - Preview */}
-        <div className="lg:w-2/3">
-          <WavePreview
-            url={url}
-            config={config as WaveConfig}
-            isLoading={isLoading}
-            outputCode={outputCode}
-            outputFormat={outputFormat}
-            onOutputFormatChange={setOutputFormat}
-            onCopy={copy}
-            copied={copied}
-          />
+        <div className="lg:w-2/3 flex-1 min-w-0 overflow-hidden">
+          <div className="h-full overflow-y-auto">
+            <WavePreview
+              url={url}
+              config={config as WaveConfig}
+              isLoading={isLoading}
+              outputCode={outputCode}
+              outputFormat={outputFormat}
+              onOutputFormatChange={setOutputFormat}
+              onCopy={copy}
+              copied={copied}
+            />
+          </div>
         </div>
       </div>
     </div>

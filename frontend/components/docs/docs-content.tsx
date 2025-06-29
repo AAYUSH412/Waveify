@@ -18,7 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 export function DocsContent() {
   return (
     <ScrollArea className="h-[calc(100vh-4rem)]">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-6 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

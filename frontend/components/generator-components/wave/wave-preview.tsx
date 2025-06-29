@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -42,12 +44,13 @@ export function WavePreview({
   const [showGrid, setShowGrid] = useState(false)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full overflow-hidden">
       {/* Preview Card */}
       <PreviewContainer
         title="Live Preview"
         description={`${config.width}×${config.height} • ${config.speed}s speed`}
         isLoading={isLoading}
+        className="w-full max-w-full"
         actions={
           <div className="flex items-center gap-2">
             <Button
@@ -335,7 +338,7 @@ function WaveOnlyPreview({
           <img
             src={blobUrl}
             alt="Wave Animation"
-            className="w-full h-auto max-w-full"
+            className="h-auto w-screen"
             style={{
               animationPlayState: isPlaying ? 'running' : 'paused',
               display: 'block'
