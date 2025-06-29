@@ -11,7 +11,7 @@ This application is configured for seamless deployment on Vercel.
 Make sure to set the following environment variables in your Vercel dashboard:
 
 ```
-NEXT_PUBLIC_API_URL=https://waveify-api.onrender.com
+NEXT_PUBLIC_API_URL=https://waveify.onrender.com
 NEXT_PUBLIC_ALLOWED_ORIGINS=https://waveify.vercel.app,https://waveify.com
 NEXT_PUBLIC_DEV_MODE=false
 NEXT_PUBLIC_GITHUB_ALLOWED=true

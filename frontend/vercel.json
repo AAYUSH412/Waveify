@@ -47,7 +47,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://waveify-api.onrender.com/api/:path*"
+      "destination": "https://waveify.onrender.com/api/:path*"
     }
   ],
   "env": {
@@ -55,7 +55,7 @@
   },
   "build": {
     "env": {
-      "NEXT_PUBLIC_API_URL": "https://waveify-api.onrender.com"
+      "NEXT_PUBLIC_API_URL": "https://waveify.onrender.com"
     }
   }
 }
