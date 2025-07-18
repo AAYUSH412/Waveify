@@ -826,7 +826,6 @@ export class TerminalGenerator {
 
       // Create realistic character-by-character typing effect
       animations += `
-  <!-- Command ${index + 1}: ${command} -->
   <text x="20" y="${currentY}" class="terminal-text">`;
       
       // Animate each character individually
@@ -862,7 +861,6 @@ export class TerminalGenerator {
 
         const outputStartTime = totalDuration + output.delay;
         animations += `
-  <!-- Output: ${output.text.substring(0, 30)}... -->
   <text x="20" y="${currentY}" class="${cssClass}" opacity="0">
     ${this.escapeHtml(output.text)}
     <animate attributeName="opacity" 
