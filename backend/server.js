@@ -61,10 +61,9 @@ app.use(cors({
     
     const allowedOrigins = [
       'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:4000',
+      'http://localhost:3000/*',
+      'http://localhost:4000/*',
       'http://127.0.0.1:3000', // Add this for local development
-      'http://127.0.0.1:3001', // Add this for local development
       'https://waveify.onrender.com',
       'https://waveipfy.vercel.app',
       'https://api.github.com'
@@ -80,7 +79,7 @@ app.use(cors({
   },
   credentials: false,
   methods: ['GET', 'HEAD', 'OPTIONS', 'POST'], // Added POST if needed
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Added X-Requested-With
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cache-Control'], // Added Cache-Control
   optionsSuccessStatus: 200,
   // Explicitly handle preflight requests
   preflightContinue: false
@@ -92,7 +91,7 @@ app.use('/api', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Cache-Control');
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
@@ -156,7 +155,6 @@ app.use('*', (req, res) => {
     availableEndpoints: {
       wave: '/api/wave',
       typing: '/api/typing',
-      badge: '/api/badge',
       loader: '/api/loader',
       terminal: '/api/terminal',
       health: '/api/health'

@@ -25,20 +25,6 @@ export interface TypingConfig {
   gradientColors?: string
 }
 
-export interface BadgeConfig {
-  label?: string
-  message?: string
-  color?: string
-  labelColor?: string
-  style?: string
-  logo?: string
-  logoWidth?: number
-  animated?: boolean
-  borderRadius?: number
-  fontSize?: number
-  fontWeight?: string
-}
-
 export interface TerminalConfig {
   commands?: string[] | string
   theme?: string
@@ -63,7 +49,7 @@ export interface LoaderConfig {
   height?: number
 }
 
-export type GeneratorType = 'wave' | 'typing' | 'badge' | 'terminal' | 'loader'
+export type GeneratorType = 'wave' | 'typing' | 'terminal' | 'loader'
 
 export class WaveifyAPI {
   private baseUrl: string
@@ -164,11 +150,6 @@ export class WaveifyAPI {
     return this.buildUrl('typing/gradient', config)
   }
 
-  // Badge Generator APIs
-  generateBadge(config: BadgeConfig = {}): string {
-    return this.buildUrl('badge', config)
-  }
-
   // Terminal Generator APIs
   generateTerminal(config: TerminalConfig = {}, subtype?: string): string {
     const endpoint = subtype ? `terminal/${subtype}` : 'terminal'
@@ -251,22 +232,6 @@ export class WaveifyAPI {
       'matrix',
       'terminal',
       'gradient'
-    ]
-  }
-
-  // Get all badge styles
-  getBadgeStyles(): string[] {
-    return [
-      'modern',
-      'gradient',
-      'glass',
-      'shadow',
-      'neon',
-      'animated',
-      'outline',
-      'pill',
-      'large',
-      'classic'
     ]
   }
 

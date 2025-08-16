@@ -37,7 +37,7 @@ Please select the type of issue you're reporting:
 - **OS**: [e.g., macOS 13.0, Windows 11, Ubuntu 22.04]
 - **Browser**: [e.g., Chrome 115, Firefox 117, Safari 16]
 - **Node.js Version**: [e.g., 18.17.0]
-- **Waveify Component**: [e.g., Wave Generator, Badge API, Frontend]
+- **Waveify Component**: [e.g., Wave Generator, Terminal API, Frontend]
 - **API Endpoint**: [if applicable, e.g., /api/wave]
 
 ### Error Messages

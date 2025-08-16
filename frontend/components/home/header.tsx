@@ -2,234 +2,201 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Menu, X, Sparkles, ArrowRight, Github } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
+
+const navigation = [
+  { name: "Features", href: "#features" },
+  { name: "Components", href: "#components" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "Docs", href: "/docs" },
+  { name: "API", href: "/docs#api" },
+]
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
+      setScrolled(window.scrollY > 20)
     }
-
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const navItems = [
-    { name: "Features", href: "#features" },
-    { name: "Generators", href: "#generators", submenu: [
-        { name: "Wave Generator", href: "/generator/wave" },
-        { name: "Typing Generator", href: "/generator/typing" },
-        { name: "Badge Generator", href: "/generator/badge" },
-        { name: "Terminal Generator", href: "/generator/terminal" },
-        { name: "Loader Generator", href: "/generator/loader" },
-      ]
-    },
-    { name: "Docs", href: "/docs" },
-    { name: "GitHub", href: "https://github.com/AAYUSH412/Waveify" },
-  ]
-
   return (
     <motion.header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "glass-effect" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "glass-nav shadow-lg" : "bg-transparent"
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="container flex h-16 items-center justify-between">
-        <motion.div
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative w-8 h-8">
-              <motion.div
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500"
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  rotate: { duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-                  scale: { duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" },
-                }}
-              />
-              <div className="absolute inset-1 rounded-full bg-background flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-primary"
-                >
-                  <path d="M2 12h20" />
-                  <path d="M5 12c.5-4.5 2.5-8 5-8s4.5 3.5 5 8c.5 4.5-2.5 8-5 8s-4.5-3.5-5-8Z" />
-                  <path d="M9 12c.5-2.5 1.5-4 3-4s2.5 1.5 3 4c.5 2.5-1.5 4-3 4s-2.5-1.5-3-4Z" />
-                </svg>
-              </div>
-            </div>
-            <span className="font-bold text-xl text-gradient">Waveify</span>
-          </Link>
-        </motion.div>
-
-        {/* Desktop Navigation */}
-        <motion.nav
-          className="hidden md:flex items-center gap-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {navItems.map((item, i) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
-              className="relative"
-            >
-              {item.submenu ? (
-                <div 
-                  className="relative"
-                  onMouseEnter={() => setOpenSubmenu(item.name)}
-                  onMouseLeave={() => setOpenSubmenu(null)}
-                >
-                  <button className="text-sm font-medium transition-colors hover:text-primary relative group flex items-center gap-1">
-                    {item.name}
-                    <ChevronDown className="h-3 w-3" />
-                    <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {openSubmenu === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 mt-2 w-48 bg-background border rounded-lg shadow-lg p-2 z-50"
-                      >
-                        {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="block px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
-                            onClick={() => setOpenSubmenu(null)}
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Logo */}
+          <motion.div
+            className="flex items-center space-x-3"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl gradient-primary p-0.5">
+                  <div className="w-full h-full rounded-xl bg-background flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                  </div>
                 </div>
-              ) : (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-gradient">Waveify</span>
+                <Badge variant="secondary" className="text-xs px-1 py-0 h-4">
+                  v2.0
+                </Badge>
+              </div>
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-1 pl-52">
+            {navigation.map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+              >
                 <Link
                   href={item.href}
-                  className="text-sm font-medium transition-colors hover:text-primary relative group"
-                  {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50 relative group"
                 >
                   {item.name}
-                  <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                  <span className="absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 </Link>
-              )}
+              </motion.div>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-3">
+            <motion.div
+              className="hidden sm:flex items-center space-x-2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link href="https://github.com/AAYUSH412/Waveify" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  <Github className="w-4 h-4 mr-2" />
+                  <span className="hidden md:inline">Star</span>
+                  <Badge variant="secondary" className="ml-2 text-xs">
+                    2.1k
+                  </Badge>
+                </Button>
+              </Link>
             </motion.div>
-          ))}
-        </motion.nav>
 
-        <motion.div
-          className="flex items-center gap-4"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <ThemeToggle />
-          <Button className="hidden md:inline-flex button-gradient shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40 transition-all duration-300">
-            Get Started
-          </Button>
+            <ThemeToggle />
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="md:hidden glass-effect"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </Button>
-        </motion.div>
+            <motion.div
+              className="hidden sm:block"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link href="/generator/wave">
+                <Button className="gradient-primary text-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                  Get Started
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
+
+            {/* Mobile menu button */}
+            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="w-5 h-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="w-5 h-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {isOpen && (
           <motion.div
-            className="md:hidden glass-effect py-4 px-6"
+            className="lg:hidden glass-nav border-t"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item, i) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.1 }}
-                >
-                  {item.submenu ? (
-                    <div>
-                      <div className="text-sm font-medium py-2 border-b border-border/50 mb-2">
-                        {item.name}
-                      </div>
-                      <div className="pl-4 space-y-2">
-                        {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="block text-sm text-muted-foreground hover:text-primary transition-colors py-1"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
+            <div className="container mx-auto px-4 py-6">
+              <nav className="flex flex-col space-y-4">
+                {navigation.map((item, index) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
                     <Link
                       href={item.href}
-                      className="text-sm font-medium transition-colors hover:text-primary block py-2"
-                      onClick={() => setIsMenuOpen(false)}
-                      {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      className="block px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50"
+                      onClick={() => setIsOpen(false)}
                     >
                       {item.name}
                     </Link>
-                  )}
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="pt-4 space-y-3"
+                >
+                  <Link href="https://github.com/AAYUSH412/Waveify" target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="w-full justify-start bg-transparent">
+                      <Github className="w-4 h-4 mr-2" />
+                      Star on GitHub
+                      <Badge variant="secondary" className="ml-auto">
+                        2.1k
+                      </Badge>
+                    </Button>
+                  </Link>
+                  <Link href="/generator/wave">
+                    <Button className="w-full gradient-primary text-white">Get Started</Button>
+                  </Link>
                 </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-              >
-                <Button className="w-full button-gradient shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40 transition-all duration-300">
-                  Get Started
-                </Button>
-              </motion.div>
-            </nav>
+              </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

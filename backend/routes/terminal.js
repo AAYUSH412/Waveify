@@ -34,7 +34,20 @@ const parseOptions = (req) => {
     showHeader: req.query.showHeader === 'false' ? false : true,
     title: req.query.title || 'Terminal',
     githubMode: req.query.githubMode === 'true' ? true : false,
-    commandType: req.query.commandType || 'auto'
+    commandType: req.query.commandType || 'auto',
+    // New professional UI/UX options
+    borderRadius: parseInt(req.query.borderRadius) || 12,
+    padding: parseInt(req.query.padding) || 16,
+    lineHeight: parseFloat(req.query.lineHeight) || 1.4,
+    showLineNumbers: req.query.showLineNumbers === 'true' ? true : false,
+    enableScanlines: req.query.enableScanlines === 'false' ? false : true,
+    showTimestamp: req.query.showTimestamp === 'true' ? true : false,
+    // Accessibility options
+    highContrast: req.query.highContrast === 'true' ? true : false,
+    reducedMotion: req.query.reducedMotion === 'true' ? true : false,
+    accessibilityFontSize: parseInt(req.query.accessibilityFontSize) || null,
+    // Custom colors (if provided as JSON)
+    customColors: req.query.customColors ? JSON.parse(req.query.customColors) : {}
   };
 };
 
@@ -227,6 +240,82 @@ router.get('/github-light', (req, res) => {
   }
 });
 
+// Professional theme terminal
+router.get('/professional', (req, res) => {
+  try {
+    const options = parseOptions(req);
+    options.theme = 'professional';
+    const svg = TerminalGenerator.generate(options);
+    
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.send(svg);
+  } catch (error) {
+    console.error('Error generating professional terminal:', error);
+    res.status(500).send('Error generating professional terminal');
+  }
+});
+
+// Ocean theme terminal
+router.get('/ocean', (req, res) => {
+  try {
+    const options = parseOptions(req);
+    options.theme = 'ocean';
+    const svg = TerminalGenerator.generate(options);
+    
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.send(svg);
+  } catch (error) {
+    console.error('Error generating ocean terminal:', error);
+    res.status(500).send('Error generating ocean terminal');
+  }
+});
+
+// Sunset theme terminal
+router.get('/sunset', (req, res) => {
+  try {
+    const options = parseOptions(req);
+    options.theme = 'sunset';
+    const svg = TerminalGenerator.generate(options);
+    
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.send(svg);
+  } catch (error) {
+    console.error('Error generating sunset terminal:', error);
+    res.status(500).send('Error generating sunset terminal');
+  }
+});
+
+// Monochrome theme terminal
+router.get('/monochrome', (req, res) => {
+  try {
+    const options = parseOptions(req);
+    options.theme = 'monochrome';
+    const svg = TerminalGenerator.generate(options);
+    
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.send(svg);
+  } catch (error) {
+    console.error('Error generating monochrome terminal:', error);
+    res.status(500).send('Error generating monochrome terminal');
+  }
+});
+
 // Endpoint to get available themes
 router.get('/themes', (req, res) => {
   try {
@@ -284,6 +373,30 @@ router.get('/themes', (req, res) => {
         description: 'Vintage terminal with amber text and classic styling',
         features: ['Retro styling', 'Amber text', 'Classic terminal feel', 'Vintage aesthetic'],
         category: 'Retro'
+      },
+      {
+        name: 'professional',
+        description: 'Corporate-grade terminal with enhanced typography and depth',
+        features: ['Corporate styling', 'Enhanced shadows', 'Professional gradients', 'Business-ready'],
+        category: 'Professional'
+      },
+      {
+        name: 'ocean',
+        description: 'Deep blue ocean-inspired terminal with wave effects',
+        features: ['Ocean gradients', 'Wave animations', 'Blue color scheme', 'Aquatic feel'],
+        category: 'Nature'
+      },
+      {
+        name: 'sunset',
+        description: 'Warm sunset terminal with golden hour gradients',
+        features: ['Warm colors', 'Sunset gradients', 'Particle effects', 'Golden glow'],
+        category: 'Nature'
+      },
+      {
+        name: 'monochrome',
+        description: 'High contrast black and white terminal with minimalist design',
+        features: ['High contrast', 'Black and white', 'Minimalist', 'Clean typography'],
+        category: 'Minimalist'
       }
     ];
 
@@ -295,7 +408,10 @@ router.get('/themes', (req, res) => {
         'Modern': themes.filter(t => t.category === 'Modern').length,
         'GitHub': themes.filter(t => t.category === 'GitHub').length,
         'Cyberpunk': themes.filter(t => t.category === 'Cyberpunk').length,
-        'Retro': themes.filter(t => t.category === 'Retro').length
+        'Retro': themes.filter(t => t.category === 'Retro').length,
+        'Professional': themes.filter(t => t.category === 'Professional').length,
+        'Nature': themes.filter(t => t.category === 'Nature').length,
+        'Minimalist': themes.filter(t => t.category === 'Minimalist').length
       }
     });
   } catch (error) {

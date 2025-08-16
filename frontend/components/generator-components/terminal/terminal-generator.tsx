@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { api } from '@/lib/api'
-import type { TerminalConfig } from '@/lib/api'
+import type { TerminalConfig } from '@/components/generator-components/shared/types'
 import { TerminalControls } from './terminal-controls'
 import { TerminalPreview } from './terminal-preview'
 import { TerminalPresets } from './terminal-presets'
@@ -32,6 +32,8 @@ const defaultConfig: TerminalConfig = {
 export function TerminalGenerator() {
   const [config, setConfig] = useState<TerminalConfig>(defaultConfig)
   const [isPreviewLoading, setIsPreviewLoading] = useState(false)
+  const [outputFormat, setOutputFormat] = useState<'markdown' | 'html' | 'url'>('markdown')
+  const [copied, setCopied] = useState(false)
   const { toast } = useToast()
 
   const updateConfig = useCallback((updates: Partial<TerminalConfig>) => {
@@ -49,6 +51,8 @@ export function TerminalGenerator() {
   const copyToClipboard = useCallback(async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
       toast({
         description: "Copied to clipboard!"
       })
@@ -59,6 +63,11 @@ export function TerminalGenerator() {
       })
     }
   }, [toast])
+
+  const handleCopyOutput = useCallback(() => {
+    const outputCode = getOutputCode()
+    copyToClipboard(outputCode)
+  }, [copyToClipboard, outputFormat])
 
   const downloadSVG = useCallback(async (url: string) => {
     try {
@@ -89,6 +98,19 @@ export function TerminalGenerator() {
   const url = api.generateTerminal(config)
   const markdownCode = api.generateMarkdown('terminal', url, 'Terminal Demo')
   const htmlCode = api.generateHTML(url, 'Terminal Demo')
+
+  const getOutputCode = () => {
+    switch (outputFormat) {
+      case 'markdown':
+        return markdownCode
+      case 'html':
+        return htmlCode
+      case 'url':
+        return url
+      default:
+        return markdownCode
+    }
+  }
 
   const handlePresetSelect = useCallback((preset: TerminalConfig) => {
     setConfig(preset)
@@ -135,67 +157,24 @@ export function TerminalGenerator() {
           </Card>
         </div>
 
-        {/* Right Column - Preview & Export */}
+        {/* Right Column - Enhanced Preview */}
         <div className="space-y-6">
-          {/* Preview */}
           <Card>
             <CardHeader>
-              <CardTitle>Preview</CardTitle>
+              <CardTitle>Enhanced Preview</CardTitle>
             </CardHeader>
             <CardContent>
               <TerminalPreview 
-                config={config} 
                 url={url}
+                config={config} 
                 isLoading={isPreviewLoading}
-                onLoadingChange={setIsPreviewLoading}
+                outputCode={getOutputCode()}
+                outputFormat={outputFormat}
+                onOutputFormatChange={setOutputFormat}
+                onCopy={handleCopyOutput}
+                copied={copied}
+                onConfigUpdate={updateConfig}
               />
-            </CardContent>
-          </Card>
-
-          {/* Export */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Export</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <CopyButton text={url} onCopy={() => copyToClipboard(url)}>
-                  Copy URL
-                </CopyButton>
-                <Button variant="outline" onClick={() => downloadSVG(url)} className="gap-2">
-                  <Download className="h-4 w-4" />
-                  Download SVG
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-sm font-medium mb-2">Markdown</h4>
-                  <CodeOutput 
-                    code={markdownCode} 
-                    language="markdown" 
-                    onCopy={() => copyToClipboard(markdownCode)}
-                  />
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium mb-2">HTML</h4>
-                  <CodeOutput 
-                    code={htmlCode} 
-                    language="html" 
-                    onCopy={() => copyToClipboard(htmlCode)}
-                  />
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium mb-2">Direct URL</h4>
-                  <CodeOutput 
-                    code={url} 
-                    language="text" 
-                    onCopy={() => copyToClipboard(url)}
-                  />
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>

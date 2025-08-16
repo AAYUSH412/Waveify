@@ -96,8 +96,8 @@ Your API includes these endpoints:
 - `GET /api/health` - Health check
 - `GET /api/wave/*` - Wave animations (sine, square, sawtooth, etc.)
 - `GET /api/typing/*` - Typing animations (classic, neon, matrix, etc.)
-- `GET /api/badge/*` - Custom badges (modern, gradient, neon, etc.)
 - `GET /api/loader/*` - Loading animations (dots, spinner, etc.)
+- `GET /api/terminal/*` - Terminal animations (matrix, retro, etc.)
 
 ## Environment Variables
 

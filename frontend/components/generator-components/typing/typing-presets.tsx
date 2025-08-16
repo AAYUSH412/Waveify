@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Search, Type, Zap, Sparkles, Rainbow } from 'lucide-react'
-import type { TypingConfig } from '@/lib/api'
+import type { TypingConfig } from '@/components/generator-components/shared/types'
 
 interface TypingPresetsProps {
   onSelect: (config: TypingConfig) => void

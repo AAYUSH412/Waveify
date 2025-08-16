@@ -7,7 +7,6 @@ import { DocsQuickStart } from "./docs-quick-start"
 import { DocsApiOverview } from "./docs-api-overview"
 import { DocsWaveApi } from "./docs-wave-api"
 import { DocsTypingApi } from "./docs-typing-api"
-import { DocsBadgeApi } from "./docs-badge-api"
 import { DocsTerminalApi } from "./docs-terminal-api"
 import { DocsLoaderApi } from "./docs-loader-api"
 import { DocsExamples } from "./docs-examples"
@@ -31,7 +30,6 @@ export function DocsContent() {
           <DocsApiOverview />
           <DocsWaveApi />
           <DocsTypingApi />
-          <DocsBadgeApi />
           <DocsTerminalApi />
           <DocsLoaderApi />
           <DocsExamples />

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Download } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { TypingConfig } from '@/lib/api'
+import type { TypingConfig } from '@/components/generator-components/shared/types'
 import { TypingControls } from './typing-controls'
 import { TypingPreview } from './typing-preview'
 import { TypingPresets } from './typing-presets'
@@ -33,6 +33,8 @@ export function TypingGenerator() {
   const [config, setConfig] = useState<TypingConfig>(defaultConfig)
   const [isPreviewLoading, setIsPreviewLoading] = useState(false)
   const [copiedText, setCopiedText] = useState<string | null>(null)
+  const [outputFormat, setOutputFormat] = useState<'markdown' | 'html' | 'url'>('markdown')
+  const [copied, setCopied] = useState(false)
   const { toast } = useToast()
 
   const updateConfig = useCallback((updates: Partial<TypingConfig>) => {
@@ -54,8 +56,8 @@ export function TypingGenerator() {
   const copyToClipboard = useCallback(async (text: string, type: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      setCopiedText(text)
-      setTimeout(() => setCopiedText(null), 2000)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
       toast({
         title: "Copied!",
         description: `${type} copied to clipboard.`
@@ -136,10 +138,18 @@ export function TypingGenerator() {
             </CardHeader>
             <CardContent>
               <TypingPreview 
-                config={config} 
                 url={url}
+                config={config}
                 isLoading={isPreviewLoading}
-                onLoadingChange={setIsPreviewLoading}
+                outputCode={outputFormat === 'markdown' ? markdownCode : outputFormat === 'html' ? htmlCode : url}
+                outputFormat={outputFormat}
+                onOutputFormatChange={setOutputFormat}
+                onCopy={() => {
+                  const code = outputFormat === 'markdown' ? markdownCode : outputFormat === 'html' ? htmlCode : url
+                  copyToClipboard(code, outputFormat.toUpperCase())
+                }}
+                copied={copied}
+                onConfigUpdate={updateConfig}
               />
             </CardContent>
           </Card>

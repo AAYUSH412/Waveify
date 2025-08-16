@@ -1,189 +1,194 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
+import { Check, Star, Zap, Crown, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Check, Sparkles } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const pricingPlans = [
+const plans = [
   {
     name: "Free",
     description: "Perfect for personal projects and experimentation",
     price: "$0",
     period: "forever",
-    features: ["Basic wave animations", "5 themes", "GitHub README integration", "Community support"],
-    cta: "Get Started",
+    icon: Star,
+    features: [
+      "All 40+ component types",
+      "Basic customization options",
+      "Community support",
+      "GitHub integration",
+      "10,000 API calls/month",
+      "Open source access",
+    ],
+    cta: "Get Started Free",
     popular: false,
+    color: "from-gray-500 to-gray-600",
   },
   {
     name: "Pro",
-    description: "For developers who want to stand out",
-    price: "$9",
+    description: "For serious developers and content creators",
+    price: "$12",
     period: "per month",
+    icon: Zap,
     features: [
-      "Advanced wave animations",
-      "Unlimited themes",
-      "Custom colors",
-      "API access",
-      "Remove watermark",
+      "Everything in Free",
+      "Advanced customization",
+      "Unlimited color gradients",
       "Priority support",
+      "Usage analytics dashboard",
+      "Export to PNG/GIF/WebP",
+      "100,000 API calls/month",
     ],
     cta: "Start Free Trial",
     popular: true,
+    color: "from-blue-500 to-purple-600",
   },
   {
     name: "Team",
-    description: "For teams and organizations",
-    price: "$29",
+    description: "For development teams and organizations",
+    price: "$39",
     period: "per month",
+    icon: Crown,
     features: [
       "Everything in Pro",
-      "Team collaboration",
-      "Organization branding",
-      "Analytics",
+      "Team workspaces",
+      "Brand templates",
+      "Advanced analytics",
+      "GitHub App integration",
+      "White-label options",
+      "500,000 API calls/month",
       "Dedicated support",
-      "Custom integrations",
     ],
     cta: "Contact Sales",
     popular: false,
+    color: "from-purple-500 to-pink-600",
   },
 ]
 
 export function PricingSection() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+
   return (
-    <section id="pricing" className="py-24 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 -z-10 grid-bg"></div>
-
-      {/* Animated gradient circles */}
-      <motion.div
-        className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-violet-500/5 blur-[100px] -z-10"
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Number.POSITIVE_INFINITY,
-          repeatType: "reverse",
-        }}
-      />
-
-      <motion.div
-        className="absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full bg-fuchsia-500/5 blur-[100px] -z-10"
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, -30, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Number.POSITIVE_INFINITY,
-          repeatType: "reverse",
-          delay: 1,
-        }}
-      />
-
-      <div className="container px-4 md:px-6 relative">
+    <section id="pricing" className="py-24 lg:py-32 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Header */}
         <motion.div
-          className="text-center mb-16 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-effect text-sm font-medium mb-6">
-            <Sparkles className="h-4 w-4 text-violet-400" />
-            <span>Pricing</span>
-          </div>
-
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Simple, <span className="text-gradient">Transparent</span> Pricing
+          <Badge variant="outline" className="glass-card border-primary/20 mb-4">
+            <Sparkles className="w-4 h-4 mr-2 text-primary" />
+            Simple Pricing
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-6 text-balance">
+            Choose Your <span className="text-gradient">Perfect Plan</span>
           </h2>
-
-          <p className="text-lg text-muted-foreground">
-            Choose the plan that's right for you and start creating beautiful animated banners
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
+            Start free and upgrade as you grow. All plans include access to our complete component library.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {pricingPlans.map((plan, index) => (
+        {/* Pricing Cards */}
+        <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {plans.map((plan, index) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              whileHover={{ y: -10 }}
-              className="card-3d"
+              key={plan.name}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className={`relative group ${plan.popular ? "lg:scale-105" : ""}`}
             >
-              <div
-                className={`relative h-full glass-card rounded-2xl overflow-hidden ${
-                  plan.popular ? "border-violet-500/50" : "border-white/10"
+              {/* Popular badge */}
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                  <Badge className="gradient-primary text-white px-4 py-1 text-sm font-medium">Most Popular</Badge>
+                </div>
+              )}
+
+              <Card
+                className={`glass-card hover-lift h-full border-border/50 ${
+                  plan.popular ? "border-primary/50 shadow-2xl shadow-primary/10" : ""
                 }`}
               >
-                {plan.popular && (
-                  <div className="absolute top-8 right-6 -translate-y-1/2">
-                    <Badge className="bg-gradient-to-r from-violet-600 to-fuchsia-600 px-3 py-1 text-white">
-                      Most Popular
-                    </Badge>
+                <CardHeader className="pb-6">
+                  {/* Icon */}
+                  <div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${plan.color} p-0.5 mb-6 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <div className="w-full h-full rounded-2xl bg-background flex items-center justify-center">
+                      <plan.icon className="w-8 h-8 text-foreground" />
+                    </div>
                   </div>
-                )}
 
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold">{plan.name}</h3>
-                  <p className="mt-2 text-muted-foreground">{plan.description}</p>
+                  <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+                  <p className="text-muted-foreground">{plan.description}</p>
 
-                  <div className="mt-6 flex items-baseline">
+                  <div className="flex items-baseline mt-4">
                     <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="ml-2 text-muted-foreground">/{plan.period}</span>
+                    <span className="text-muted-foreground ml-2">/{plan.period}</span>
                   </div>
+                </CardHeader>
 
-                  <div className="mt-8">
-                    <ul className="space-y-4">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center">
-                          <div className="mr-3 flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500">
-                            <Check className="h-3 w-3 text-white" />
+                <CardContent className="pt-0">
+                  {/* Features */}
+                  <ul className="space-y-4 mb-8">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start">
+                        <div
+                          className={`w-5 h-5 rounded-full bg-gradient-to-r ${plan.color} p-0.5 mr-3 mt-0.5 flex-shrink-0`}
+                        >
+                          <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                            <Check className="w-3 h-3 text-foreground" />
                           </div>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                        </div>
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                  <div className="mt-8">
-                    <Button
-                      className={`w-full ${
-                        plan.popular
-                          ? "button-gradient shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
-                          : "glass-effect hover:bg-white/10"
-                      }`}
-                    >
-                      {plan.cta}
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                  {/* CTA */}
+                  <Button
+                    className={`w-full transition-all duration-300 ${
+                      plan.popular
+                        ? "gradient-primary text-white shadow-lg hover:shadow-xl"
+                        : "glass-card hover:bg-muted/50"
+                    }`}
+                    size="lg"
+                  >
+                    {plan.cta}
+                  </Button>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
 
+        {/* Enterprise */}
         <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           viewport={{ once: true }}
+          className="text-center mt-16"
         >
-          <p className="text-muted-foreground">
-            Need a custom plan?{" "}
-            <a href="#contact" className="text-violet-400 hover:text-violet-300 transition-colors">
-              Contact us
-            </a>{" "}
-            for enterprise pricing.
-          </p>
+          <Card className="glass-card border-border/50 max-w-2xl mx-auto">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold mb-4">Need Enterprise Features?</h3>
+              <p className="text-muted-foreground mb-6">
+                Custom solutions for large organizations with on-premise deployment, dedicated support, and custom
+                integrations.
+              </p>
+              <Button variant="outline" size="lg" className="glass-card hover:bg-muted/50 bg-transparent">
+                Contact Enterprise Sales
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
     </section>

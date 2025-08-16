@@ -26,12 +26,23 @@ export function ReadmePreviewSection() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`<div align="center">
-  <img src="https://waveify.dev/api/wave?theme=neon&height=120" alt="Waveify Banner" />
+  <img src="https://waveify.onrender.com/api/wave/neon?color=%23${waveColor.slice(1)}&height=${waveHeight + 60}&width=1200&speed=${waveSpeed / 10}" alt="Waveify Banner" />
 </div>
 
-# My Awesome Project
+# 🚀 My Awesome Project
 
-A cutting-edge solution for modern development challenges.`)
+A cutting-edge solution for modern development challenges.
+
+## ✨ Features
+
+- **Beautiful Design** - Stunning visual effects
+- **Easy Integration** - Simple URL-based implementation  
+- **Customizable** - Endless customization options
+- **Performance** - Lightweight SVG animations
+
+## 🎨 Generated with Waveify
+
+[Create your own animated banner →](https://waveify.dev)`)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -236,7 +247,12 @@ A cutting-edge solution for modern development challenges.`)
                     <div className="bg-gradient-to-b from-background/80 to-background p-6">
                       <div className="flex justify-center mb-6">
                         <div className="relative h-[120px] w-full max-w-md overflow-hidden rounded-md bg-gradient-to-r from-gray-900 to-black flex items-center justify-center">
-                          <WavePreview color={waveColor} height={waveHeight} speed={waveSpeed} isPlaying={isPlaying} />
+                          <img 
+                            src={`https://waveify.onrender.com/api/wave/sine?color=%23${waveColor.slice(1)}&height=${waveHeight + 25}&width=400&speed=${waveSpeed / 10}`}
+                            alt="Live Wave Preview"
+                            className="absolute inset-0 w-full h-full object-cover"
+                            style={{ opacity: isPlaying ? 1 : 0.5 }}
+                          />
                           <div className="absolute inset-0 flex items-center justify-center">
                             <h3 className="text-2xl font-bold text-white drop-shadow-lg">My Awesome Project</h3>
                           </div>
@@ -301,7 +317,7 @@ A cutting-edge solution for modern development challenges.`)
                               <span className="text-violet-400">&lt;img</span>{" "}
                               <span className="text-fuchsia-400">src</span>=
                               <span className="text-green-400">
-                                &quot;https://waveify.dev/api/wave?theme=neon&height=120&quot;
+                                &quot;https://waveify.onrender.com/api/wave/sine&quot;
                               </span>{" "}
                               <span className="text-fuchsia-400">alt</span>=
                               <span className="text-green-400">&quot;Waveify Banner&quot;</span>{" "}

@@ -1,18 +1,12 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
-interface GridBackgroundProps {
-  className?: string
-}
-
-export function GridBackground({ className = "" }: GridBackgroundProps) {
+export function GridBackground() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
-  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -24,56 +18,59 @@ export function GridBackground({ className = "" }: GridBackgroundProps) {
   const isDark = theme === "dark"
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`} aria-hidden="true">
-      {/* Grid pattern */}
-      <div className="absolute inset-0 z-0 grid-bg"></div>
+    <div className="fixed inset-0 -z-10 h-full w-full" aria-hidden="true">
+      {/* Base dark background - ensure it's always dark in dark mode */}
+      <div className={`absolute inset-0 ${isDark ? "bg-slate-900" : "bg-white"}`} />
 
-      {/* Animated gradient overlay */}
-      <motion.div
-        className="absolute inset-0 opacity-30"
-        animate={{
-          backgroundPosition: ["0% 0%", "100% 100%"],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Number.POSITIVE_INFINITY,
-          repeatType: "reverse",
-          ease: "linear",
-        }}
+      {/* Dark mode gradient backgrounds */}
+      {isDark && (
+        <>
+          {/* Primary gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900" />
+
+          {/* Secondary gradient for depth */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/10 via-transparent to-purple-900/10" />
+
+          {/* Radial gradients for ambient lighting */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial from-blue-600/20 via-blue-600/5 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-radial from-purple-600/20 via-purple-600/5 to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-radial from-indigo-600/10 via-indigo-600/5 to-transparent rounded-full blur-3xl" />
+        </>
+      )}
+
+      {/* Light mode gradient (subtle) */}
+      {!isDark && <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50" />}
+
+      {/* Grid Pattern with Dots */}
+      <div
+        className={`absolute inset-0 h-full w-full ${isDark ? "opacity-[0.3]" : "opacity-[0.5]"}`}
         style={{
-          backgroundImage: isDark
-            ? "radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 40%)"
-            : "radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.05) 0%, transparent 40%)",
-          backgroundSize: "100% 100%",
-          backgroundPosition: "0% 0%",
+          backgroundImage: `
+            radial-gradient(circle, ${
+              isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)"
+            } 1px, transparent 1px),
+            linear-gradient(${isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)"} 1px, transparent 1px),
+            linear-gradient(90deg, ${isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)"} 1px, transparent 1px)
+          `,
+          backgroundSize: "50px 50px, 50px 50px, 50px 50px",
+          backgroundPosition: "0 0, 0 0, 0 0",
         }}
       />
 
-      {/* Glowing accent points */}
-      {Array.from({ length: 5 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
+      {/* Subtle vignette effect for dark mode */}
+      {isDark && (
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-slate-900/20" />
+      )}
+
+      {/* Light mode radial fade overlay */}
+      {!isDark && (
+        <div
+          className="absolute inset-0 h-full w-full"
           style={{
-            width: `${Math.random() * 4 + 2}px`,
-            height: `${Math.random() * 4 + 2}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            backgroundColor: i % 2 === 0 ? "rgba(139, 92, 246, 0.6)" : "rgba(236, 72, 153, 0.6)",
-            boxShadow: i % 2 === 0 ? "0 0 10px 2px rgba(139, 92, 246, 0.3)" : "0 0 10px 2px rgba(236, 72, 153, 0.3)",
-          }}
-          animate={{
-            opacity: [0.4, 0.8, 0.4],
-          }}
-          transition={{
-            duration: Math.random() * 3 + 2,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-            ease: "easeInOut",
-            delay: Math.random() * 5,
+            background: `radial-gradient(ellipse 80% 50% at 50% 0%, transparent 0%, rgba(255, 255, 255, 0.2) 100%)`,
           }}
         />
-      ))}
+      )}
     </div>
   )
 }

@@ -1,99 +1,171 @@
 "use client"
 
-import React, { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { useTheme } from 'next-themes'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Download, Palette, RotateCcw } from 'lucide-react'
+import { api } from '@/lib/api'
+import type { WaveConfig, WaveType } from '@/components/generator-components/shared/types'
 import { WaveControls } from './wave-controls'
 import { WavePreview } from './wave-preview'
 import { WavePresets } from './wave-presets'
 import { WaveTypeSelector } from './wave-type-selector'
-import { useGenerator } from '../shared'
-import { WaveConfig } from '../shared/types'
-import { RotateCcw, Undo, Redo, Palette } from 'lucide-react'
+import { CodeOutput, CopyButton } from '../shared/components'
+import { useToast } from '@/hooks/use-toast'
+
+const defaultConfig: WaveConfig = {
+  color: '#007CF0',
+  height: 150,
+  speed: 4,
+  width: 1200,
+  amplitude: 20,
+  frequency: 2,
+  waveType: 'default'
+}
 
 export function WaveGenerator() {
+  const [config, setConfig] = useState<WaveConfig>(defaultConfig)
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false)
+  const [outputFormat, setOutputFormat] = useState<'markdown' | 'html' | 'url'>('markdown')
+  const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState('controls')
-  const { theme } = useTheme()
-  
-  const {
-    config,
-    updateConfig,
-    reset,
-    undo,
-    redo,
-    canUndo,
-    canRedo,
-    subtype,
-    setSubtype,
-    outputFormat,
-    setOutputFormat,
-    url,
-    outputCode,
-    isLoading,
-    copy,
-    copied
-  } = useGenerator('wave')
+  const { toast } = useToast()
 
-  const handleWaveTypeSelect = (waveType: string, color: string) => {
-    setSubtype(waveType === 'default' ? undefined : waveType)
-    updateConfig({ color })
+  const updateConfig = useCallback((updates: Partial<WaveConfig>) => {
+    setConfig(prev => ({ ...prev, ...updates }))
+  }, [])
+
+  const resetConfig = useCallback(() => {
+    setConfig(defaultConfig)
+    toast({
+      title: "Settings Reset",
+      description: "Wave configuration has been reset to defaults."
+    })
+  }, [toast])
+
+  const copyToClipboard = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+      toast({
+        description: "Copied to clipboard!"
+      })
+    } catch (error) {
+      toast({
+        description: "Failed to copy to clipboard",
+        variant: "destructive"
+      })
+    }
+  }, [toast])
+
+  const downloadSVG = useCallback(async (url: string) => {
+    try {
+      const response = await fetch(url)
+      const svgText = await response.text()
+      const blob = new Blob([svgText], { type: 'image/svg+xml' })
+      const downloadUrl = URL.createObjectURL(blob)
+      
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.download = `waveify-${config.waveType || 'wave'}-${Date.now()}.svg`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(downloadUrl)
+      
+      toast({
+        description: "Wave downloaded successfully!"
+      })
+    } catch (error) {
+      toast({
+        description: "Failed to download wave",
+        variant: "destructive"
+      })
+    }
+  }, [config.waveType, toast])
+
+  // Generate URLs and code - fix for default wave type
+  const url = useMemo(() => {
+    const subtype = config.waveType === 'default' ? undefined : config.waveType
+    return api.generateWave(config, subtype)
+  }, [config])
+  const markdownCode = useMemo(() => `![Wave Animation](${url})`, [url])
+  const htmlCode = useMemo(() => `<img src="${url}" alt="Wave Animation" />`, [url])
+
+  const getOutputCode = () => {
+    switch (outputFormat) {
+      case 'markdown':
+        return markdownCode
+      case 'html':
+        return htmlCode
+      case 'url':
+        return url
+      default:
+        return markdownCode
+    }
   }
 
+  const handleCopyOutput = useCallback(() => {
+    const outputCode = getOutputCode()
+    copyToClipboard(outputCode)
+  }, [copyToClipboard, outputFormat])
+
+  const handleWaveTypeSelect = useCallback((waveType: string, color: string) => {
+    updateConfig({ 
+      waveType: (waveType === 'default' ? undefined : waveType) as WaveType | undefined, 
+      color 
+    })
+  }, [updateConfig])
+
+  const handlePresetSelect = useCallback((preset: WaveConfig) => {
+    setConfig(preset)
+    toast({
+      title: "Preset Applied",
+      description: "Wave configuration updated successfully."
+    })
+  }, [toast])
+
   return (
-    <div className="h-full w-full overflow-hidden">
-      <div className="flex flex-col lg:flex-row h-full gap-6 p-6">
-        {/* Left Panel - Controls */}
-        <div className="lg:w-1/3 lg:max-w-sm flex-shrink-0 space-y-6 overflow-y-auto">
-            <Card className={`transition-colors ${
-              theme === 'dark' 
-                ? 'bg-gray-900 border-gray-800' 
-                : 'bg-white border-gray-200'
-            } w-full`}>
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column - Controls */}
+        <div className="space-y-6">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Palette className="h-5 w-5 text-primary" />
                   <span>Wave Generator</span>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={undo}
-                    disabled={!canUndo}
-                    className="h-8 w-8 p-0"
-                    title="Undo (Ctrl+Z)"
+                    onClick={resetConfig}
+                    className="gap-2"
                   >
-                    <Undo className="h-3 w-3" />
+                    <RotateCcw className="h-4 w-4" />
+                    Reset
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={redo}
-                    disabled={!canRedo}
-                    className="h-8 w-8 p-0"
-                    title="Redo (Ctrl+Y)"
+                    onClick={() => downloadSVG(url)}
+                    className="gap-2"
                   >
-                    <Redo className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={reset}
-                    className="h-8 w-8 p-0"
-                    title="Reset to defaults"
-                  >
-                    <RotateCcw className="h-3 w-3" />
+                    <Download className="h-4 w-4" />
+                    Download
                   </Button>
                 </div>
               </CardTitle>
-              {subtype && (
+              {config.waveType && config.waveType !== 'default' && (
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="bg-primary/10 text-primary">
-                    {subtype.charAt(0).toUpperCase() + subtype.slice(1)} Wave
+                    {config.waveType.charAt(0).toUpperCase() + config.waveType.slice(1)} Wave
                   </Badge>
                   <Badge variant="outline" className="text-xs">
                     {config.width}×{config.height}
@@ -111,7 +183,7 @@ export function WaveGenerator() {
                 
                 <TabsContent value="types" className="mt-4">
                   <WaveTypeSelector
-                    selectedType={subtype || 'default'}
+                    selectedType={config.waveType || 'default'}
                     onTypeSelect={handleWaveTypeSelect}
                     onConfigUpdate={updateConfig}
                   />
@@ -119,39 +191,62 @@ export function WaveGenerator() {
                 
                 <TabsContent value="controls" className="mt-4">
                   <WaveControls
-                    config={config as WaveConfig}
+                    config={config}
                     onUpdate={updateConfig}
-                    subtype={subtype}
-                    onSubtypeChange={setSubtype}
+                    subtype={config.waveType}
+                    onSubtypeChange={(waveType) => updateConfig({ waveType: waveType as WaveType | undefined })}
                   />
                 </TabsContent>
                 
                 <TabsContent value="presets" className="mt-4">
                   <WavePresets
-                    onSelect={(presetConfig) => {
-                      updateConfig(presetConfig)
-                    }}
+                    onSelect={handlePresetSelect}
                   />
                 </TabsContent>
               </Tabs>
             </CardContent>
           </Card>
+
+          {/* Output Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Generated Code
+                <Select value={outputFormat} onValueChange={(value) => setOutputFormat(value as 'markdown' | 'html' | 'url')}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="markdown">Markdown</SelectItem>
+                    <SelectItem value="html">HTML</SelectItem>
+                    <SelectItem value="url">Direct URL</SelectItem>
+                  </SelectContent>
+                </Select>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CodeOutput
+                code={getOutputCode()}
+                onCopy={handleCopyOutput}
+                copied={copied}
+                language={outputFormat}
+              />
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Right Panel - Preview */}
-        <div className="lg:w-2/3 flex-1 min-w-0 overflow-hidden">
-          <div className="h-full overflow-y-auto">
-            <WavePreview
-              url={url}
-              config={config as WaveConfig}
-              isLoading={isLoading}
-              outputCode={outputCode}
-              outputFormat={outputFormat}
-              onOutputFormatChange={setOutputFormat}
-              onCopy={copy}
-              copied={copied}
-            />
-          </div>
+        {/* Right Column - Preview */}
+        <div className="space-y-6">
+          <WavePreview
+            url={url}
+            config={config}
+            isLoading={isPreviewLoading}
+            outputCode={getOutputCode()}
+            outputFormat={outputFormat}
+            onOutputFormatChange={setOutputFormat}
+            onCopy={handleCopyOutput}
+            copied={copied}
+          />
         </div>
       </div>
     </div>

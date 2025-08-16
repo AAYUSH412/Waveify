@@ -37,20 +37,20 @@ export function DocsExamples() {
       description: "Complete README header for a full-stack application",
       preview: [
         "https://waveify.onrender.com/api/wave?color=%23667eea&height=150&speed=3&amplitude=25",
-        "https://waveify.onrender.com/api/typing/gradient?text=TaskFlow+-+Project+Management+Made+Easy&speed=60&fontSize=28&gradientColors=%23667eea,%23764ba2",
-        "https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=green&style=modern",
-        "https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue&style=gradient"
+        "https://waveify.onrender.com/api/typing?text=TaskFlow+-+Project+Management+Made+Easy&speed=60&fontSize=28&style=gradient",
+        "https://waveify.onrender.com/api/loader?type=pulse&color=green&text=Build%20Passing",
+        "https://waveify.onrender.com/api/terminal?text=Version:%20v2.1.0&style=modern&color=blue"
       ],
       code: `![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=150&speed=3&amplitude=25)
 
-![Title](https://waveify.onrender.com/api/typing/gradient?text=TaskFlow+-+Project+Management+Made+Easy&speed=60&fontSize=28&gradientColors=%23667eea,%23764ba2)
+![Title](https://waveify.onrender.com/api/typing?text=TaskFlow+-+Project+Management+Made+Easy&speed=60&fontSize=28&style=gradient)
 
 <div align="center">
 
-![Build](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=green&style=modern)
-![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue&style=gradient)
-![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=yellow&style=modern)
-![Coverage](https://waveify.onrender.com/api/badge?label=Coverage&message=98%&color=green&style=neon)
+![Build Status](https://waveify.onrender.com/api/loader?type=pulse&color=green&text=Build%20Passing)
+![Version](https://waveify.onrender.com/api/terminal?text=Version:%20v2.1.0&style=modern&color=blue)
+![License](https://waveify.onrender.com/api/terminal?text=License:%20MIT&style=modern&color=yellow)
+![Coverage](https://waveify.onrender.com/api/loader?type=bars&color=green&text=Coverage:%2098%)
 
 </div>`
     },
@@ -58,23 +58,23 @@ export function DocsExamples() {
       title: "Open Source Library",
       description: "Perfect setup for an NPM package or library",
       preview: [
-        "https://waveify.onrender.com/api/typing/neon?text=AWESOME+LIBRARY&speed=100&color=%2300ff88&fontSize=32",
+        "https://waveify.onrender.com/api/typing?text=AWESOME+LIBRARY&speed=100&color=%2300ff88&fontSize=32&style=neon",
         "https://waveify.onrender.com/api/wave?color=%2300ff88&height=120&speed=2&amplitude=20",
-        "https://waveify.onrender.com/api/badge?label=NPM&message=v1.5.2&color=red&style=3d"
+        "https://waveify.onrender.com/api/loader?type=orbit&color=red&text=NPM%20v1.5.2"
       ],
-      code: `![Title](https://waveify.onrender.com/api/typing/neon?text=AWESOME+LIBRARY&speed=100&color=%2300ff88&fontSize=32)
+      code: `![Title](https://waveify.onrender.com/api/typing?text=AWESOME+LIBRARY&speed=100&color=%2300ff88&fontSize=32&style=neon)
 
 ![Divider](https://waveify.onrender.com/api/wave?color=%2300ff88&height=120&speed=2&amplitude=20)
 
 ## Installation
 
-![Install](https://waveify.onrender.com/api/typing/terminal?text=npm+install+awesome-library&prompt=$+&speed=80)
+![Install](https://waveify.onrender.com/api/typing?text=npm+install+awesome-library&style=terminal&speed=80)
 
 <div align="center">
 
-![NPM](https://waveify.onrender.com/api/badge?label=NPM&message=v1.5.2&color=red&style=3d)
-![Downloads](https://waveify.onrender.com/api/badge?label=Downloads&message=125K&color=blue&style=gradient)
-![Size](https://waveify.onrender.com/api/badge?label=Size&message=12KB&color=green&style=modern)
+![NPM](https://waveify.onrender.com/api/loader?type=orbit&color=red&text=NPM%20v1.5.2)
+![Downloads](https://waveify.onrender.com/api/terminal?text=Downloads:%20125K&style=modern&color=blue)
+![Size](https://waveify.onrender.com/api/terminal?text=Size:%2012KB&style=modern&color=green)
 
 </div>`
     },
@@ -82,23 +82,23 @@ export function DocsExamples() {
       title: "Cybersecurity Project",
       description: "Dark theme setup for security-related projects",
       preview: [
-        "https://waveify.onrender.com/api/typing/glitch?text=CYBER+SECURITY+TOOLKIT&speed=70&color=%23ff0040&fontSize=30",
-        "https://waveify.onrender.com/api/wave/glitch?color=%23ff0040&height=140&speed=1&amplitude=30",
-        "https://waveify.onrender.com/api/badge?label=Security&message=Verified&color=red&style=neon"
+        "https://waveify.onrender.com/api/typing?text=CYBER+SECURITY+TOOLKIT&speed=70&color=%23ff0040&fontSize=30&style=glitch",
+        "https://waveify.onrender.com/api/wave?color=%23ff0040&height=140&speed=1&amplitude=30&style=glitch",
+        "https://waveify.onrender.com/api/loader?type=grid&color=red&text=Security%20Verified"
       ],
-      code: `![Title](https://waveify.onrender.com/api/typing/glitch?text=CYBER+SECURITY+TOOLKIT&speed=70&color=%23ff0040&fontSize=30)
+      code: `![Title](https://waveify.onrender.com/api/typing?text=CYBER+SECURITY+TOOLKIT&speed=70&color=%23ff0040&fontSize=30&style=glitch)
 
-![Divider](https://waveify.onrender.com/api/wave/glitch?color=%23ff0040&height=140&speed=1&amplitude=30)
+![Divider](https://waveify.onrender.com/api/wave?color=%23ff0040&height=140&speed=1&amplitude=30&style=glitch)
 
 ## Features
 
-![Terminal](https://waveify.onrender.com/api/typing/terminal?text=sudo+python3+security_scan.py+--target+localhost&prompt=root@security:~#+&speed=90)
+![Terminal](https://waveify.onrender.com/api/terminal?text=sudo+python3+security_scan.py+--target+localhost&style=matrix&speed=90)
 
 <div align="center">
 
-![Security](https://waveify.onrender.com/api/badge?label=Security&message=Verified&color=red&style=neon)
-![Status](https://waveify.onrender.com/api/badge?label=Status&message=Active&color=green&style=glitch)
-![Tools](https://waveify.onrender.com/api/badge?label=Tools&message=50+&color=purple&style=3d)
+![Security](https://waveify.onrender.com/api/loader?type=grid&color=red&text=Security%20Verified)
+![Status](https://waveify.onrender.com/api/terminal?text=Status:%20Active&style=modern&color=green)
+![Tools](https://waveify.onrender.com/api/terminal?text=Tools:%2050+&style=modern&color=purple)
 
 </div>`
     }

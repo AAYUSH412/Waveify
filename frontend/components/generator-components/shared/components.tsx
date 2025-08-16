@@ -1,18 +1,62 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Copy, Check, Heart, Star, Download, Play, Pause, RotateCcw } from 'lucide-react'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { 
+  Copy, 
+  Check, 
+  Heart, 
+  Star, 
+  Download, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  Eye,
+  EyeOff,
+  Zap,
+  Sparkles,
+  TrendingUp,
+  Activity,
+  Clock,
+  RefreshCw,
+  ExternalLink,
+  Share2,
+  Code,
+  Image,
+  FileText,
+  Settings
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
-// Loading states
+// Enhanced loading states with animations
 export function PreviewSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn("space-y-4", className)}>
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-32 w-full" />
-      <Skeleton className="h-4 w-3/4" />
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-8 w-20" />
+      </div>
+      <div className="relative">
+        <Skeleton className="h-48 w-full rounded-lg" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          animate={{ x: [-300, 300] }}
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2, ease: "easeInOut" }}
+        />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
     </div>
   )
 }
@@ -20,23 +64,21 @@ export function PreviewSkeleton({ className }: { className?: string }) {
 export function ConfigSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn("space-y-6", className)}>
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-20" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-24" />
-        <Skeleton className="h-10 w-full" />
-      </div>
+      {Array.from({ length: 4 }, (_, i) => (
+        <div key={i} className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-16" />
+          </div>
+          <Skeleton className="h-10 w-full" />
+          {i === 1 && <Skeleton className="h-20 w-full" />}
+        </div>
+      ))}
     </div>
   )
 }
 
-// Copy button component
+// Enhanced copy button with better animations and feedback
 interface CopyButtonProps {
   text: string
   onCopy?: () => void
@@ -45,50 +87,483 @@ interface CopyButtonProps {
   size?: 'sm' | 'default' | 'lg'
   className?: string
   children?: React.ReactNode
+  showText?: boolean
+  tooltip?: string
 }
 
 export function CopyButton({ 
   text, 
   onCopy, 
   copied = false, 
-  variant = 'outline',
+  variant = 'outline', 
   size = 'sm',
   className,
-  children 
+  children,
+  showText = true,
+  tooltip = "Copy to clipboard"
 }: CopyButtonProps) {
+  const [localCopied, setLocalCopied] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const isCopied = copied || localCopied
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
+      setLocalCopied(true)
       onCopy?.()
-    } catch (error) {
-      console.error('Failed to copy:', error)
+      
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      
+      // Reset after 2 seconds
+      timeoutRef.current = setTimeout(() => {
+        setLocalCopied(false)
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant={variant}
+            size={size}
+            onClick={handleCopy}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className={cn(
+              "group relative overflow-hidden transition-all duration-200",
+              isCopied && "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-300",
+              className
+            )}
+          >
+            <AnimatePresence mode="wait">
+              {isCopied ? (
+                <motion.div
+                  key="check"
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  exit={{ scale: 0, rotate: 180 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center gap-2"
+                >
+                  <Check className="h-4 w-4" />
+                  {showText && <span>Copied!</span>}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="copy"
+                  initial={{ scale: 0, rotate: 180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  exit={{ scale: 0, rotate: -180 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center gap-2"
+                >
+                  <Copy className={cn(
+                    "h-4 w-4 transition-transform",
+                    isHovered && "scale-110"
+                  )} />
+                  {showText && <span>{children || "Copy"}</span>}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Ripple effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              initial={{ x: "-100%" }}
+              animate={isHovered ? { x: "100%" } : { x: "-100%" }}
+              transition={{ duration: 0.6 }}
+            />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{isCopied ? "Copied to clipboard!" : tooltip}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
+// Enhanced preview card with better visuals and interactions
+interface PreviewCardProps {
+  title: string
+  description?: string
+  children: React.ReactNode
+  isLoading?: boolean
+  error?: string
+  actions?: React.ReactNode
+  stats?: {
+    views?: number
+    generations?: number
+    lastUpdated?: string
+  }
+  className?: string
+}
+
+export function PreviewCard({ 
+  title, 
+  description, 
+  children, 
+  isLoading = false,
+  error,
+  actions,
+  stats,
+  className 
+}: PreviewCardProps) {
+  const [isVisible, setIsVisible] = useState(true)
+
+  return (
+    <Card className={cn("group hover:shadow-lg transition-all duration-300", className)}>
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1 flex-1">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              {title}
+              {isLoading && (
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                >
+                  <RefreshCw className="h-4 w-4 text-muted-foreground" />
+                </motion.div>
+              )}
+            </CardTitle>
+            {description && (
+              <CardDescription className="text-sm">{description}</CardDescription>
+            )}
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsVisible(!isVisible)}
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              {isVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+            {actions}
+          </div>
+        </div>
+
+        {/* Stats bar */}
+        {stats && (
+          <div className="flex items-center gap-4 text-xs text-muted-foreground pt-2">
+            {stats.views && (
+              <div className="flex items-center gap-1">
+                <Eye className="h-3 w-3" />
+                <span>{stats.views.toLocaleString()} views</span>
+              </div>
+            )}
+            {stats.generations && (
+              <div className="flex items-center gap-1">
+                <Zap className="h-3 w-3" />
+                <span>{stats.generations.toLocaleString()} generated</span>
+              </div>
+            )}
+            {stats.lastUpdated && (
+              <div className="flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                <span>Updated {stats.lastUpdated}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </CardHeader>
+
+      <CardContent>
+        <AnimatePresence mode="wait">
+          {error ? (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            </motion.div>
+          ) : isLoading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <PreviewSkeleton />
+            </motion.div>
+          ) : isVisible ? (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              {children}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center h-32 text-muted-foreground"
+            >
+              <div className="text-center space-y-2">
+                <EyeOff className="h-8 w-8 mx-auto" />
+                <p className="text-sm">Preview hidden</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Enhanced generator controls with better UX
+interface GeneratorControlsProps {
+  isGenerating?: boolean
+  onGenerate?: () => void
+  onReset?: () => void
+  onCopy?: () => void
+  onDownload?: () => void
+  onShare?: () => void
+  copied?: boolean
+  className?: string
+  generationCount?: number
+  estimatedTime?: string
+}
+
+export function GeneratorControls({
+  isGenerating = false,
+  onGenerate,
+  onReset,
+  onCopy,
+  onDownload,
+  onShare,
+  copied = false,
+  className,
+  generationCount = 0,
+  estimatedTime = "~1s"
+}: GeneratorControlsProps) {
+  return (
+    <div className={cn("flex flex-wrap items-center gap-3", className)}>
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={onGenerate}
+          disabled={isGenerating}
+          className="relative overflow-hidden group"
+        >
+          <AnimatePresence mode="wait">
+            {isGenerating ? (
+              <motion.div
+                key="generating"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                className="flex items-center gap-2"
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </motion.div>
+                <span>Generating...</span>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="generate"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                className="flex items-center gap-2"
+              >
+                <Sparkles className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                <span>Generate</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Button>
+
+        {onReset && (
+          <Button variant="outline" onClick={onReset} disabled={isGenerating}>
+            <RotateCcw className="h-4 w-4 mr-2" />
+            Reset
+          </Button>
+        )}
+      </div>
+
+      <Separator orientation="vertical" className="h-8" />
+
+      <div className="flex items-center gap-2">
+        {onCopy && (
+          <CopyButton
+            text=""
+            onCopy={onCopy}
+            copied={copied}
+            tooltip="Copy SVG code"
+          >
+            <Code className="h-4 w-4 mr-2" />
+            Copy SVG
+          </CopyButton>
+        )}
+
+        {onDownload && (
+          <Button variant="outline" onClick={onDownload} disabled={isGenerating}>
+            <Download className="h-4 w-4 mr-2" />
+            Download
+          </Button>
+        )}
+
+        {onShare && (
+          <Button variant="outline" onClick={onShare} disabled={isGenerating}>
+            <Share2 className="h-4 w-4 mr-2" />
+            Share
+          </Button>
+        )}
+      </div>
+
+      {/* Generation stats */}
+      {generationCount > 0 && (
+        <>
+          <Separator orientation="vertical" className="h-8" />
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <TrendingUp className="h-3 w-3" />
+              <span>{generationCount.toLocaleString()} generated</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              <span>{estimatedTime}</span>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+// Enhanced code block with syntax highlighting placeholder
+interface CodeBlockProps {
+  code: string
+  language?: string
+  title?: string
+  copyable?: boolean
+  maxHeight?: string
+  className?: string
+}
+
+export function CodeBlock({
+  code,
+  language = "html",
+  title,
+  copyable = true,
+  maxHeight = "400px",
+  className
+}: CodeBlockProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy code: ', err)
     }
   }
 
   return (
-    <Button
-      variant={variant}
-      size={size}
-      onClick={handleCopy}
-      className={cn("gap-2", className)}
-      disabled={copied}
-    >
-      {copied ? (
-        <>
-          <Check className="h-4 w-4" />
-          {children || 'Copied!'}
-        </>
-      ) : (
-        <>
-          <Copy className="h-4 w-4" />
-          {children || 'Copy'}
-        </>
+    <div className={cn("relative group", className)}>
+      {title && (
+        <div className="flex items-center justify-between px-4 py-2 bg-muted border-b">
+          <div className="flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            <span className="text-sm font-medium">{title}</span>
+            <Badge variant="secondary" className="text-xs">
+              {language}
+            </Badge>
+          </div>
+          {copyable && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCopy}
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-emerald-600" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+        </div>
       )}
-    </Button>
+      
+      <div 
+        className="p-4 bg-muted/50 font-mono text-sm overflow-auto"
+        style={{ maxHeight }}
+      >
+        <pre className="whitespace-pre-wrap break-all">
+          <code>{code}</code>
+        </pre>
+      </div>
+    </div>
   )
 }
 
-// Preview container
+// Progress indicator for long operations
+interface ProgressIndicatorProps {
+  value: number
+  max?: number
+  label?: string
+  showPercentage?: boolean
+  className?: string
+}
+
+export function ProgressIndicator({
+  value,
+  max = 100,
+  label,
+  showPercentage = true,
+  className
+}: ProgressIndicatorProps) {
+  const percentage = Math.round((value / max) * 100)
+
+  return (
+    <div className={cn("space-y-2", className)}>
+      {(label || showPercentage) && (
+        <div className="flex items-center justify-between text-sm">
+          {label && <span className="text-muted-foreground">{label}</span>}
+          {showPercentage && (
+            <span className="font-medium">{percentage}%</span>
+          )}
+        </div>
+      )}
+      <Progress value={percentage} className="h-2" />
+    </div>
+  )
+}// Preview container
 interface PreviewContainerProps {
   children: React.ReactNode
   title?: string

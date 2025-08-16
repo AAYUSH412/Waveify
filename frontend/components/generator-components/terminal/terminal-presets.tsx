@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Search, Terminal, Code, GitBranch, Package } from 'lucide-react'
-import type { TerminalConfig } from '@/lib/api'
+import type { TerminalConfig } from '@/components/generator-components/shared/types'
 
 interface TerminalPresetsProps {
   onSelect: (config: TerminalConfig) => void

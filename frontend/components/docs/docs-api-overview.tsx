@@ -22,12 +22,6 @@ export function DocsApiOverview() {
       params: "text, speed, color, fontSize, cursor"
     },
     {
-      endpoint: "/api/badge",
-      method: "GET",
-      description: "Generate custom badges",
-      params: "label, message, color, style"
-    },
-    {
       endpoint: "/api/health",
       method: "GET",
       description: "API health check",

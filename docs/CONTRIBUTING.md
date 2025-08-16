@@ -100,13 +100,12 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 
 1. **New Wave Patterns** - Add new wave animation styles
 2. **New Typing Effects** - Create new typing animation variations
-3. **Badge Styles** - Design new badge styles and themes
-4. **Loading Animations** - Add new loader types
-5. **API Improvements** - Enhance existing API endpoints
-6. **Frontend Enhancements** - Improve the web interface
-7. **Documentation** - Improve documentation and examples
-8. **Performance** - Optimize SVG generation and delivery
-9. **Testing** - Add tests for existing or new features
+3. **Loading Animations** - Add new loader types
+4. **API Improvements** - Enhance existing API endpoints
+5. **Frontend Enhancements** - Improve the web interface
+6. **Documentation** - Improve documentation and examples
+7. **Performance** - Optimize SVG generation and delivery
+8. **Testing** - Add tests for existing or new features
 
 ## 🏗️ Development Setup
 
@@ -143,12 +142,10 @@ Waveify/
 │   ├── generators/         # SVG generation logic
 │   │   ├── WaveGenerator.js
 │   │   ├── TypingGenerator.js
-│   │   ├── BadgeGenerator.js
 │   │   └── LoaderGenerator.js
 │   ├── routes/            # API route handlers
 │   │   ├── wave.js
 │   │   ├── typing.js
-│   │   ├── badge.js
 │   │   └── loader.js
 │   ├── utils/             # Utility functions
 │   └── server.js          # Main server file
@@ -216,7 +213,7 @@ Use descriptive branch names:
 - `feature/new-wave-pattern`
 - `fix/cors-issue`
 - `docs/api-examples`
-- `refactor/badge-generator`
+- `refactor/typing-generator`
 
 ### Commit Messages
 
@@ -224,7 +221,7 @@ Follow conventional commits:
 - `feat: add new neon wave pattern`
 - `fix: resolve CORS issue for development`
 - `docs: update API documentation`
-- `refactor: improve badge generation performance`
+- `refactor: improve typing animation performance`
 - `test: add tests for typing animations`
 
 ### Pull Request Process

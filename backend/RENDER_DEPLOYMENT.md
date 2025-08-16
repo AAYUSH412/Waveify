@@ -69,8 +69,8 @@ curl https://your-app-name.onrender.com/health
 # Wave API
 curl "https://your-app-name.onrender.com/api/wave?color=%23007CF0&width=400&height=100"
 
-# Badge API  
-curl "https://your-app-name.onrender.com/api/badge?label=Status&message=Live&color=green"
+# Terminal API  
+curl "https://your-app-name.onrender.com/api/terminal?text=Hello%20World&style=matrix"
 ```
 
 ### 📊 Understanding the Error (Educational)

@@ -1,0 +1,88 @@
+<div className="min-h-screen w-full bg-[#f8fafc] relative">
+  {/* Top Fade Grid Background */}
+  <div
+    className="absolute inset-0 z-0"
+    style={{
+      backgroundImage: `
+        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
+      `,
+      backgroundSize: "20px 30px",
+      WebkitMaskImage:
+        "radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)",
+      maskImage:
+        "radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)",
+    }}
+  />
+     {/* Your Content/Components */}
+</div>
+
+
+<div className="min-h-screen w-full bg-[#f8fafc] relative">
+  {/* Bottom Fade Grid Background */}
+  <div
+    className="absolute inset-0 z-0"
+    style={{
+      backgroundImage: `
+        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
+      `,
+      backgroundSize: "20px 30px",
+      WebkitMaskImage:
+        "radial-gradient(ellipse 70% 60% at 50% 100%, #000 60%, transparent 100%)",
+      maskImage:
+        "radial-gradient(ellipse 70% 60% at 50% 100%, #000 60%, transparent 100%)",
+    }}
+  />
+     {/* Your Content/Components */}
+</div>
+
+
+<div className="min-h-screen w-full bg-white relative text-gray-800">
+  {/* Circuit Board - Light Pattern */}
+  <div
+    className="absolute inset-0 z-0 pointer-events-none"
+    style={{
+      backgroundImage: `
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+        radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+        radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
+      `,
+      backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+    }}
+  />
+  {/* Your Content/Components */}
+</div>
+
+
+<div className="min-h-screen w-full bg-white relative">
+  {/* Noise Texture (Darker Dots) Background */}
+  <div
+    className="absolute inset-0 z-0"
+    style={{
+      background: "#ffffff",
+      backgroundImage: "radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)",
+      backgroundSize: "20px 20px",
+    }}
+  />
+     {/* Your Content/Components */}
+</div>
+
+
+<div className="min-h-screen w-full bg-white relative">
+ {/* White Sphere Grid Background */}
+ <div
+   className="absolute inset-0 z-0"
+   style={{
+     background: "white",
+     backgroundImage: `
+       linear-gradient(to right, rgba(71,85,105,0.3) 1px, transparent 1px),
+       linear-gradient(to bottom, rgba(71,85,105,0.3) 1px, transparent 1px),
+       radial-gradient(circle at 50% 50%, rgba(139,92,246,0.25) 0%, rgba(139,92,246,0.1) 40%, transparent 80%)
+     `,
+     backgroundSize: "32px 32px, 32px 32px, 100% 100%",
+   }}
+ />
+    {/* Your Content/Components */}
+</div>

@@ -1,18 +1,21 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { 
   GeneratorType, 
   GeneratorConfig, 
   WaveConfig, 
   TypingConfig, 
   BadgeConfig, 
+  LoaderConfig,
+  TerminalConfig,
   getDefaultConfig,
-  debounce
+  debounce,
+  validateConfig
 } from './types'
 import { api } from '../../../lib/api'
 
-// Hook for managing generator configuration
+// Enhanced hook for managing generator configuration with undo/redo
 export function useGeneratorConfig<T extends GeneratorConfig>(
   type: GeneratorType,
   initialConfig?: Partial<T>
@@ -24,37 +27,55 @@ export function useGeneratorConfig<T extends GeneratorConfig>(
 
   const [history, setHistory] = useState<T[]>([config])
   const [historyIndex, setHistoryIndex] = useState(0)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [validationErrors, setValidationErrors] = useState<string[]>([])
 
-  // Update configuration with history tracking
+  // Update configuration with history tracking and validation
   const updateConfig = useCallback((updates: Partial<T>) => {
     setConfig(prev => {
       const newConfig = { ...prev, ...updates }
       
-      // Add to history
-      setHistory(prevHistory => {
-        const newHistory = prevHistory.slice(0, historyIndex + 1)
-        newHistory.push(newConfig)
-        return newHistory.slice(-20) // Keep last 20 states
-      })
-      setHistoryIndex(prev => Math.min(prev + 1, 19))
+      // Validate the new configuration
+      const errors = validateConfig(type, newConfig)
+      setValidationErrors(errors)
+      
+      // Add to history only if valid
+      if (errors.length === 0) {
+        setHistory(prevHistory => {
+          const newHistory = prevHistory.slice(0, historyIndex + 1)
+          newHistory.push(newConfig)
+          return newHistory.slice(-50) // Keep last 50 states
+        })
+        setHistoryIndex(prev => Math.min(prev + 1, 49))
+        setHasUnsavedChanges(true)
+      }
       
       return newConfig
     })
-  }, [historyIndex])
+  }, [historyIndex, type])
+
+  // Batch update multiple properties
+  const batchUpdate = useCallback((updates: Partial<T>) => {
+    updateConfig(updates)
+  }, [updateConfig])
 
   // Undo functionality
   const undo = useCallback(() => {
     if (historyIndex > 0) {
-      setHistoryIndex(prev => prev - 1)
-      setConfig(history[historyIndex - 1])
+      const newIndex = historyIndex - 1
+      setHistoryIndex(newIndex)
+      setConfig(history[newIndex])
+      setHasUnsavedChanges(true)
     }
   }, [history, historyIndex])
 
   // Redo functionality
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1) {
-      setHistoryIndex(prev => prev + 1)
-      setConfig(history[historyIndex + 1])
+      const newIndex = historyIndex + 1
+      setHistoryIndex(newIndex)
+      setConfig(history[newIndex])
+      setHasUnsavedChanges(true)
     }
   }, [history, historyIndex])
 
@@ -64,25 +85,48 @@ export function useGeneratorConfig<T extends GeneratorConfig>(
     setConfig(defaultConfig)
     setHistory([defaultConfig])
     setHistoryIndex(0)
+    setHasUnsavedChanges(false)
+    setValidationErrors([])
   }, [type])
+
+  // Apply preset configuration
+  const applyPreset = useCallback((presetConfig: Partial<T>) => {
+    const newConfig = { ...getDefaultConfig(type), ...presetConfig } as T
+    setConfig(newConfig)
+    setHistory(prev => [...prev.slice(0, historyIndex + 1), newConfig])
+    setHistoryIndex(prev => prev + 1)
+    setHasUnsavedChanges(true)
+  }, [type, historyIndex])
+
+  // Save current state (mark as saved)
+  const saveConfig = useCallback(() => {
+    setHasUnsavedChanges(false)
+  }, [])
 
   // Check if can undo/redo
   const canUndo = historyIndex > 0
   const canRedo = historyIndex < history.length - 1
+  const isValid = validationErrors.length === 0
 
   return {
     config,
     updateConfig,
+    batchUpdate,
     reset,
     undo,
     redo,
+    applyPreset,
+    saveConfig,
     canUndo,
     canRedo,
+    hasUnsavedChanges,
+    isValid,
+    validationErrors,
     history: history.slice(0, historyIndex + 1)
   }
 }
 
-// Hook for generating URLs with debouncing
+// Enhanced hook for generating URLs with caching and debouncing
 export function useGeneratorURL(
   type: GeneratorType,
   config: GeneratorConfig,
@@ -90,252 +134,416 @@ export function useGeneratorURL(
   delay: number = 300
 ) {
   const [url, setUrl] = useState<string>('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const urlCache = useRef<Map<string, string>>(new Map())
+  const abortController = useRef<AbortController | null>(null)
 
-  // Debounced URL generation
+  // Generate URL helper function
+  const generateUrlString = useCallback((
+    baseURL: string,
+    generatorType: GeneratorType,
+    configuration: GeneratorConfig,
+    generatorSubtype?: string
+  ): string => {
+    const params = new URLSearchParams()
+    
+    // Add configuration parameters based on type
+    Object.entries(configuration).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value))
+      }
+    })
+
+    // Build URL
+    let endpoint = ''
+    switch (generatorType) {
+      case 'wave':
+        endpoint = generatorSubtype ? `/wave/${generatorSubtype}` : '/wave'
+        break
+      case 'typing':
+        endpoint = generatorSubtype ? `/typing/${generatorSubtype}` : '/typing'
+        break
+      case 'badge':
+        endpoint = '/badge'
+        break
+      case 'terminal':
+        endpoint = generatorSubtype ? `/terminal/${generatorSubtype}` : '/terminal'
+        break
+      case 'loader':
+        endpoint = generatorSubtype ? `/loader/${generatorSubtype}` : '/loader'
+        break
+      default:
+        endpoint = `/${generatorType}`
+    }
+
+    return `${baseURL}${endpoint}?${params.toString()}`
+  }, [])
+
+  // Debounced URL generation with caching
   const generateURL = useMemo(
-    () => debounce((currentConfig: GeneratorConfig) => {
-      setIsLoading(true)
+    () => debounce(async (currentConfig: GeneratorConfig) => {
+      setIsGenerating(true)
+      setError(null)
       
       try {
-        let generatedUrl = ''
+        // Create cache key
+        const cacheKey = JSON.stringify({ type, subtype, config: currentConfig })
         
-        switch (type) {
-          case 'wave':
-            generatedUrl = subtype 
-              ? api.generateWave(currentConfig as WaveConfig, subtype)
-              : api.generateWave(currentConfig as WaveConfig)
-            break
-          case 'typing':
-            generatedUrl = subtype 
-              ? api.generateTyping(currentConfig as TypingConfig, subtype)
-              : api.generateTyping(currentConfig as TypingConfig)
-            break
-          case 'badge':
-            generatedUrl = api.generateBadge(currentConfig as BadgeConfig)
-            break
-          case 'terminal':
-            generatedUrl = api.generateTerminal(currentConfig as any, subtype)
-            break
-          case 'loader':
-            generatedUrl = api.generateLoader(currentConfig as any, subtype)
-            break
+        // Check cache first
+        if (urlCache.current.has(cacheKey)) {
+          setUrl(urlCache.current.get(cacheKey)!)
+          setIsGenerating(false)
+          return
+        }
+
+        // Cancel previous request
+        if (abortController.current) {
+          abortController.current.abort()
+        }
+        abortController.current = new AbortController()
+
+        // Generate new URL
+        const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://waveify.onrender.com'
+        const newUrl = generateUrlString(baseURL, type, currentConfig, subtype)
+        
+        // Cache the result
+        urlCache.current.set(cacheKey, newUrl)
+        
+        // Clean cache if it gets too large
+        if (urlCache.current.size > 100) {
+          const keys = Array.from(urlCache.current.keys())
+          keys.slice(0, 50).forEach(key => urlCache.current.delete(key))
         }
         
-        setUrl(generatedUrl)
-      } catch (error) {
-        console.error('Error generating URL:', error)
+        setUrl(newUrl)
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setError(err.message)
+        }
       } finally {
-        setIsLoading(false)
+        setIsGenerating(false)
       }
     }, delay),
-    [type, subtype, delay]
+    [type, subtype, delay, generateUrlString]
   )
 
   // Update URL when config changes
   useEffect(() => {
-    generateURL(config)
+    if (config) {
+      generateURL(config)
+    }
   }, [config, generateURL])
 
-  return { url, isLoading }
+  // Clear cache when component unmounts
+  useEffect(() => {
+    return () => {
+      if (abortController.current) {
+        abortController.current.abort()
+      }
+    }
+  }, [])
+
+  return { url, isGenerating, error, clearCache: () => urlCache.current.clear() }
 }
 
-// Hook for copying to clipboard
-export function useClipboard() {
+// Hook for copying text to clipboard with feedback
+export function useCopyToClipboard() {
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const copy = useCallback(async (text: string) => {
+  const copyToClipboard = useCallback(async (text: string) => {
     try {
-      await api.copyToClipboard(text)
+      // Clear previous timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      await navigator.clipboard.writeText(text)
       setCopied(true)
       setError(null)
       
-      // Reset copied state after 2 seconds
-      setTimeout(() => setCopied(false), 2000)
+      // Reset after 2 seconds
+      timeoutRef.current = setTimeout(() => {
+        setCopied(false)
+      }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to copy')
       setCopied(false)
     }
   }, [])
 
-  return { copy, copied, error }
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
+  return { copied, error, copyToClipboard }
 }
 
-// Hook for local storage persistence
-export function useLocalStorage<T>(key: string, defaultValue: T) {
-  const [value, setValue] = useState<T>(() => {
-    if (typeof window === 'undefined') return defaultValue
-    
+// Hook for managing local storage with TypeScript support
+export function useLocalStorage<T>(
+  key: string,
+  defaultValue: T
+): [T, (value: T | ((prev: T) => T)) => void, () => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = window.localStorage.getItem(key)
-      return item ? JSON.parse(item) : defaultValue
+      if (typeof window !== 'undefined') {
+        const item = window.localStorage.getItem(key)
+        return item ? JSON.parse(item) : defaultValue
+      }
     } catch (error) {
-      console.error(`Error reading localStorage key "${key}":`, error)
-      return defaultValue
+      console.warn(`Error reading localStorage key "${key}":`, error)
     }
+    return defaultValue
   })
 
-  const setStoredValue = useCallback((newValue: T | ((val: T) => T)) => {
+  const setValue = useCallback((value: T | ((prev: T) => T)) => {
     try {
-      const valueToStore = newValue instanceof Function ? newValue(value) : newValue
-      setValue(valueToStore)
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      setStoredValue(valueToStore)
       
       if (typeof window !== 'undefined') {
         window.localStorage.setItem(key, JSON.stringify(valueToStore))
       }
     } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error)
+      console.warn(`Error setting localStorage key "${key}":`, error)
     }
-  }, [key, value])
+  }, [key, storedValue])
 
-  return [value, setStoredValue] as const
+  const removeValue = useCallback(() => {
+    try {
+      setStoredValue(defaultValue)
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(key)
+      }
+    } catch (error) {
+      console.warn(`Error removing localStorage key "${key}":`, error)
+    }
+  }, [key, defaultValue])
+
+  return [storedValue, setValue, removeValue]
 }
 
-// Hook for managing favorites
-export function useFavorites() {
-  const [favorites, setFavorites] = useLocalStorage<string[]>('waveify-favorites', [])
+// Hook for managing user preferences
+export function useUserPreferences() {
+  const [preferences, setPreferences, clearPreferences] = useLocalStorage('waveify-preferences', {
+    theme: 'system' as 'light' | 'dark' | 'system',
+    reducedMotion: false,
+    autoSave: true,
+    showPreview: true,
+    defaultGenerator: 'wave' as GeneratorType,
+    recentColors: [] as string[],
+    favoritePresets: [] as string[]
+  })
 
-  const addFavorite = useCallback((id: string) => {
-    setFavorites(prev => prev.includes(id) ? prev : [...prev, id])
-  }, [setFavorites])
-
-  const removeFavorite = useCallback((id: string) => {
-    setFavorites(prev => prev.filter(fav => fav !== id))
-  }, [setFavorites])
-
-  const isFavorite = useCallback((id: string) => {
-    return favorites.includes(id)
-  }, [favorites])
-
-  const toggleFavorite = useCallback((id: string) => {
-    if (isFavorite(id)) {
-      removeFavorite(id)
-    } else {
-      addFavorite(id)
-    }
-  }, [isFavorite, addFavorite, removeFavorite])
-
-  return {
-    favorites,
-    addFavorite,
-    removeFavorite,
-    isFavorite,
-    toggleFavorite
-  }
-}
-
-// Hook for managing recent configurations
-export function useRecentConfigs(maxRecent: number = 10) {
-  const [recentConfigs, setRecentConfigs] = useLocalStorage<Array<{
-    id: string
-    type: GeneratorType
-    config: GeneratorConfig
-    timestamp: number
-    name?: string
-  }>>('waveify-recent-configs', [])
-
-  const addRecentConfig = useCallback((
-    type: GeneratorType,
-    config: GeneratorConfig,
-    name?: string
+  const updatePreference = useCallback(<K extends keyof typeof preferences>(
+    key: K,
+    value: typeof preferences[K]
   ) => {
-    const newConfig = {
-      id: `${type}-${Date.now()}`,
-      type,
-      config,
-      timestamp: Date.now(),
-      name
-    }
+    setPreferences(prev => ({ ...prev, [key]: value }))
+  }, [setPreferences])
 
-    setRecentConfigs(prev => {
-      const filtered = prev.filter(item => 
-        !(item.type === type && JSON.stringify(item.config) === JSON.stringify(config))
-      )
-      return [newConfig, ...filtered].slice(0, maxRecent)
-    })
-  }, [setRecentConfigs, maxRecent])
+  const addRecentColor = useCallback((color: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      recentColors: [color, ...prev.recentColors.filter(c => c !== color)].slice(0, 10)
+    }))
+  }, [setPreferences])
 
-  const removeRecentConfig = useCallback((id: string) => {
-    setRecentConfigs(prev => prev.filter(item => item.id !== id))
-  }, [setRecentConfigs])
-
-  const clearRecentConfigs = useCallback(() => {
-    setRecentConfigs([])
-  }, [setRecentConfigs])
+  const toggleFavoritePreset = useCallback((presetId: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      favoritePresets: prev.favoritePresets.includes(presetId)
+        ? prev.favoritePresets.filter(id => id !== presetId)
+        : [...prev.favoritePresets, presetId]
+    }))
+  }, [setPreferences])
 
   return {
-    recentConfigs,
-    addRecentConfig,
-    removeRecentConfig,
-    clearRecentConfigs
+    preferences,
+    updatePreference,
+    addRecentColor,
+    toggleFavoritePreset,
+    clearPreferences
   }
 }
 
-// Hook for managing generator state
-export function useGenerator(type: GeneratorType, initialConfig?: GeneratorConfig) {
-  const {
-    config,
-    updateConfig,
-    reset,
-    undo,
-    redo,
-    canUndo,
-    canRedo
-  } = useGeneratorConfig(type, initialConfig)
+// Hook for managing animation state
+export function useAnimationState() {
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [speed, setSpeed] = useState(1)
+  const [currentTime, setCurrentTime] = useState(0)
+  const animationRef = useRef<number>(0)
+  const startTime = useRef<number>(0)
 
-  const [subtype, setSubtype] = useState<string>()
-  const [outputFormat, setOutputFormat] = useState<'markdown' | 'html' | 'url'>('markdown')
-  
-  const { url, isLoading } = useGeneratorURL(type, config, subtype)
-  const { copy, copied } = useClipboard()
-  const { addRecentConfig } = useRecentConfigs()
+  const play = useCallback(() => {
+    setIsPlaying(true)
+    startTime.current = performance.now() - currentTime
+  }, [currentTime])
 
-  // Generate output code based on format
-  const outputCode = useMemo(() => {
-    switch (outputFormat) {
-      case 'markdown':
-        return api.generateMarkdown(type, url)
-      case 'html':
-        return api.generateHTML(url)
-      case 'url':
-        return url
-      default:
-        return url
+  const pause = useCallback(() => {
+    setIsPlaying(false)
+  }, [])
+
+  const reset = useCallback(() => {
+    setCurrentTime(0)
+    startTime.current = performance.now()
+  }, [])
+
+  const toggle = useCallback(() => {
+    if (isPlaying) {
+      pause()
+    } else {
+      play()
     }
-  }, [outputFormat, type, url])
+  }, [isPlaying, pause, play])
 
-  // Copy current configuration
-  const copyConfiguration = useCallback(() => {
-    copy(outputCode)
-    addRecentConfig(type, config)
-  }, [copy, outputCode, addRecentConfig, type, config])
+  // Animation loop
+  useEffect(() => {
+    if (isPlaying) {
+      const animate = (timestamp: number) => {
+        if (startTime.current === undefined) {
+          startTime.current = timestamp
+        }
+        
+        setCurrentTime((timestamp - startTime.current) * speed)
+        animationRef.current = requestAnimationFrame(animate)
+      }
+      
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [isPlaying, speed])
 
   return {
-    // Configuration
-    config,
-    updateConfig,
+    isPlaying,
+    speed,
+    currentTime,
+    play,
+    pause,
     reset,
+    toggle,
+    setSpeed
+  }
+}
+
+// Hook for handling responsive breakpoints
+export function useBreakpoint() {
+  const [breakpoint, setBreakpoint] = useState<'sm' | 'md' | 'lg' | 'xl'>('lg')
+
+  useEffect(() => {
+    const updateBreakpoint = () => {
+      const width = window.innerWidth
+      if (width < 640) setBreakpoint('sm')
+      else if (width < 768) setBreakpoint('md')
+      else if (width < 1024) setBreakpoint('lg')
+      else setBreakpoint('xl')
+    }
+
+    updateBreakpoint()
+    window.addEventListener('resize', updateBreakpoint)
+    return () => window.removeEventListener('resize', updateBreakpoint)
+  }, [])
+
+  return {
+    breakpoint,
+    isMobile: breakpoint === 'sm',
+    isTablet: breakpoint === 'md',
+    isDesktop: breakpoint === 'lg' || breakpoint === 'xl'
+  }
+}
+
+// Hook for debounced values
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
+}
+
+// Hook for managing form state with validation
+export function useFormState<T extends Record<string, any>>(
+  initialState: T,
+  validationRules?: Partial<Record<keyof T, (value: any) => string | null>>
+) {
+  const [state, setState] = useState<T>(initialState)
+  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({})
+  const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({})
+
+  const updateField = useCallback(<K extends keyof T>(
+    field: K,
+    value: T[K]
+  ) => {
+    setState(prev => ({ ...prev, [field]: value }))
     
-    // History
-    undo,
-    redo,
-    canUndo,
-    canRedo,
+    // Mark field as touched
+    setTouched(prev => ({ ...prev, [field]: true }))
     
-    // Generator options
-    subtype,
-    setSubtype,
-    outputFormat,
-    setOutputFormat,
+    // Validate field if rules exist
+    if (validationRules?.[field]) {
+      const error = validationRules[field]!(value)
+      setErrors(prev => ({ ...prev, [field]: error || undefined }))
+    }
+  }, [validationRules])
+
+  const validateAll = useCallback(() => {
+    if (!validationRules) return true
     
-    // Generated output
-    url,
-    outputCode,
-    isLoading,
+    const newErrors: Partial<Record<keyof T, string>> = {}
+    let hasErrors = false
     
-    // Actions
-    copy: copyConfiguration,
-    copied
+    Object.keys(validationRules).forEach(field => {
+      const key = field as keyof T
+      const error = validationRules[key]!(state[key])
+      if (error) {
+        newErrors[key] = error
+        hasErrors = true
+      }
+    })
+    
+    setErrors(newErrors)
+    setTouched(Object.keys(state).reduce((acc, key) => ({ ...acc, [key]: true }), {}))
+    
+    return !hasErrors
+  }, [state, validationRules])
+
+  const reset = useCallback(() => {
+    setState(initialState)
+    setErrors({})
+    setTouched({})
+  }, [initialState])
+
+  const isValid = Object.keys(errors).length === 0
+  const hasBeenTouched = Object.values(touched).some(Boolean)
+
+  return {
+    state,
+    errors,
+    touched,
+    updateField,
+    validateAll,
+    reset,
+    isValid,
+    hasBeenTouched
   }
 }

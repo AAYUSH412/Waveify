@@ -25,7 +25,6 @@
 
 - 🌊 **Animated Wave Patterns** - 10+ wave styles (sine, square, sawtooth, neon, glitch, plasma, etc.)
 - ⌨️ **Typing Animations** - 8+ typing effects (classic, neon, rainbow, matrix, terminal, etc.)
-- 🏷️ **Dynamic Badges** - Custom badges with 10+ styles and animations
 - 💻 **Terminal Simulations** - Beautiful terminal interfaces with multiple themes
 - 📊 **GitHub Stats Cards** - Animated profile statistics with modern themes
 - ⏳ **Loading Animations** - Elegant loaders and spinners
@@ -49,17 +48,12 @@
 ![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20my%20project&fontSize=24&color=%23333)
 ```
 
-### 3. Custom Badge
-```markdown
-![Badge](https://waveify.onrender.com/api/badge?label=Status&message=Awesome&color=brightgreen&style=modern)
-```
-
-### 4. Loading Animation
+### 3. Loading Animation
 ```markdown
 ![Loader](https://waveify.onrender.com/api/loader?type=dots&color=blue&speed=1.5)
 ```
 
-### 5. Terminal Simulation
+### 4. Terminal Simulation
 ```markdown
 ![Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20install%20waveify&theme=modern)
 ```
@@ -89,14 +83,6 @@
 | **Classic** | ![Classic Typing](https://waveify.onrender.com/api/typing?text=Hello%20World&fontSize=18&width=300&height=50) | `/api/typing?text=Hello%20World` |
 | **Neon** | ![Neon Typing](https://waveify.onrender.com/api/typing/neon?text=Cyberpunk%20Style&fontSize=18&width=350&height=50) | `/api/typing/neon?text=Cyberpunk%20Style` |
 | **Matrix** | ![Matrix Typing](https://waveify.onrender.com/api/typing/matrix?text=Follow%20the%20white%20rabbit&fontSize=16&width=400&height=50) | `/api/typing/matrix?text=Follow%20the%20white%20rabbit` |
-
-### Dynamic Badges
-
-| Style | Example | URL |
-|-------|---------|-----|
-| **Modern** | ![Modern Badge](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success&style=modern) | `/api/badge?style=modern` |
-| **Gradient** | ![Gradient Badge](https://waveify.onrender.com/api/badge?label=Version&message=v1.0.0&color=blue&style=gradient) | `/api/badge?style=gradient` |
-| **Neon** | ![Neon Badge](https://waveify.onrender.com/api/badge?label=Status&message=Online&color=green&style=neon) | `/api/badge?style=neon` |
 
 ### Terminal Simulations
 
@@ -191,11 +177,6 @@ https://waveify.onrender.com/api
 - `GET /api/typing/terminal` - Terminal typing simulation
 - `GET /api/typing/gradient` - Gradient color typing
 
-#### 🏷️ Badge API
-- `GET /api/badge` - Generate custom badges
-- `GET /api/badge/styles` - Available badge styles
-- `GET /api/badge/colors` - Available badge colors
-
 #### 💻 Terminal API
 - `GET /api/terminal` - Generate terminal command simulations
 - `GET /api/terminal/modern` - Modern macOS-style terminal
@@ -253,12 +234,12 @@ Waveify/
 │   ├── 📁 generators/         # SVG generation logic
 │   │   ├── 📄 WaveGenerator.js
 │   │   ├── 📄 TypingGenerator.js
-│   │   ├── 📄 BadgeGenerator.js
+│   │   ├── 📄 TerminalGenerator.js
 │   │   └── 📄 LoaderGenerator.js
 │   ├── 📁 routes/            # API route handlers
 │   │   ├── 📄 wave.js
 │   │   ├── 📄 typing.js
-│   │   ├── 📄 badge.js
+│   │   ├── 📄 terminal.js
 │   │   ├── 📄 loader.js
 │   │   └── 📄 health.js
 │   └── 📁 utils/             # Utility functions
@@ -321,22 +302,20 @@ Waveify/
 
 ### GitHub README Enhancement
 ```markdown
+### GitHub README Enhancement
+```markdown
 <!-- Project Header with Wave Animation -->
 ![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=200&width=1200&amplitude=30)
-
-<!-- Project Stats with Modern Badges -->
-![Build Status](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=success&style=modern)
-![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue&style=gradient)
-![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=green&style=pill)
 
 <!-- Dynamic Typing Introduction -->
 ![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22&style=gradient)
 
 <!-- Installation Commands in Terminal Style -->
-![Installation](https://waveify.onrender.com/api/terminal?commands=npm%20install%20myproject&theme=modern&width=600)
+![Installation](https://waveify.onrender.com/api/terminal?text=npm%20install%20myproject&style=modern&width=600)
 
-<!-- GitHub Profile Stats -->
-![GitHub Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=dark&metrics=commits,prs,stars,repos)
+<!-- Loading Animation for Builds -->
+![Build Status](https://waveify.onrender.com/api/loader?type=pulse&color=green&text=Build%20Passing)
+```
 
 <!-- Loading States for Dynamic Content -->
 ![Loading](https://waveify.onrender.com/api/loader?type=dots&color=purple&speed=1.2)
@@ -348,21 +327,21 @@ Waveify/
 ![API Docs](https://waveify.onrender.com/api/wave/neon?color=%2300ff88&height=120&text=API%20Documentation)
 
 <!-- Terminal Examples -->
-![Terminal Example](https://waveify.onrender.com/api/terminal?commands=curl%20-X%20GET%20api.example.com/users&theme=cyberpunk)
+![Terminal Example](https://waveify.onrender.com/api/terminal?text=curl%20-X%20GET%20api.example.com/users&style=cyberpunk)
 ```
 
 ### Project Showcases
 ```markdown
 <!-- Project Banner with Typing -->
-![Project Banner](https://waveify.onrender.com/api/typing/matrix?text=Entering%20the%20Matrix...&fontSize=24&width=500)
+![Project Banner](https://waveify.onrender.com/api/typing?text=Entering%20the%20Matrix...&fontSize=24&width=500&style=matrix)
 
-<!-- Feature Highlights -->
-![Features](https://waveify.onrender.com/api/badge?label=Features&message=10%2B%20APIs&color=purple&style=neon&animated=true)
+<!-- Feature Highlights with Loaders -->
+![Features](https://waveify.onrender.com/api/loader?type=bars&color=purple&text=10%2B%20APIs)
 
-<!-- Tech Stack Badges -->
-![Node.js](https://waveify.onrender.com/api/badge?label=Node.js&message=18%2B&color=green&style=modern)
-![React](https://waveify.onrender.com/api/badge?label=React&message=18.0&color=blue&style=gradient)
-![TypeScript](https://waveify.onrender.com/api/badge?label=TypeScript&message=Ready&color=blue&style=modern)
+<!-- Tech Stack with Terminal Style -->
+![Node.js](https://waveify.onrender.com/api/terminal?text=Node.js%20v18%2B&style=modern&color=green)
+![React](https://waveify.onrender.com/api/terminal?text=React%2018.0&style=modern&color=blue)
+![TypeScript](https://waveify.onrender.com/api/terminal?text=TypeScript%20Ready&style=modern&color=blue)
 ```
 
 ### Profile Customization
@@ -418,16 +397,13 @@ For detailed contributing guidelines, see [CONTRIBUTING.md](./docs/CONTRIBUTING.
 ### Phase 1: Core Features ✅
 - [x] Wave animations (10+ styles)
 - [x] Typing animations (8+ effects)
-- [x] Basic badges with modern styling
 - [x] Loading animations and spinners
 - [x] Terminal simulations with themes
-- [x] GitHub stats cards with live data
 - [x] API documentation and examples
 
 ### Phase 2: Enhanced Features 🚧
-- [x] Advanced badge styles (gradient, neon, glass)
 - [x] Terminal themes (modern, matrix, cyberpunk, retro)
-- [x] Animated GitHub profile statistics
+- [x] Advanced typing effects with customization
 - [ ] Custom animation presets and templates
 - [ ] Batch generation and export tools
 - [ ] Enhanced error handling and validation

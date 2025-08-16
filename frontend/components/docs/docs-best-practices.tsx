@@ -123,9 +123,9 @@ export function DocsBestPractices() {
 
 *Create something amazing with clean, professional animations*
 
-![Build Status](https://waveify.onrender.com/api/badge?label=Build&message=Passing&color=green&style=modern)
-![Version](https://waveify.onrender.com/api/badge?label=Version&message=v2.1.0&color=blue&style=modern)
-![License](https://waveify.onrender.com/api/badge?label=License&message=MIT&color=yellow&style=modern)
+![Typing Animation](https://waveify.onrender.com/api/typing?text=Project%20Status:%20Active&style=modern&speed=100)
+![Terminal Status](https://waveify.onrender.com/api/terminal?text=Version:%20v2.1.0&style=modern&color=blue)
+![Loader Animation](https://waveify.onrender.com/api/loader?type=dots&color=green&size=24)
 
 </div>`,
       type: "good"

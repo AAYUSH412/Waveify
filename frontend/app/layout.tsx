@@ -54,11 +54,11 @@ export const metadata = {
     creator: "@waveify",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/apple-icon.png",
+    icon: "/favicon/favicon.svg",
+    shortcut: "/favicon/favicon.svg",
+    apple: "/favicon/apple-touch-icon.png",
   },
-  manifest: "/manifest.webmanifest",
+  manifest: "/favicon/site.webmanifest",
   metadataBase: new URL("https://waveify.vercel.app"),
 }
 
@@ -81,13 +81,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
     <head>
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      <link rel="apple-touch-icon" href="/apple-icon.png" />
-      <link rel="manifest" href="/manifest.webmanifest" />
+      <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+      <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+      <link rel="manifest" href="/favicon/site.webmanifest" />
       <meta name="google-site-verification" content="zt9A_STXvRGIDDkpA_-eOL3Wx0dsu2o4UxtnZy9l2o4" />
     </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
           <Toaster />
         </ThemeProvider>

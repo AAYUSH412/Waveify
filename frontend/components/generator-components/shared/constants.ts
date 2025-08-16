@@ -1,647 +1,620 @@
-import { 
+import type { 
   WaveConfig, 
   TypingConfig, 
   BadgeConfig, 
-  Preset, 
-  ColorPreset,
-  COMMON_COLORS
+  LoaderConfig, 
+  TerminalConfig,
+  ColorScheme, 
+  PresetConfig,
+  ExportFormat,
+  AnimationConfig,
+  GeneratorType
 } from './types'
 
-// Wave Presets
-export const WAVE_PRESETS: Preset[] = [
-  // Default/Sine Waves
+// Professional color schemes for modern design
+export const PROFESSIONAL_COLOR_SCHEMES: ColorScheme[] = [
   {
-    id: 'ocean-wave',
-    name: 'Ocean Wave',
-    description: 'Smooth blue waves like ocean',
-    type: 'wave',
-    config: {
-      color: '#007CF0',
-      height: 150,
-      width: 1200,
-      speed: 4,
-      amplitude: 25,
-      frequency: 2,
-      waveType: 'sine'
-    } as WaveConfig,
-    tags: ['blue', 'smooth', 'professional', 'sine']
+    name: "Ocean Breeze",
+    primary: "#0EA5E9",
+    secondary: "#0F172A", 
+    accent: "#06B6D4",
+    background: "#F8FAFC",
+    surface: "#FFFFFF",
+    text: "#1E293B",
+    success: "#10B981",
+    warning: "#F59E0B",
+    error: "#EF4444"
   },
   {
-    id: 'sunset-waves',
-    name: 'Sunset Waves',
-    description: 'Warm orange sunset waves',
-    type: 'wave',
-    config: {
-      color: '#ff6b35',
-      height: 140,
-      width: 1200,
-      speed: 5,
-      amplitude: 20,
-      frequency: 1.5,
-      waveType: 'sine'
-    } as WaveConfig,
-    tags: ['orange', 'warm', 'sunset', 'sine']
-  },
-  
-  // Square Waves
-  {
-    id: 'pixel-wave',
-    name: 'Pixel Wave',
-    description: 'Retro 8-bit style square waves',
-    type: 'wave',
-    config: {
-      color: '#00ff41',
-      height: 120,
-      width: 1200,
-      speed: 3,
-      amplitude: 30,
-      frequency: 4,
-      waveType: 'square'
-    } as WaveConfig,
-    tags: ['retro', 'pixel', 'gaming', 'square']
+    name: "Sunset Gradient",
+    primary: "#F97316",
+    secondary: "#1C1917",
+    accent: "#FBBF24",
+    background: "#FEF3C7",
+    surface: "#FFFBEB",
+    text: "#78350F",
+    success: "#65A30D",
+    warning: "#D97706",
+    error: "#DC2626"
   },
   {
-    id: 'digital-banner',
-    name: 'Digital Banner',
-    description: 'Clean digital square wave banner',
-    type: 'wave',
-    config: {
-      color: '#0080ff',
-      height: 160,
-      width: 1200,
-      speed: 4,
-      amplitude: 25,
-      frequency: 2,
-      waveType: 'square'
-    } as WaveConfig,
-    tags: ['digital', 'tech', 'clean', 'square']
-  },
-
-  // Sawtooth Waves
-  {
-    id: 'sharp-edge',
-    name: 'Sharp Edge',
-    description: 'Aggressive sawtooth pattern',
-    type: 'wave',
-    config: {
-      color: '#ff3366',
-      height: 150,
-      width: 1200,
-      speed: 3,
-      amplitude: 35,
-      frequency: 2.5,
-      waveType: 'sawtooth'
-    } as WaveConfig,
-    tags: ['sharp', 'aggressive', 'modern', 'sawtooth']
+    name: "Forest Green",
+    primary: "#059669",
+    secondary: "#064E3B",
+    accent: "#34D399",
+    background: "#ECFDF5",
+    surface: "#F0FDF4",
+    text: "#064E3B",
+    success: "#10B981",
+    warning: "#D97706",
+    error: "#DC2626"
   },
   {
-    id: 'mountain-range',
-    name: 'Mountain Range',
-    description: 'Mountain-like sawtooth waves',
-    type: 'wave',
-    config: {
-      color: '#8b5a3c',
-      height: 180,
-      width: 1200,
-      speed: 6,
-      amplitude: 40,
-      frequency: 1.5,
-      waveType: 'sawtooth'
-    } as WaveConfig,
-    tags: ['nature', 'mountains', 'brown', 'sawtooth']
-  },
-
-  // Pulse Waves
-  {
-    id: 'heartbeat',
-    name: 'Heartbeat',
-    description: 'Pulse wave like a heartbeat',
-    type: 'wave',
-    config: {
-      color: '#ff4757',
-      height: 140,
-      width: 1200,
-      speed: 2,
-      amplitude: 30,
-      frequency: 3,
-      pulseWidth: 0.2,
-      waveType: 'pulse'
-    } as WaveConfig,
-    tags: ['pulse', 'heartbeat', 'health', 'red']
+    name: "Royal Purple",
+    primary: "#7C3AED",
+    secondary: "#3C1E78",
+    accent: "#A855F7",
+    background: "#F3F4F6",
+    surface: "#FFFFFF",
+    text: "#374151",
+    success: "#10B981",
+    warning: "#F59E0B",
+    error: "#EF4444"
   },
   {
-    id: 'data-pulse',
-    name: 'Data Pulse',
-    description: 'Data transmission pulse pattern',
-    type: 'wave',
-    config: {
-      color: '#00d4aa',
-      height: 120,
-      width: 1200,
-      speed: 1.5,
-      amplitude: 25,
-      frequency: 4,
-      pulseWidth: 0.3,
-      waveType: 'pulse'
-    } as WaveConfig,
-    tags: ['data', 'tech', 'pulse', 'cyan']
-  },
-
-  // Triangle Waves
-  {
-    id: 'geometric-wave',
-    name: 'Geometric Wave',
-    description: 'Clean geometric triangle pattern',
-    type: 'wave',
-    config: {
-      color: '#6c5ce7',
-      height: 150,
-      width: 1200,
-      speed: 4,
-      amplitude: 28,
-      frequency: 2.5,
-      waveType: 'triangle'
-    } as WaveConfig,
-    tags: ['geometric', 'clean', 'purple', 'triangle']
+    name: "Midnight Dark",
+    primary: "#6366F1",
+    secondary: "#1E1B4B",
+    accent: "#8B5CF6",
+    background: "#0F172A",
+    surface: "#1E293B",
+    text: "#F1F5F9",
+    success: "#22C55E",
+    warning: "#EAB308",
+    error: "#F87171"
   },
   {
-    id: 'architect-wave',
-    name: 'Architect Wave',
-    description: 'Architectural triangle design',
-    type: 'wave',
-    config: {
-      color: '#2d3436',
-      height: 170,
-      width: 1200,
-      speed: 5,
-      amplitude: 35,
-      frequency: 2,
-      waveType: 'triangle'
-    } as WaveConfig,
-    tags: ['architecture', 'professional', 'dark', 'triangle']
-  },
-
-  // Fluid Waves
-  {
-    id: 'liquid-motion',
-    name: 'Liquid Motion',
-    description: 'Smooth flowing liquid animation',
-    type: 'wave',
-    config: {
-      color: '#74b9ff',
-      height: 160,
-      width: 1200,
-      speed: 6,
-      amplitude: 30,
-      frequency: 1.5,
-      waveType: 'fluid'
-    } as WaveConfig,
-    tags: ['fluid', 'liquid', 'smooth', 'blue']
-  },
-  {
-    id: 'organic-flow',
-    name: 'Organic Flow',
-    description: 'Natural organic fluid movement',
-    type: 'wave',
-    config: {
-      color: '#00b894',
-      height: 140,
-      width: 1200,
-      speed: 7,
-      amplitude: 25,
-      frequency: 2,
-      waveType: 'fluid'
-    } as WaveConfig,
-    tags: ['organic', 'nature', 'green', 'fluid']
-  },
-
-  // Glitch Waves
-  {
-    id: 'glitch-error',
-    name: 'Glitch Error',
-    description: 'Digital glitch error effect',
-    type: 'wave',
-    config: {
-      color: '#ff0040',
-      height: 150,
-      width: 1200,
-      speed: 1,
-      amplitude: 35,
-      frequency: 3,
-      waveType: 'glitch'
-    } as WaveConfig,
-    tags: ['glitch', 'error', 'digital', 'red']
-  },
-  {
-    id: 'matrix-glitch',
-    name: 'Matrix Glitch',
-    description: 'Matrix-style digital distortion',
-    type: 'wave',
-    config: {
-      color: '#00ff00',
-      height: 140,
-      width: 1200,
-      speed: 0.8,
-      amplitude: 40,
-      frequency: 4,
-      waveType: 'glitch'
-    } as WaveConfig,
-    tags: ['matrix', 'glitch', 'green', 'hacker']
-  },
-
-  // Plasma Waves
-  {
-    id: 'energy-plasma',
-    name: 'Energy Plasma',
-    description: 'High-energy plasma effect',
-    type: 'wave',
-    config: {
-      color: '#ff6b00',
-      height: 160,
-      width: 1200,
-      speed: 2.5,
-      amplitude: 30,
-      frequency: 2.5,
-      waveType: 'plasma'
-    } as WaveConfig,
-    tags: ['energy', 'plasma', 'orange', 'power']
-  },
-  {
-    id: 'lightning-plasma',
-    name: 'Lightning Plasma',
-    description: 'Electric lightning plasma',
-    type: 'wave',
-    config: {
-      color: '#fd79a8',
-      height: 150,
-      width: 1200,
-      speed: 1.5,
-      amplitude: 35,
-      frequency: 3,
-      waveType: 'plasma'
-    } as WaveConfig,
-    tags: ['lightning', 'electric', 'pink', 'plasma']
-  },
-
-  // Neon Waves
-  {
-    id: 'cyberpunk-neon',
-    name: 'Cyberpunk Neon',
-    description: 'Classic cyberpunk neon glow',
-    type: 'wave',
-    config: {
-      color: '#00ffff',
-      height: 180,
-      width: 1200,
-      speed: 2,
-      amplitude: 30,
-      frequency: 2.5,
-      waveType: 'neon'
-    } as WaveConfig,
-    tags: ['cyberpunk', 'neon', 'cyan', 'futuristic']
-  },
-  {
-    id: 'synthwave-neon',
-    name: 'Synthwave Neon',
-    description: 'Retro synthwave neon style',
-    type: 'wave',
-    config: {
-      color: '#ff0080',
-      height: 160,
-      width: 1200,
-      speed: 3,
-      amplitude: 28,
-      frequency: 2,
-      waveType: 'neon'
-    } as WaveConfig,
-    tags: ['synthwave', 'retro', 'neon', 'pink']
-  },
-  {
-    id: 'neon-city',
-    name: 'Neon City',
-    description: 'Urban neon city lights',
-    type: 'wave',
-    config: {
-      color: '#39ff14',
-      height: 170,
-      width: 1200,
-      speed: 2.5,
-      amplitude: 32,
-      frequency: 3,
-      waveType: 'neon'
-    } as WaveConfig,
-    tags: ['city', 'urban', 'neon', 'green']
+    name: "Cherry Blossom",
+    primary: "#EC4899",
+    secondary: "#831843",
+    accent: "#F472B6",
+    background: "#FDF2F8",
+    surface: "#FFFFFF",
+    text: "#831843",
+    success: "#10B981",
+    warning: "#F59E0B",
+    error: "#EF4444"
   }
 ]
 
-// Typing Presets
-export const TYPING_PRESETS: Preset[] = [
+// Enhanced wave presets with metadata
+export const WAVE_PRESETS: PresetConfig<WaveConfig>[] = [
   {
-    id: 'classic-terminal',
-    name: 'Classic Terminal',
-    description: 'Traditional monospace typing',
-    type: 'typing',
+    id: "gentle-waves",
+    name: "Gentle Waves",
+    description: "Soft, flowing waves perfect for backgrounds",
+    category: "Nature",
     config: {
-      text: 'Hello, World!',
-      speed: 80,
-      color: '#00ff00',
-      backgroundColor: '#000000',
-      fontSize: 16,
-      fontFamily: 'monospace',
-      width: 400,
+      text: "Gentle Waves",
+      font: "Arial",
+      fontSize: 40,
+      fontWeight: 500,
+      color: "#0EA5E9",
+      animation: true,
+      duration: 3,
       height: 60,
-      cursor: true,
-      type: 'classic'
-    } as TypingConfig,
-    tags: ['terminal', 'classic', 'monospace']
+      sections: 4,
+      waveHeight: 20,
+      waveLength: 100,
+      speed: 1
+    },
+    tags: ["gentle", "background", "nature", "blue"],
+    difficulty: "beginner",
+    popularity: 95
   },
   {
-    id: 'neon-cyberpunk',
-    name: 'Neon Cyberpunk',
-    description: 'Futuristic neon typing effect',
-    type: 'typing',
+    id: "dynamic-waves",
+    name: "Dynamic Waves",
+    description: "High-energy waves with dynamic movement",
+    category: "Energy",
     config: {
-      text: 'SYSTEM ONLINE',
-      speed: 60,
-      color: '#00ffff',
-      backgroundColor: '#000011',
-      fontSize: 20,
-      fontFamily: 'monospace',
-      width: 450,
+      text: "Dynamic Energy",
+      font: "Arial Black",
+      fontSize: 48,
+      fontWeight: 700,
+      color: "#F97316",
+      animation: true,
+      duration: 1.5,
+      height: 80,
+      sections: 6,
+      waveHeight: 35,
+      waveLength: 80,
+      speed: 2
+    },
+    tags: ["dynamic", "energy", "fast", "orange"],
+    difficulty: "intermediate",
+    popularity: 87
+  },
+  {
+    id: "ocean-depths",
+    name: "Ocean Depths",
+    description: "Deep, mysterious ocean-inspired waves",
+    category: "Nature",
+    config: {
+      text: "Ocean Depths",
+      font: "Georgia",
+      fontSize: 36,
+      fontWeight: 400,
+      color: "#1E40AF",
+      animation: true,
+      duration: 4,
+      height: 100,
+      sections: 3,
+      waveHeight: 45,
+      waveLength: 120,
+      speed: 0.8
+    },
+    tags: ["ocean", "deep", "mysterious", "blue"],
+    difficulty: "advanced",
+    popularity: 72
+  },
+  {
+    id: "neon-pulse",
+    name: "Neon Pulse",
+    description: "Futuristic neon waves with electric energy",
+    category: "Tech",
+    config: {
+      text: "NEON PULSE",
+      font: "Courier New",
+      fontSize: 32,
+      fontWeight: 600,
+      color: "#8B5CF6",
+      animation: true,
+      duration: 2,
       height: 70,
+      sections: 8,
+      waveHeight: 25,
+      waveLength: 60,
+      speed: 1.5
+    },
+    tags: ["neon", "futuristic", "tech", "purple"],
+    difficulty: "intermediate",
+    popularity: 81
+  }
+]
+
+// Enhanced typing presets
+export const TYPING_PRESETS: PresetConfig<TypingConfig>[] = [
+  {
+    id: "typewriter-classic",
+    name: "Classic Typewriter",
+    description: "Traditional typewriter effect with cursor",
+    category: "Retro",
+    config: {
+      text: "Hello, World!",
+      font: "Courier New",
+      fontSize: 24,
+      fontWeight: 400,
+      color: "#374151",
+      speed: 100,
       cursor: true,
-      type: 'neon'
-    } as TypingConfig,
-    tags: ['neon', 'cyberpunk', 'futuristic']
+      cursorColor: "#374151",
+      loop: false,
+      startDelay: 0
+    },
+    tags: ["classic", "typewriter", "cursor", "retro"],
+    difficulty: "beginner",
+    popularity: 92
   },
   {
-    id: 'glitch-error',
-    name: 'Glitch Error',
-    description: 'Glitchy error message style',
-    type: 'typing',
+    id: "code-typing",
+    name: "Code Typing",
+    description: "Programming-style typing animation",
+    category: "Tech",
     config: {
-      text: 'ERROR: SYSTEM CORRUPTED',
-      speed: 40,
-      color: '#ff0040',
-      backgroundColor: '#000000',
+      text: "const message = 'Hello, World!';",
+      font: "JetBrains Mono",
       fontSize: 18,
-      fontFamily: 'monospace',
-      width: 500,
-      height: 65,
+      fontWeight: 500,
+      color: "#059669",
+      speed: 80,
       cursor: true,
-      type: 'glitch'
-    } as TypingConfig,
-    tags: ['glitch', 'error', 'dramatic']
+      cursorColor: "#059669",
+      loop: true,
+      startDelay: 500
+    },
+    tags: ["code", "programming", "tech", "monospace"],
+    difficulty: "intermediate",
+    popularity: 88
   },
   {
-    id: 'rainbow-magic',
-    name: 'Rainbow Magic',
-    description: 'Colorful rainbow text animation',
-    type: 'typing',
+    id: "elegant-script",
+    name: "Elegant Script",
+    description: "Smooth, elegant typing for formal content",
+    category: "Elegant",
     config: {
-      text: 'Welcome to the Rainbow',
-      speed: 70,
-      fontSize: 22,
-      width: 600,
-      height: 75,
-      cursor: true,
-      type: 'rainbow'
-    } as TypingConfig,
-    tags: ['rainbow', 'colorful', 'fun']
-  },
-  {
-    id: 'matrix-code',
-    name: 'Matrix Code',
-    description: 'Matrix-style digital rain',
-    type: 'typing',
-    config: {
-      text: 'Wake up, Neo...',
-      speed: 90,
-      color: '#00ff41',
-      backgroundColor: '#000000',
-      fontSize: 16,
-      fontFamily: 'monospace',
-      width: 400,
-      height: 60,
-      cursor: true,
-      type: 'matrix'
-    } as TypingConfig,
-    tags: ['matrix', 'green', 'movie']
+      text: "Welcome to our journey",
+      font: "Georgia",
+      fontSize: 32,
+      fontWeight: 300,
+      color: "#7C3AED",
+      speed: 120,
+      cursor: false,
+      cursorColor: "#7C3AED",
+      loop: false,
+      startDelay: 1000
+    },
+    tags: ["elegant", "formal", "smooth", "purple"],
+    difficulty: "beginner",
+    popularity: 76
   }
 ]
 
-// Badge Presets
-export const BADGE_PRESETS: Preset[] = [
+// Terminal presets
+export const TERMINAL_PRESETS: PresetConfig<TerminalConfig>[] = [
   {
-    id: 'build-status',
-    name: 'Build Status',
-    description: 'Standard build status badge',
-    type: 'badge',
+    id: "ubuntu-terminal",
+    name: "Ubuntu Terminal",
+    description: "Classic Ubuntu terminal appearance",
+    category: "Linux",
     config: {
-      label: 'Build',
-      message: 'Passing',
-      color: 'green',
-      style: 'modern'
-    } as BadgeConfig,
-    tags: ['build', 'status', 'ci/cd']
+      text: "user@ubuntu:~$ echo 'Hello World'",
+      font: "Ubuntu Mono",
+      fontSize: 14,
+      fontWeight: 400,
+      color: "#00FF00",
+      backgroundColor: "#300A24",
+      borderRadius: 6,
+      padding: 20,
+      prompt: "user@ubuntu:~$ ",
+      cursor: true
+    },
+    tags: ["ubuntu", "linux", "terminal", "green"],
+    difficulty: "beginner",
+    popularity: 94
   },
   {
-    id: 'version-badge',
-    name: 'Version Badge',
-    description: 'Version information badge',
-    type: 'badge',
+    id: "macos-terminal",
+    name: "macOS Terminal",
+    description: "Clean macOS terminal style",
+    category: "macOS",
     config: {
-      label: 'Version',
-      message: 'v2.1.0',
-      color: 'blue',
-      style: 'gradient'
-    } as BadgeConfig,
-    tags: ['version', 'release', 'info']
-  },
-  {
-    id: 'license-badge',
-    name: 'License Badge',
-    description: 'Open source license badge',
-    type: 'badge',
-    config: {
-      label: 'License',
-      message: 'MIT',
-      color: 'success',
-      style: 'pill'
-    } as BadgeConfig,
-    tags: ['license', 'legal', 'open-source']
-  },
-  {
-    id: 'neon-status',
-    name: 'Neon Status',
-    description: 'Futuristic neon status badge',
-    type: 'badge',
-    config: {
-      label: 'Status',
-      message: 'ONLINE',
-      color: 'cyan',
-      style: 'neon',
-      animated: true
-    } as BadgeConfig,
-    tags: ['neon', 'status', 'animated']
-  },
-  {
-    id: 'glass-modern',
-    name: 'Glass Modern',
-    description: 'Modern glassmorphism badge',
-    type: 'badge',
-    config: {
-      label: 'UI',
-      message: 'Modern',
-      color: 'purple',
-      style: 'glass',
-      borderRadius: 12
-    } as BadgeConfig,
-    tags: ['glass', 'modern', 'ui']
+      text: "MacBook-Pro:~ user$ ls -la",
+      font: "SF Mono",
+      fontSize: 13,
+      fontWeight: 400,
+      color: "#FFFFFF",
+      backgroundColor: "#1C1C1C",
+      borderRadius: 8,
+      padding: 16,
+      prompt: "MacBook-Pro:~ user$ ",
+      cursor: true
+    },
+    tags: ["macos", "clean", "terminal", "white"],
+    difficulty: "beginner",
+    popularity: 89
   }
 ]
 
-// Color Presets
-export const COLOR_PRESETS: ColorPreset[] = [
+// Loader presets
+export const LOADER_PRESETS: PresetConfig<LoaderConfig>[] = [
   {
-    id: 'ocean-blue',
-    name: 'Ocean Blue',
-    colors: ['#007CF0', '#0051A5', '#00D4FF'],
-    primary: '#007CF0'
+    id: "spinning-dots",
+    name: "Spinning Dots",
+    description: "Three dots spinning in a circle",
+    category: "Minimal",
+    config: {
+      type: "dots",
+      size: 40,
+      color: "#0EA5E9",
+      speed: 1,
+      count: 3,
+      spacing: 10
+    },
+    tags: ["dots", "spinning", "minimal", "blue"],
+    difficulty: "beginner",
+    popularity: 91
   },
   {
-    id: 'sunset-orange',
-    name: 'Sunset Orange',
-    colors: ['#FF6B6B', '#FF8E53', '#FFD93D'],
-    primary: '#FF6B6B'
-  },
-  {
-    id: 'forest-green',
-    name: 'Forest Green',
-    colors: ['#51CF66', '#40C057', '#37B24D'],
-    primary: '#51CF66'
-  },
-  {
-    id: 'purple-magic',
-    name: 'Purple Magic',
-    colors: ['#8B5CF6', '#A855F7', '#C084FC'],
-    primary: '#8B5CF6'
-  },
-  {
-    id: 'neon-cyan',
-    name: 'Neon Cyan',
-    colors: ['#00FFFF', '#00D4FF', '#0099CC'],
-    primary: '#00FFFF'
-  },
-  {
-    id: 'hot-pink',
-    name: 'Hot Pink',
-    colors: ['#EC4899', '#F472B6', '#FBCFE8'],
-    primary: '#EC4899'
-  },
-  {
-    id: 'golden-yellow',
-    name: 'Golden Yellow',
-    colors: ['#FFD43B', '#FCC419', '#FAB005'],
-    primary: '#FFD43B'
-  },
-  {
-    id: 'cyber-red',
-    name: 'Cyber Red',
-    colors: ['#FF0040', '#FF1744', '#FF5252'],
-    primary: '#FF0040'
+    id: "pulse-ring",
+    name: "Pulse Ring",
+    description: "Pulsing ring loader animation",
+    category: "Modern",
+    config: {
+      type: "ring",
+      size: 60,
+      color: "#8B5CF6",
+      speed: 1.2,
+      thickness: 4,
+      gap: 30
+    },
+    tags: ["ring", "pulse", "modern", "purple"],
+    difficulty: "intermediate",
+    popularity: 85
   }
 ]
 
-// Generator type descriptions
-export const GENERATOR_DESCRIPTIONS = {
-  wave: 'Create beautiful animated wave patterns for your GitHub README headers',
-  typing: 'Generate realistic typing animations with various text effects',
-  badge: 'Design modern status badges with multiple styles and effects',
-  terminal: 'Simulate terminal interfaces with command sequences',
-  loader: 'Create loading animations and spinners'
+// Badge presets
+export const BADGE_PRESETS: PresetConfig<BadgeConfig>[] = [
+  {
+    id: "status-success",
+    name: "Success Status",
+    description: "Green success badge",
+    category: "Status",
+    config: {
+      text: "Success",
+      style: "flat",
+      color: "#10B981",
+      textColor: "#FFFFFF",
+      fontSize: 12,
+      padding: 8
+    },
+    tags: ["success", "green", "status", "flat"],
+    difficulty: "beginner",
+    popularity: 96
+  },
+  {
+    id: "version-badge",
+    name: "Version Badge",
+    description: "Software version indicator",
+    category: "Software",
+    config: {
+      text: "v2.1.0",
+      style: "rounded",
+      color: "#6366F1",
+      textColor: "#FFFFFF",
+      fontSize: 11,
+      padding: 6
+    },
+    tags: ["version", "software", "blue", "rounded"],
+    difficulty: "beginner",
+    popularity: 88
+  }
+]
+
+// Animation presets
+export const ANIMATION_PRESETS: AnimationConfig[] = [
+  {
+    name: "Smooth Fade",
+    type: "fade",
+    duration: 1000,
+    easing: "ease-in-out",
+    delay: 0
+  },
+  {
+    name: "Bounce In",
+    type: "bounce",
+    duration: 800,
+    easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+    delay: 200
+  },
+  {
+    name: "Slide Up",
+    type: "slide",
+    duration: 600,
+    easing: "ease-out",
+    delay: 0
+  }
+]
+
+// Layout presets
+export const LAYOUT_PRESETS = {
+  SIDEBAR_WIDTHS: {
+    compact: 240,
+    normal: 280,
+    wide: 320
+  },
+  BREAKPOINTS: {
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    '2xl': 1536
+  },
+  SPACING: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    '2xl': 48
+  }
 }
 
-// Example use cases
-export const USE_CASES = [
-  {
-    title: 'Project Headers',
-    description: 'Use wave animations as eye-catching headers for your GitHub repositories',
-    generators: ['wave'],
-    example: 'Add a fluid wave animation to make your project stand out'
-  },
-  {
-    title: 'Demo Sections',
-    description: 'Show typing animations to demonstrate your CLI tools or APIs',
-    generators: ['typing', 'terminal'],
-    example: 'Display installation commands with realistic typing effects'
-  },
-  {
-    title: 'Status Indicators',
-    description: 'Create dynamic badges to show build status, version info, and metrics',
-    generators: ['badge'],
-    example: 'Modern animated badges for CI/CD status and project metrics'
-  },
-  {
-    title: 'Loading States',
-    description: 'Add loading animations for documentation or demo purposes',
-    generators: ['loader'],
-    example: 'Show progress indicators for long-running processes'
-  },
-  {
-    title: 'Interactive Demos',
-    description: 'Combine multiple generators to create engaging project showcases',
-    generators: ['wave', 'typing', 'terminal', 'badge'],
-    example: 'Create a complete demo with header, commands, and status badges'
-  }
-]
+// Default configurations for each generator type
+export const DEFAULT_CONFIGURATIONS = {
+  wave: {
+    text: "Sample Wave",
+    font: "Arial",
+    fontSize: 32,
+    fontWeight: 500,
+    color: "#0EA5E9",
+    animation: true,
+    duration: 2,
+    height: 60,
+    sections: 4,
+    waveHeight: 20,
+    waveLength: 100,
+    speed: 1
+  } as WaveConfig,
+  
+  typing: {
+    text: "Hello, World!",
+    font: "Arial",
+    fontSize: 24,
+    fontWeight: 400,
+    color: "#374151",
+    speed: 100,
+    cursor: true,
+    cursorColor: "#374151",
+    loop: false,
+    startDelay: 0
+  } as TypingConfig,
+  
+  badge: {
+    text: "Badge",
+    style: "flat",
+    color: "#6366F1",
+    textColor: "#FFFFFF",
+    fontSize: 12,
+    padding: 8
+  } as BadgeConfig,
+  
+  terminal: {
+    text: "$ echo 'Hello World'",
+    font: "Monaco",
+    fontSize: 14,
+    fontWeight: 400,
+    color: "#00FF00",
+    backgroundColor: "#000000",
+    borderRadius: 4,
+    padding: 16,
+    prompt: "$ ",
+    cursor: true
+  } as TerminalConfig,
+  
+  loader: {
+    type: "dots",
+    size: 40,
+    color: "#0EA5E9",
+    speed: 1,
+    count: 3,
+    spacing: 8
+  } as LoaderConfig
+}
 
-// Common dimensions for different use cases
-export const COMMON_DIMENSIONS = {
-  // GitHub README standard widths
+// Platform-specific styles
+export const PLATFORM_STYLES = {
   github: {
-    full: { width: 1200, height: 150 },
-    half: { width: 600, height: 120 },
-    compact: { width: 400, height: 80 }
+    backgroundColor: "#0D1117",
+    textColor: "#C9D1D9",
+    accentColor: "#58A6FF"
   },
-  // Social media banners
-  social: {
-    twitter: { width: 1500, height: 500 },
-    linkedin: { width: 1200, height: 627 },
-    facebook: { width: 1200, height: 630 }
+  discord: {
+    backgroundColor: "#36393F",
+    textColor: "#DCDDDE",
+    accentColor: "#5865F2"
   },
-  // Documentation sizes
-  docs: {
-    header: { width: 800, height: 120 },
-    section: { width: 600, height: 80 },
-    inline: { width: 300, height: 50 }
+  slack: {
+    backgroundColor: "#FFFFFF",
+    textColor: "#1D1C1D",
+    accentColor: "#4A154B"
+  },
+  notion: {
+    backgroundColor: "#FFFFFF",
+    textColor: "#37352F",
+    accentColor: "#2383E2"
   }
 }
 
-// Export all presets by type
-export const ALL_PRESETS = {
-  wave: WAVE_PRESETS,
-  typing: TYPING_PRESETS,
-  badge: BADGE_PRESETS,
-  terminal: [],
-  loader: []
+// Export formats
+export const EXPORT_FORMATS: ExportFormat[] = [
+  {
+    name: "SVG",
+    extension: "svg",
+    mimeType: "image/svg+xml",
+    description: "Scalable Vector Graphics - best for web"
+  },
+  {
+    name: "PNG",
+    extension: "png", 
+    mimeType: "image/png",
+    description: "Portable Network Graphics - great for presentations"
+  },
+  {
+    name: "GIF",
+    extension: "gif",
+    mimeType: "image/gif", 
+    description: "Graphics Interchange Format - perfect for animations"
+  },
+  {
+    name: "MP4",
+    extension: "mp4",
+    mimeType: "video/mp4",
+    description: "Video format - ideal for high-quality animations"
+  }
+]
+
+// Common dimensions
+export const COMMON_DIMENSIONS = {
+  social: {
+    "Instagram Post": { width: 1080, height: 1080 },
+    "Instagram Story": { width: 1080, height: 1920 },
+    "Twitter Header": { width: 1500, height: 500 },
+    "Facebook Cover": { width: 1200, height: 630 },
+    "LinkedIn Banner": { width: 1584, height: 396 }
+  },
+  web: {
+    "Blog Header": { width: 1200, height: 400 },
+    "Hero Banner": { width: 1920, height: 600 },
+    "Card Image": { width: 400, height: 300 },
+    "Avatar": { width: 128, height: 128 }
+  },
+  print: {
+    "Business Card": { width: 350, height: 200 },
+    "Poster A4": { width: 2480, height: 3508 },
+    "Flyer": { width: 1240, height: 1754 }
+  }
 }
 
-// Get presets by generator type
-export function getPresetsByType(type: string): Preset[] {
-  return ALL_PRESETS[type as keyof typeof ALL_PRESETS] || []
+// Generator categories for organization
+export const GENERATOR_CATEGORIES = {
+  text: ["wave", "typing"],
+  ui: ["badge", "loader"],
+  terminal: ["terminal"],
+  all: ["wave", "typing", "badge", "loader", "terminal"]
+} as const
+
+// Quality presets for export
+export const QUALITY_PRESETS = {
+  draft: { scale: 1, quality: 0.7 },
+  standard: { scale: 2, quality: 0.8 },
+  high: { scale: 3, quality: 0.9 },
+  ultra: { scale: 4, quality: 1.0 }
 }
 
-// Get preset by ID
-export function getPresetById(id: string): Preset | undefined {
-  const allPresets = Object.values(ALL_PRESETS).flat()
-  return allPresets.find(preset => preset.id === id)
+// Additional constants for backward compatibility
+export const LOADER_TYPE_DESCRIPTIONS = {
+  spinner: "Classic spinning circle loader",
+  dots: "Three dots bouncing animation",
+  bars: "Animated loading bars",
+  pulse: "Pulsing circle effect",
+  wave: "Wave-like animation",
+  orbit: "Orbiting elements",
+  grid: "Grid-based loading pattern",
+  text: "Text-based loading indicator",
+  ring: "Ring loading animation"
 }
 
-// Search presets by tag
-export function searchPresetsByTag(tag: string): Preset[] {
-  const allPresets = Object.values(ALL_PRESETS).flat()
-  return allPresets.filter(preset => 
-    preset.tags?.some(t => t.toLowerCase().includes(tag.toLowerCase()))
-  )
+export const TERMINAL_THEME_DESCRIPTIONS = {
+  modern: "Clean, modern terminal appearance",
+  retro: "Classic vintage terminal style",
+  matrix: "Matrix-inspired green on black",
+  powershell: "Windows PowerShell theme",
+  classic: "Traditional terminal styling",
+  cyberpunk: "Futuristic neon-themed terminal"
+}
+
+export const TYPING_TYPE_DESCRIPTIONS = {
+  typewriter: "Classic typewriter effect",
+  fade: "Fade-in character animation",
+  slide: "Slide-in text animation",
+  bounce: "Bouncing character effect",
+  glitch: "Digital glitch-style typing",
+  matrix: "Matrix rain effect",
+  classic: "Simple classic typing",
+  neon: "Neon glow effect",
+  rainbow: "Rainbow color transition",
+  wave: "Wave-like character animation",
+  terminal: "Terminal-style typing",
+  gradient: "Gradient color effect"
+}
+
+export const EASING_FUNCTIONS = {
+  linear: "linear",
+  easeIn: "ease-in",
+  easeOut: "ease-out",
+  easeInOut: "ease-in-out",
+  bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+  elastic: "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
 }

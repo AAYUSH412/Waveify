@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Search, Loader, MoreHorizontal, BarChart3, Circle, Waves } from 'lucide-react'
-import type { LoaderConfig } from '@/lib/api'
+import type { LoaderConfig } from '@/components/generator-components/shared/types'
 
 interface LoaderPresetsProps {
   onSelect: (config: LoaderConfig) => void

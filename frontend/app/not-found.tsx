@@ -181,7 +181,7 @@ export default function NotFound() {
             </Link>
             <span className="text-muted-foreground">•</span>
             <Link 
-              href="#docs" 
+              href="/docs" 
               className="text-primary hover:text-primary/80 transition-colors"
             >
               Documentation
