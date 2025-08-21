@@ -3,8 +3,9 @@
 
 [build]
 builder = "dockerfile"
-dockerfilePath = "backend/Dockerfile"
-buildCommand = "echo 'Building Waveify backend from root'"
+dockerfilePath = "Dockerfile"
+buildCommand = "echo 'Building from root using optimized Dockerfile'"
+watchPatterns = ["backend/**"]
 
 [deploy]
 healthcheckPath = "/api/health"
