@@ -2,6 +2,8 @@
   "version": 2,
   "name": "waveify-frontend",
   "framework": "nextjs",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
