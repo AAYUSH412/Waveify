@@ -1,36 +1,47 @@
-# Use the official Node.js runtime as a parent image
-FROM node:18-alpine
+# 🚀 Optimized Dockerfile for Railway Deployment
+# Uses Node.js 20 LTS for better performance and security
+FROM node:20-alpine AS base
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
 
-# Copy package.json and package-lock.json (if available)
+# Set working directory
+WORKDIR /app
+
+# Create app user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S waveify -u 1001
+
+# Copy package files for dependency installation
 COPY package*.json ./
 
-# Install any needed packages
-RUN npm ci --only=production
+# Install dependencies - use npm install if no package-lock.json exists
+RUN if [ -f package-lock.json ]; then \
+      npm ci --only=production --no-audit --no-fund; \
+    else \
+      npm install --only=production --no-audit --no-fund; \
+    fi && \
+    npm cache clean --force
 
-# Copy the rest of the application code
-COPY . .
+# Copy application code
+COPY --chown=waveify:nodejs . .
 
-# Create a non-root user to run the application
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S waveify -u 1001
-
-# Change ownership of the app directory
-RUN chown -R waveify:nodejs /usr/src/app
+# Switch to non-root user
 USER waveify
 
-# Make port 4000 available to the world outside this container
-EXPOSE 4000
-
-# Define environment variable
+# Railway automatically assigns PORT, but fallback to 4000
 ENV NODE_ENV=production
 ENV PORT=4000
 
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+# Expose port (Railway will use PORT env var)
+EXPOSE $PORT
 
-# Run server.js when the container launches
+# Health check optimized for Railway
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 4000) + '/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
+
+# Use dumb-init for proper signal handling in Railway
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
 CMD ["node", "server.js"]

@@ -1,0 +1,30 @@
+# 🚂 Railway Configuration for Waveify API
+# https://docs.railway.app/reference/config-file
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# Railway automatically sets PORT, but we can specify custom env vars
+[env]
+NODE_ENV = "production"
+
+# Service configuration
+[service]
+name = "waveify-api"
+
+# Resource limits (adjust based on your Railway plan)
+[resources]
+memory = "512Mi"  # Adjust based on your plan (Railway Hobby: 512Mi, Pro: up to 8Gi)
+cpu = "500m"      # Adjust based on your plan (Railway Hobby: 500m, Pro: up to 4000m)
+
+# Networking configuration
+[networking]
+# Railway automatically handles this, but you can specify custom domains
+# customDomains = ["api.yourdomain.com"]

@@ -194,18 +194,40 @@ export interface TerminalConfig extends BaseConfig {
   scanLines?: boolean
   glitch?: boolean
   neonEffect?: boolean
+  // Additional missing properties
+  showHeader?: boolean
+  windowStyle?: string
+  autoScroll?: boolean
+  soundEnabled?: boolean
+  glowEffect?: boolean
+  lineHeight?: number
+  accessibility?: AccessibilityConfig
+}
+
+// Badge configuration interface
+export interface BadgeConfig extends BaseConfig {
+  text?: string
+  label?: string
+  message?: string
+  style?: 'flat' | 'flat-square' | 'plastic' | 'for-the-badge' | 'social'
+  logo?: string
+  logoColor?: string
+  labelColor?: string
+  color?: string
+  link?: string
+  cacheSeconds?: number
   accessibility?: AccessibilityConfig
 }
 
 // Union type for all generator configurations
-export type GeneratorConfig = WaveConfig | TypingConfig | LoaderConfig | TerminalConfig
+export type GeneratorConfig = WaveConfig | TypingConfig | LoaderConfig | TerminalConfig | BadgeConfig
 
 // Type definitions for generator types and subtypes
 export type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth' | 'pulse' | 'fluid' | 'noise' | 'default' | 'glitch' | 'plasma' | 'neon'
 export type TypingType = 'typewriter' | 'fade' | 'slide' | 'bounce' | 'glitch' | 'matrix' | 'classic' | 'neon' | 'rainbow' | 'wave' | 'terminal' | 'gradient'
 export type LoaderType = 'spinner' | 'dots' | 'bars' | 'pulse' | 'wave' | 'orbit' | 'grid' | 'text' | 'ring' | 'neon-pulse' | 'liquid'
-export type TerminalTheme = 'modern' | 'retro' | 'matrix' | 'powershell' | 'classic' | 'cyberpunk'
-export type GeneratorType = 'wave' | 'typing' | 'loader' | 'terminal'
+export type TerminalTheme = 'modern' | 'retro' | 'matrix' | 'powershell' | 'classic' | 'cyberpunk' | 'glass' | 'minimal'
+export type GeneratorType = 'wave' | 'typing' | 'loader' | 'terminal' | 'badge'
 
 // Style and visual type definitions
 export type CursorStyle = 'block' | 'line' | 'underline' | 'hollow'

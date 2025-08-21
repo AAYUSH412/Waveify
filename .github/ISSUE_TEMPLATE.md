@@ -13,6 +13,9 @@ Please select the type of issue you're reporting:
 - [ ] ⚡ Performance Issue
 - [ ] 🔧 API Issue
 - [ ] 🛠️ Development/Setup Issue
+- [ ] 🧪 Component/Generator Issue
+- [ ] 🎯 Animation/SVG Issue
+- [ ] 📱 Mobile/Responsive Issue
 - [ ] ❓ Question/Help Needed
 - [ ] 🔒 Security Issue
 
@@ -37,8 +40,10 @@ Please select the type of issue you're reporting:
 - **OS**: [e.g., macOS 13.0, Windows 11, Ubuntu 22.04]
 - **Browser**: [e.g., Chrome 115, Firefox 117, Safari 16]
 - **Node.js Version**: [e.g., 18.17.0]
-- **Waveify Component**: [e.g., Wave Generator, Terminal API, Frontend]
-- **API Endpoint**: [if applicable, e.g., /api/wave]
+- **Package Manager**: [e.g., npm, yarn, pnpm]
+- **Waveify Component**: [e.g., Wave Generator, Terminal API, Frontend, Liquid Button]
+- **API Endpoint**: [if applicable, e.g., /api/wave, /api/typing, /api/terminal]
+- **Animation Type**: [if applicable, e.g., sine wave, matrix typing, cyberpunk terminal]
 
 ### Error Messages
 <!-- Include any error messages, console logs, or stack traces -->
@@ -135,10 +140,15 @@ Paste error messages here
 
 ### Affected Components
 - [ ] SVG Generation
-- [ ] API Response Time
+- [ ] API Response Time (target: <150ms)
 - [ ] Frontend Loading
 - [ ] Image Optimization
+- [ ] Animation Performance
+- [ ] Memory Usage
+- [ ] Bundle Size Optimization
 - [ ] Database Queries
+- [ ] Cache Performance
+- [ ] CDN Delivery
 - [ ] Other: ___________
 
 ### Performance Metrics

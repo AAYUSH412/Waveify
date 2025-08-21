@@ -287,8 +287,8 @@ export function TerminalControls({ config, onUpdate, onReset }: TerminalControls
               <div className="space-y-2">
                 <Label>Username</Label>
                 <Input
-                  value={config.username || 'user'}
-                  onChange={(e) => onUpdate({ username: e.target.value })}
+                  value={config.userName || 'user'}
+                  onChange={(e) => onUpdate({ userName: e.target.value })}
                   placeholder="user"
                   className="font-mono"
                 />
@@ -482,8 +482,8 @@ export function TerminalControls({ config, onUpdate, onReset }: TerminalControls
                   <p className="text-sm text-muted-foreground">Retro CRT effect</p>
                 </div>
                 <Switch
-                  checked={config.scanlines === true}
-                  onCheckedChange={(checked) => onUpdate({ scanlines: checked })}
+                  checked={config.scanLines === true}
+                  onCheckedChange={(checked) => onUpdate({ scanLines: checked })}
                 />
               </div>
 

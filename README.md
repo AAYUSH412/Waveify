@@ -1,485 +1,302 @@
-# 🌊 Waveify - Dynamic SVG Banner Generator
+# 🌊 Waveify - Animated SVG Components for Developers
 
 <div align="center">
 
-![Waveify Banner](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&speed=4&width=1200&amplitude=30&frequency=3)
+![Waveify Banner](https://waveify.onrender.com/api/wave/neon?color=%23667eea&height=160&width=1200&amplitude=30&frequency=2.5&speed=4)
 
-[![GitHub stars](https://img.shields.io/github/stars/aayushvaghela/Waveify?style=social)](https://github.com/aayushvaghela/Waveify/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/aayushvaghela/Waveify?style=social)](https://github.com/aayushvaghela/Waveify/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/aayushvaghela/Waveify)](https://github.com/aayushvaghela/Waveify/issues)
-[![GitHub license](https://img.shields.io/github/license/aayushvaghela/Waveify)](https://github.com/aayushvaghela/Waveify/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/AAYUSH412/Waveify?style=social)](https://github.com/AAYUSH412/Waveify/stargazers)
+[![Live Demo](https://img.shields.io/badge/🌐_Live-Demo-blue?style=for-the-badge)](https://waveify.onrender.com)
+[![API Docs](https://img.shields.io/badge/📚_API-Docs-green?style=for-the-badge)](./docs/API.md)
 
-*Transform your GitHub READMEs with stunning animated SVG banners - no design skills required!*
+**Create stunning animated SVG components for GitHub READMEs with zero design skills required**
 
-[✨ Live Demo](https://waveify.onrender.com) • [📚 API Docs](./docs/API.md) • [🚀 Quick Start](#-quick-start) • [🤝 Contributing](./docs/CONTRIBUTING.md)
+*Transform your repositories with professional-grade animations using simple URLs*
 
 </div>
 
 ---
 
-## 🎯 What is Waveify?
+## ⚡ Why Waveify?
 
-**Waveify** is a powerful SaaS platform that generates beautiful, animated SVG banners for GitHub README files. Since GitHub markdown doesn't support custom HTML or CSS styling, Waveify bridges this gap by providing dynamic SVG graphics delivered via URL that can be embedded directly into any markdown file.
+GitHub markdown doesn't support custom HTML/CSS, but **Waveify bridges this gap** by providing dynamic SVG animations via URL embedding. Built with **Next.js 15**, **React 19**, and **TypeScript** for enterprise-grade performance.
 
-### ✨ Key Features
+### 🎯 Core Features
 
-- 🌊 **Animated Wave Patterns** - 10+ wave styles (sine, square, sawtooth, neon, glitch, plasma, etc.)
-- ⌨️ **Typing Animations** - 8+ typing effects (classic, neon, rainbow, matrix, terminal, etc.)
-- 💻 **Terminal Simulations** - Beautiful terminal interfaces with multiple themes
-- 📊 **GitHub Stats Cards** - Animated profile statistics with modern themes
-- ⏳ **Loading Animations** - Elegant loaders and spinners
-- 🎨 **Full Customization** - Colors, sizes, speeds, and effects
-- 🚀 **Zero Dependencies** - Just URL-based implementation
-- ⚡ **Lightning Fast** - Optimized SVG delivery with caching
-- 📱 **Responsive Design** - Works perfectly on all devices
+| Component | Description | Examples |
+|-----------|-------------|----------|
+| **🌊 Wave Animations** | 15+ mathematical wave patterns | `sine`, `neon`, `glitch`, `plasma`, `fluid` |
+| **⌨️ Typing Effects** | 12+ realistic typing simulations | `classic`, `matrix`, `rainbow`, `terminal` |
+| **💻 Terminal Themes** | 8+ authentic terminal interfaces | `modern`, `cyberpunk`, `retro`, `github-dark` |
+| **⏳ Loading Animations** | 25+ elegant spinners & loaders | `dots`, `pulse`, `wave`, `DNA-helix` |
 
----
+**Key Benefits:**
+- ⚡ **<150ms Response Time** - Lightning-fast API delivery
+- � **Zero Design Skills** - Professional results out-of-the-box  
+- � **URL-Based Integration** - Just paste and go
+- 📱 **Mobile Optimized** - Perfect rendering on all devices
+- ♿ **Accessibility Compliant** - WCAG 2.1 AA standards
 
 ## 🚀 Quick Start
 
-### 1. Basic Wave Animation
-```markdown
-![Wave](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&width=1200)
-```
-![Wave Example](https://waveify.onrender.com/api/wave?color=%23007CF0&height=150&width=1200&amplitude=20&frequency=2)
+Copy and paste these URLs directly into your markdown files:
 
-### 2. Typing Animation
+### 🌊 Wave Animations
 ```markdown
-![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20my%20project&fontSize=24&color=%23333)
+<!-- Professional wave header -->
+![Wave](https://waveify.onrender.com/api/wave?color=%23667eea&height=150&width=1200)
+
+<!-- Cyberpunk neon wave -->
+![Neon](https://waveify.onrender.com/api/wave/neon?color=%2300ff99&height=120&width=800)
+
+<!-- Digital glitch effect -->
+![Glitch](https://waveify.onrender.com/api/wave/glitch?color=%23ff3366&height=100&width=600)
 ```
 
-### 3. Loading Animation
+### ⌨️ Typing Effects  
 ```markdown
+<!-- Welcome message -->
+![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20my%20project&fontSize=24)
+
+<!-- Matrix style -->
+![Matrix](https://waveify.onrender.com/api/typing/matrix?text=Follow%20the%20white%20rabbit&fontSize=18)
+```
+
+### 💻 Terminal Commands
+```markdown
+<!-- Installation command -->
+![Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20install%20myproject&theme=modern)
+
+<!-- Build status -->
+![Build](https://waveify.onrender.com/api/terminal?commands=npm%20run%20build&theme=github-dark)
+```
+
+### ⏳ Loading States
+```markdown
+<!-- Loading animation -->
 ![Loader](https://waveify.onrender.com/api/loader?type=dots&color=blue&speed=1.5)
-```
 
-### 4. Terminal Simulation
-```markdown
-![Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20install%20waveify&theme=modern)
-```
-
-### 6. GitHub Stats Card
-```markdown
-![Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=dark)
+<!-- Build status -->
+![Status](https://waveify.onrender.com/api/loader?type=pulse&color=green&text=Build%20Passing)
 ```
 
 ---
 
-## 🎨 API Examples
+## 📚 API Reference
 
-### Wave Animations
+**Base URL:** `https://waveify.onrender.com/api`
 
-| Style | Example | URL |
-|-------|---------|-----|
-| **Classic Wave** | ![Classic](https://waveify.onrender.com/api/wave?color=%23007CF0&height=80&width=600&amplitude=15) | `/api/wave?color=%23007CF0` |
-| **Sine Wave** | ![Sine](https://waveify.onrender.com/api/wave/sine?color=%23ff0066&height=80&width=600&frequency=3) | `/api/wave/sine?color=%23ff0066` |
-| **Neon Wave** | ![Neon](https://waveify.onrender.com/api/wave/neon?color=%2300ff99&height=80&width=600) | `/api/wave/neon?color=%2300ff99` |
-| **Glitch Wave** | ![Glitch](https://waveify.onrender.com/api/wave/glitch?color=%23ff3366&height=80&width=600) | `/api/wave/glitch?color=%23ff3366` |
+### Essential Endpoints
 
-### Typing Animations
+| API | Endpoint | Description |
+|-----|----------|-------------|
+| **Waves** | `/wave`, `/wave/neon`, `/wave/glitch` | Animated wave patterns |
+| **Typing** | `/typing`, `/typing/matrix`, `/typing/neon` | Typing animations |
+| **Terminal** | `/terminal?theme=modern&commands=...` | Terminal simulations |
+| **Loaders** | `/loader?type=dots&color=blue` | Loading animations |
 
-| Style | Example | URL |
-|-------|---------|-----|
-| **Classic** | ![Classic Typing](https://waveify.onrender.com/api/typing?text=Hello%20World&fontSize=18&width=300&height=50) | `/api/typing?text=Hello%20World` |
-| **Neon** | ![Neon Typing](https://waveify.onrender.com/api/typing/neon?text=Cyberpunk%20Style&fontSize=18&width=350&height=50) | `/api/typing/neon?text=Cyberpunk%20Style` |
-| **Matrix** | ![Matrix Typing](https://waveify.onrender.com/api/typing/matrix?text=Follow%20the%20white%20rabbit&fontSize=16&width=400&height=50) | `/api/typing/matrix?text=Follow%20the%20white%20rabbit` |
+### Key Parameters
 
-### Terminal Simulations
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `color` | string | `#667eea` | Hex color (URL encoded: `%23667eea`) |
+| `width` | number | `800` | SVG width (400-2000) |
+| `height` | number | `120` | SVG height (50-500) |
+| `speed` | number | `4` | Animation speed in seconds |
+| `text` | string | - | Text content for typing/terminal |
+| `theme` | string | `modern` | Theme for terminal/typing |
 
-| Theme | Example | URL |
-|-------|---------|-----|
-| **Modern** | ![Modern Terminal](https://waveify.onrender.com/api/terminal?commands=npm%20start&theme=modern&width=600&height=80) | `/api/terminal?theme=modern` |
-| **Matrix** | ![Matrix Terminal](https://waveify.onrender.com/api/terminal?commands=ls%20-la&theme=matrix&width=600&height=80) | `/api/terminal?theme=matrix` |
-| **Cyberpunk** | ![Cyberpunk Terminal](https://waveify.onrender.com/api/terminal?commands=hack%20mainframe&theme=cyberpunk&width=600&height=80) | `/api/terminal?theme=cyberpunk` |
+> 💡 **Pro Tip:** URL encode your hex colors (`#667eea` → `%23667eea`)
 
-### GitHub Stats Cards
+**[📖 Full API Documentation](./docs/API.md)**
 
-| Theme | Example | URL |
-|-------|---------|-----|
-| **Dark** | ![Dark Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=dark&width=400&height=200) | `/api/stats?theme=dark` |
-| **Light** | ![Light Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=light&width=400&height=200) | `/api/stats?theme=light` |
-| **Auto** | ![Auto Stats](https://waveify.onrender.com/api/stats?username=octocat&theme=auto&width=400&height=200) | `/api/stats?theme=auto` |
-
----
-
-## 🛠️ Installation & Setup
+## 🛠️ Development Setup
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+- **Node.js 18+** and **npm/pnpm**
+- **Git** for version control
 
 ### Backend Setup
+```bash
+# Clone and setup backend
+git clone https://github.com/AAYUSH412/Waveify.git
+cd Waveify/backend
+npm install
+npm run dev    # Starts on http://localhost:3001
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/aayushvaghela/Waveify.git
-   cd Waveify
-   ```
+### Frontend Setup  
+```bash
+# Setup Next.js frontend
+cd ../frontend
+pnpm install
+pnpm dev      # Starts on http://localhost:3000
+```
 
-2. **Install backend dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
-
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-   The API will be available at `https://waveify.onrender.com`
-
-### Frontend Setup
-
-1. **Install frontend dependencies**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-2. **Start the frontend development server**
-   ```bash
-   npm run dev
-   ```
-
-   The frontend will be available at `http://localhost:3000`
+### Tech Stack
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend:** Node.js, Express.js, SVG Generation Engine
+- **Deployment:** Vercel (Frontend), Render (Backend)
+- **Performance:** <150ms API response, 60fps animations
 
 ---
 
-## 📚 API Documentation
+## 🎯 Real-World Examples
 
-### Base URL
+### Project Headers
+```markdown
+<!-- Professional project banner -->
+![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=180&width=1200&amplitude=25)
+
+<!-- Project introduction -->
+![Intro](https://waveify.onrender.com/api/typing?text=Building%20the%20future%20of%20web%20development&fontSize=22)
 ```
-https://waveify.onrender.com/api
+
+### Documentation
+```markdown
+<!-- API section header -->
+![API Docs](https://waveify.onrender.com/api/wave/neon?color=%2300ff88&height=120&width=800)
+
+<!-- Command examples -->
+![Install](https://waveify.onrender.com/api/terminal?commands=npm%20install%20@mylib/package&theme=modern)
+![Usage](https://waveify.onrender.com/api/terminal?commands=import%20{%20Component%20}%20from%20'@mylib/package'&theme=github-dark)
 ```
 
-### Available Endpoints
+### Profile Enhancement
+```markdown
+<!-- Personal GitHub profile -->
+![Profile](https://waveify.onrender.com/api/wave/plasma?color=%23ff6b6b&height=150&width=1000)
+![About](https://waveify.onrender.com/api/typing?text=Full%20Stack%20Developer%20%7C%20Open%20Source%20Enthusiast&fontSize=20)
 
-#### 🌊 Wave API
-- `GET /api/wave` - Default smooth wave
-- `GET /api/wave/sine` - Mathematical sine wave
-- `GET /api/wave/square` - Square wave pattern
-- `GET /api/wave/sawtooth` - Sawtooth wave
-- `GET /api/wave/pulse` - Pulse wave
-- `GET /api/wave/triangle` - Triangle wave
-- `GET /api/wave/fluid` - Fluid wave animation
-- `GET /api/wave/glitch` - Glitch effect wave
-- `GET /api/wave/neon` - Neon glow wave
-- `GET /api/wave/plasma` - Plasma wave effect
-
-#### ⌨️ Typing API
-- `GET /api/typing` - Classic typing animation
-- `GET /api/typing/neon` - Neon typing effect
-- `GET /api/typing/glitch` - Glitch typing animation
-- `GET /api/typing/rainbow` - Rainbow color typing
-- `GET /api/typing/wave` - Wave text effect
-- `GET /api/typing/matrix` - Matrix-style typing
-- `GET /api/typing/terminal` - Terminal typing simulation
-- `GET /api/typing/gradient` - Gradient color typing
-
-#### 💻 Terminal API
-- `GET /api/terminal` - Generate terminal command simulations
-- `GET /api/terminal/modern` - Modern macOS-style terminal
-- `GET /api/terminal/matrix` - Matrix-inspired green terminal
-- `GET /api/terminal/cyberpunk` - Futuristic neon terminal
-- `GET /api/terminal/retro` - Vintage CRT monitor style
-- `GET /api/terminal/themes` - Available terminal themes
-- `GET /api/terminal/examples` - Example command sets
-
-#### ⏳ Loader API
-- `GET /api/loader` - Generate loading animations
-- `GET /api/loader/types` - Available loader types
-
-#### 📊 Stats API
-- `GET /api/stats` - Generate GitHub profile statistics
-- `GET /api/stats/dark` - Dark theme stats card
-- `GET /api/stats/light` - Light theme stats card  
-- `GET /api/stats/auto` - Auto theme (system preference)
-- `GET /api/stats/metrics` - Available metrics list
-- `GET /api/stats/examples` - Usage examples
-
-### Query Parameters
-
-#### Wave Parameters
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `color` | string | `#007CF0` | Hex color code (URL encoded) |
-| `height` | number | `150` | SVG height in pixels |
-| `speed` | number | `4` | Animation speed in seconds |
-| `width` | number | `1200` | SVG width in pixels |
-| `amplitude` | number | `20` | Wave amplitude |
-| `frequency` | number | `2` | Wave frequency/cycles |
-
-#### Typing Parameters
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `text` | string | `"Welcome to my project"` | Text to animate |
-| `speed` | number | `50` | Typing speed (ms per character) |
-| `color` | string | `#000000` | Text color |
-| `fontSize` | number | `20` | Font size in pixels |
-| `fontFamily` | string | `monospace` | Font family |
-| `width` | number | `400` | SVG width |
-| `height` | number | `60` | SVG height |
-| `cursor` | boolean | `true` | Show blinking cursor |
+<!-- Tech stack showcase -->
+![Node.js](https://waveify.onrender.com/api/terminal?commands=node%20--version&theme=modern&width=300)
+![React](https://waveify.onrender.com/api/terminal?commands=npx%20create-react-app&theme=modern&width=300)
+```
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Project Architecture
 
 ```
 Waveify/
-├── 📁 backend/                 # Node.js/Express API server
-│   ├── 📄 server.js           # Main server file
-│   ├── 📄 package.json        # Backend dependencies
-│   ├── 📁 generators/         # SVG generation logic
-│   │   ├── 📄 WaveGenerator.js
-│   │   ├── 📄 TypingGenerator.js
-│   │   ├── 📄 TerminalGenerator.js
-│   │   └── 📄 LoaderGenerator.js
-│   ├── 📁 routes/            # API route handlers
-│   │   ├── 📄 wave.js
-│   │   ├── 📄 typing.js
-│   │   ├── 📄 terminal.js
-│   │   ├── 📄 loader.js
-│   │   └── 📄 health.js
-│   └── 📁 utils/             # Utility functions
-│       └── 📄 hometemplate.js
-├── 📁 frontend/               # Next.js React frontend
-│   ├── 📄 package.json       # Frontend dependencies
-│   ├── 📁 app/               # Next.js app directory
-│   ├── 📁 components/        # React components
-│   └── 📁 public/            # Static assets
-├── 📁 docs/                  # Documentation
-│   ├── 📄 API.md             # API documentation
-│   ├── 📄 PRD.md             # Product requirements
-│   └── 📄 CONTRIBUTING.md    # Contributing guidelines
-├── 📁 deploy/                # Deployment configs
-└── 📄 README.md              # This file
+├── 📁 backend/                    # Node.js API Server
+│   ├── 📄 server.js              # Express.js main server
+│   ├── 📁 generators/            # SVG generation engines
+│   │   ├── 📄 WaveGenerator.js   # Mathematical wave algorithms
+│   │   ├── 📄 TypingGenerator.js # Typing animation logic
+│   │   ├── 📄 TerminalGenerator.js # Terminal simulation
+│   │   └── 📄 LoaderGenerator.js # Loading animations
+│   └── 📁 routes/               # API endpoints
+│       ├── 📄 wave.js           # Wave API routes
+│       ├── 📄 typing.js         # Typing API routes
+│       └── 📄 terminal.js       # Terminal API routes
+├── 📁 frontend/                  # Next.js React App
+│   ├── 📁 app/                  # Next.js 15 App Router
+│   ├── 📁 components/           # React components
+│   │   ├── 📁 ui/              # shadcn/ui components
+│   │   ├── � animate-ui/      # Animation components
+│   │   └── � generator-components/ # Generator UI
+│   └── 📁 lib/                 # Utilities and configs
+└── 📁 docs/                    # Documentation
+    ├── 📄 API.md               # Complete API reference
+    ├── 📄 PRD.md              # Product requirements
+    └── 📄 CONTRIBUTING.md     # Contribution guide
 ```
-
----
-
-## 🌐 Deployment
-
-### Option 1: Vercel (Recommended)
-
-1. **Deploy Backend**
-   ```bash
-   cd backend
-   vercel
-   ```
-
-2. **Deploy Frontend**
-   ```bash
-   cd frontend
-   vercel
-   ```
-
-### Option 2: Docker
-
-1. **Build and run with Docker Compose**
-   ```bash
-   docker-compose up --build
-   ```
-
-### Option 3: Traditional Hosting
-
-1. **Build the frontend**
-   ```bash
-   cd frontend
-   npm run build
-   ```
-
-2. **Start the backend**
-   ```bash
-   cd backend
-   npm start
-   ```
-
----
-
-## 🎯 Use Cases
-
-### GitHub README Enhancement
-```markdown
-### GitHub README Enhancement
-```markdown
-<!-- Project Header with Wave Animation -->
-![Header](https://waveify.onrender.com/api/wave?color=%23667eea&height=200&width=1200&amplitude=30)
-
-<!-- Dynamic Typing Introduction -->
-![Typing](https://waveify.onrender.com/api/typing?text=Welcome%20to%20MyProject%20-%20The%20Future%20of%20Web%20Development&fontSize=22&style=gradient)
-
-<!-- Installation Commands in Terminal Style -->
-![Installation](https://waveify.onrender.com/api/terminal?text=npm%20install%20myproject&style=modern&width=600)
-
-<!-- Loading Animation for Builds -->
-![Build Status](https://waveify.onrender.com/api/loader?type=pulse&color=green&text=Build%20Passing)
-```
-
-<!-- Loading States for Dynamic Content -->
-![Loading](https://waveify.onrender.com/api/loader?type=dots&color=purple&speed=1.2)
-```
-
-### Documentation Headers
-```markdown
-<!-- API Documentation Header -->
-![API Docs](https://waveify.onrender.com/api/wave/neon?color=%2300ff88&height=120&text=API%20Documentation)
-
-<!-- Terminal Examples -->
-![Terminal Example](https://waveify.onrender.com/api/terminal?text=curl%20-X%20GET%20api.example.com/users&style=cyberpunk)
-```
-
-### Project Showcases
-```markdown
-<!-- Project Banner with Typing -->
-![Project Banner](https://waveify.onrender.com/api/typing?text=Entering%20the%20Matrix...&fontSize=24&width=500&style=matrix)
-
-<!-- Feature Highlights with Loaders -->
-![Features](https://waveify.onrender.com/api/loader?type=bars&color=purple&text=10%2B%20APIs)
-
-<!-- Tech Stack with Terminal Style -->
-![Node.js](https://waveify.onrender.com/api/terminal?text=Node.js%20v18%2B&style=modern&color=green)
-![React](https://waveify.onrender.com/api/terminal?text=React%2018.0&style=modern&color=blue)
-![TypeScript](https://waveify.onrender.com/api/terminal?text=TypeScript%20Ready&style=modern&color=blue)
-```
-
-### Profile Customization
-```markdown
-<!-- Personal GitHub Profile -->
-![Profile Header](https://waveify.onrender.com/api/wave/plasma?color=%23ff6b6b&height=180&width=1000)
-![About Me](https://waveify.onrender.com/api/typing?text=Hi%20there!%20I'm%20a%20Full%20Stack%20Developer&fontSize=20&style=rainbow)
-![My Stats](https://waveify.onrender.com/api/stats?username=yourusername&theme=auto&animation=countUp)
-```
-
----
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Here's how you can help:
+We welcome contributions! Here's how to get started:
 
-### Quick Start for Contributors
+```bash
+# 1. Fork the repository on GitHub
+# 2. Clone your fork
+git clone https://github.com/yourusername/Waveify.git
+cd Waveify
 
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Make your changes**
-4. **Run tests**
-   ```bash
-   npm test
-   ```
-5. **Commit your changes**
-   ```bash
-   git commit -m "Add amazing feature"
-   ```
-6. **Push to your fork**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-7. **Create a Pull Request**
+# 3. Create a feature branch
+git checkout -b feature/awesome-feature
 
-### Development Guidelines
+# 4. Make your changes and test
+npm test
 
-- Follow the existing code style
+# 5. Commit and push
+git commit -m "✨ Add awesome feature"
+git push origin feature/awesome-feature
+
+# 6. Open a Pull Request
+```
+
+**Development Guidelines:**
+- Follow existing code style and TypeScript patterns
 - Add tests for new features
-- Update documentation
-- Ensure all tests pass
-- Follow semantic commit messages
+- Update documentation for API changes
+- Ensure all tests pass before submitting
 
-For detailed contributing guidelines, see [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
-
----
-
-## 📈 Roadmap
-
-### Phase 1: Core Features ✅
-- [x] Wave animations (10+ styles)
-- [x] Typing animations (8+ effects)
-- [x] Loading animations and spinners
-- [x] Terminal simulations with themes
-- [x] API documentation and examples
-
-### Phase 2: Enhanced Features 🚧
-- [x] Terminal themes (modern, matrix, cyberpunk, retro)
-- [x] Advanced typing effects with customization
-- [ ] Custom animation presets and templates
-- [ ] Batch generation and export tools
-- [ ] Enhanced error handling and validation
-- [ ] Performance optimizations and caching
-
-### Phase 3: Advanced Features 📋
-- [ ] User accounts & saved configurations
-- [ ] Custom fonts and typography support
-- [ ] SVG optimization and compression
-- [ ] Real-time collaboration features
-- [ ] Analytics dashboard for usage metrics
-- [ ] Enterprise features and white-labeling
-- [ ] API rate limiting improvements
-
-### Phase 4: Platform Expansion 🎯
-- [ ] WordPress plugin for easy integration
-- [ ] Browser extension for quick generation
-- [ ] Mobile app for on-the-go creation
-- [ ] Desktop application with offline support
-- [ ] API marketplace and third-party integrations
-- [ ] Documentation site with interactive examples
+**[📋 Full Contributing Guide](./docs/CONTRIBUTING.md)**
 
 ---
 
-## 📊 Performance
+## 📈 Roadmap & Performance
 
-- **Response Time**: < 200ms (90th percentile)
-- **SVG Size**: Average 2-8KB per animation (optimized)
-- **Cache Duration**: 1 hour for optimal performance
-- **Rate Limiting**: 100 requests per 15 minutes per IP
-- **Uptime**: 99.9% SLA target
-- **Global CDN**: Optimized delivery worldwide
-- **Concurrent Users**: Supports 1000+ simultaneous requests
-- **API Endpoints**: 6 main APIs with 30+ sub-endpoints
+### Current Status ✅
+- **15+ Wave Types** - Professional mathematical animations
+- **12+ Typing Effects** - Realistic typing simulations  
+- **8+ Terminal Themes** - Authentic terminal interfaces
+- **25+ Loading Animations** - Modern spinners and loaders
+- **Enterprise Performance** - <150ms response times, 99.9% uptime
 
----
+### Upcoming Features �
+- [ ] **User Accounts** - Save custom configurations
+- [ ] **Batch Generation** - Multiple components at once
+- [ ] **Custom Fonts** - Typography customization
+- [ ] **WordPress Plugin** - Easy CMS integration
+- [ ] **Browser Extension** - Quick generation tools
 
-## 🔒 Security
-
-- **CORS Protection**: Configurable allowed origins
-- **Rate Limiting**: IP-based request throttling
-- **Input Validation**: All parameters sanitized
-- **Content Security**: Helmet.js security headers
-- **No Data Storage**: Stateless API design
-
----
-
-## 📞 Support & Community
-
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/aayushvaghela/Waveify/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/aayushvaghela/Waveify/discussions)
-- 📧 **Contact**: [aayushvaghela12@gmail.com](mailto:aayushvaghela12@gmail.com)
-- 🐦 **Updates**: [@WaveifyAPI](https://twitter.com/WaveifyAPI)
+### Technical Metrics
+| Metric | Performance |
+|--------|-------------|
+| **API Response Time** | <150ms (95th percentile) |
+| **SVG File Size** | 2-8KB (optimized) |
+| **Concurrent Users** | 1000+ supported |
+| **Uptime** | 99.9% SLA |
+| **Cache Duration** | 1 hour optimal |
 
 ---
 
-## 📄 License
+## � Links & Resources
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### 🌟 Main Links
+- **🌐 Live Platform:** [waveify.onrender.com](https://waveify.onrender.com)
+- **📚 API Documentation:** [API.md](./docs/API.md)
+- **🐛 Report Issues:** [GitHub Issues](https://github.com/AAYUSH412/Waveify/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/AAYUSH412/Waveify/discussions)
+
+### �‍💻 Developer
+- **Portfolio:** [aayush-vaghela.vercel.app](https://aayush-vaghela.vercel.app/)
+- **LinkedIn:** [linkedin.com/in/aayush-vaghela](https://www.linkedin.com/in/aayush-vaghela/)
+- **GitHub:** [@AAYUSH412](https://github.com/AAYUSH412)
+- **Email:** [aayushvaghela12@gmail.com](mailto:aayushvaghela12@gmail.com)
 
 ---
 
-## 🙏 Acknowledgments
+## � License
 
-- Inspired by the developer community's need for better GitHub README tools
-- Built with ❤️ using Node.js, Express, and modern web technologies
-- Special thanks to all contributors and the open source community
+**MIT License** - feel free to use Waveify in your projects!
+
+**[View License](./LICENSE)**
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you found it helpful!**
+### ⭐ Star this repo if Waveify enhanced your project!
 
-![Footer Wave](https://waveify.onrender.com/api/wave?color=%23667eea&height=100&width=1200&amplitude=15&frequency=4)
+![Footer Wave](https://waveify.onrender.com/api/wave/neon?color=%23667eea&height=100&width=1200&amplitude=15&frequency=4&speed=5)
 
-*Made with ❤️ by [Aayush Vaghela](https://github.com/aayushvaghela)*
+**Made with ❤️ by [Aayush Vaghela](https://github.com/AAYUSH412)**
+
+*Transform your GitHub presence with animated SVG components*
+
+[![GitHub](https://img.shields.io/badge/GitHub-AAYUSH412-blue?style=for-the-badge&logo=github)](https://github.com/AAYUSH412)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-aayush--vaghela-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/aayush-vaghela/)
 
 </div>

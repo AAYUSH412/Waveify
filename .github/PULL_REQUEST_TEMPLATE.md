@@ -16,6 +16,9 @@ What kind of change does this PR introduce?
 - [ ] 🧪 Test additions or updates
 - [ ] 🔧 Build/CI changes
 - [ ] 🛠️ Development tools changes
+- [ ] 🎯 New generator/component
+- [ ] 🌊 Animation improvements
+- [ ] 📱 Mobile/responsive fixes
 
 ## 📝 Description
 
@@ -79,9 +82,10 @@ What kind of change does this PR introduce?
   - `param1` (string, required): Description
   - `param2` (number, optional): Description
 - **Response**: Description of response format
+- **Performance**: Expected response time (<150ms target)
 - **Example**:
 ```bash
-curl -X GET "https://api.waveify.dev/api/new-endpoint?param1=value"
+curl -X GET "https://waveify.onrender.com/api/new-endpoint?param1=value"
 ```
 
 ### New Components
@@ -89,6 +93,12 @@ curl -X GET "https://api.waveify.dev/api/new-endpoint?param1=value"
 
 ### New Generators
 <!-- If you added new SVG generators, describe them here -->
+
+### New Animations
+<!-- If you added new animation types or effects, describe them here -->
+
+### UI Component Integration
+<!-- If you integrated new animate-ui components, describe them here -->
 
 ## 🔧 Breaking Changes
 

@@ -41,6 +41,8 @@ Examples of unacceptable behavior include:
 - **Be Helpful**: Include relevant code examples, error messages, or screenshots
 - **Be Patient**: Maintainers and contributors volunteer their time
 - **Be Grateful**: Acknowledge help and contributions from others
+- **Be Specific**: Include generator type, animation style, and parameters when relevant
+- **Be Constructive**: Suggest improvements and solutions when possible
 
 ### 💻 For Code Contributions
 
@@ -49,6 +51,9 @@ Examples of unacceptable behavior include:
 - **Document Changes**: Update documentation when necessary
 - **Review Respectfully**: Provide constructive feedback in code reviews
 - **Stay Focused**: Keep pull requests focused on a single feature or fix
+- **Performance Aware**: Consider the impact on API response times (<150ms target)
+- **Mobile First**: Ensure responsive design for mobile users
+- **Accessibility**: Consider accessibility in all UI/UX changes
 
 ### 🎨 For Design & UX Discussions
 
@@ -86,9 +91,9 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 If you experience or witness unacceptable behavior, or have any other concerns, please report it by contacting the project team at:
 
-- **Email**: [conduct@waveify.dev](mailto:conduct@waveify.dev)
+- **Email**: [aayushvaghela.dev@gmail.com](mailto:aayushvaghela.dev@gmail.com)
 - **GitHub**: Create a private issue or direct message to [@aayushvaghela](https://github.com/aayushvaghela)
-- **Alternative Contact**: If the issue involves the main maintainer, contact [alternative-contact@waveify.dev](mailto:alternative-contact@waveify.dev)
+- **Alternative Contact**: If the issue involves the main maintainer, contact [conduct@waveify.dev](mailto:conduct@waveify.dev)
 
 ### 📝 What to Include
 
@@ -160,7 +165,9 @@ If you believe you have been falsely or unfairly accused of violating this Code 
 
 - [Contributing Guidelines](./docs/CONTRIBUTING.md)
 - [API Documentation](./docs/API.md)
-- [Project Roadmap](https://github.com/AAYUSH412/Waveify/projects)
+- [Generator Ideas & Roadmap](./docs/GENERATOR_IDEAS.md)
+- [Product Requirements Document](./docs/PRD.md)
+- [Project Roadmap](https://github.com/aayushvaghela/Waveify/projects)
 - [Release Notes](./CHANGELOG.md)
 
 ## Acknowledgments

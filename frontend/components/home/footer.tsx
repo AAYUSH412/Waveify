@@ -2,180 +2,236 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Github, Twitter, Linkedin, Mail, Heart, Sparkles, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
+import { Github, Linkedin, Mail, Heart, Sparkles, ExternalLink, Code, BookOpen, Users, Coffee, LucideIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { DotPattern } from "@/components/magicui/dot-pattern"
+import { LiquidButton } from "@/components/animate-ui/buttons/liquid"
+import ShimmerText from "@/components/kokonutui/shimmer-text"
 
-const footerLinks = {
+interface FooterLink {
+  name: string
+  href: string
+  icon?: LucideIcon | string
+  external?: boolean
+}
+
+interface FooterLinks {
+  [key: string]: FooterLink[]
+}
+
+const footerLinks: FooterLinks = {
   Product: [
-    { name: "Features", href: "#features" },
-    { name: "Components", href: "#components" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "API", href: "#api" },
+    { name: "Wave Generator", href: "/generator/wave", icon: "🌊" },
+    { name: "Typing Effects", href: "/generator/typing", icon: "⌨️" },
+    { name: "Terminal Themes", href: "/generator/terminal", icon: "💻" },
+    { name: "Loader Animations", href: "/generator/loader", icon: "⏳" },
   ],
   Resources: [
-    { name: "Documentation", href: "#docs" },
-    { name: "Tutorials", href: "#tutorials" },
-    { name: "Blog", href: "#blog" },
-    { name: "Community", href: "#community" },
-  ],
-  Company: [
-    { name: "About", href: "#about" },
-    { name: "Careers", href: "#careers" },
-    { name: "Contact", href: "#contact" },
-    { name: "Press", href: "#press" },
+    { name: "Documentation", href: "/docs", icon: BookOpen },
+    { name: "API Reference", href: "/docs/api", icon: Code },
+    { name: "Examples", href: "/docs/examples", icon: "🎨" },
+    { name: "Community", href: "https://github.com/AAYUSH412/Waveify/discussions", icon: Users, external: true },
   ],
   Legal: [
-    { name: "Privacy", href: "#privacy" },
-    { name: "Terms", href: "#terms" },
-    { name: "Security", href: "#security" },
-    { name: "Status", href: "#status" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Terms of Service", href: "/terms" },
+    { name: "MIT License", href: "https://github.com/AAYUSH412/Waveify/blob/main/LICENSE", external: true },
+    { name: "Status", href: "/status" },
   ],
 }
 
-const socialLinks = [
-  { name: "GitHub", icon: Github, href: "https://github.com/AAYUSH412/Waveify", color: "hover:text-gray-600" },
-  { name: "Twitter", icon: Twitter, href: "https://twitter.com/waveify_dev", color: "hover:text-blue-500" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/waveify", color: "hover:text-blue-600" },
-  { name: "Email", icon: Mail, href: "mailto:hello@waveify.dev", color: "hover:text-green-500" },
+interface SocialLink {
+  name: string
+  icon: LucideIcon
+  href: string
+  description: string
+}
+
+const socialLinks: SocialLink[] = [
+  { 
+    name: "Waveify Repository", 
+    icon: Github, 
+    href: "https://github.com/AAYUSH412/Waveify", 
+    description: "Star us on GitHub"
+  },
+  { 
+    name: "Developer LinkedIn", 
+    icon: Linkedin, 
+    href: "https://www.linkedin.com/in/aayush-vaghela/", 
+    description: "Connect with the developer"
+  },
+  { 
+    name: "Contact Email", 
+    icon: Mail, 
+    href: "mailto:aayushvaghela@gmail.com", 
+    description: "Get in touch"
+  },
 ]
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative py-20 overflow-hidden border-t border-border/50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Newsletter Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-16"
-        >
-          <Card className="glass-card border-border/50">
-            <CardContent className="p-8 lg:p-12">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div>
-                  <Badge variant="outline" className="glass-card border-primary/20 mb-4">
-                    <Sparkles className="w-4 h-4 mr-2 text-primary" />
-                    Stay Updated
-                  </Badge>
-                  <h3 className="text-2xl lg:text-3xl font-bold mb-4">
-                    Get the Latest <span className="text-gradient">Updates</span>
-                  </h3>
-                  <p className="text-muted-foreground text-lg">
-                    New components, features, and exclusive tips delivered to your inbox.
-                  </p>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      className="glass-card border-border/50 focus:border-primary flex-1"
-                    />
-                    <Button className="gradient-primary text-white shadow-lg hover:shadow-xl transition-all duration-300 group">
-                      Subscribe
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    No spam, unsubscribe at any time. We respect your privacy.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
+    <footer className="relative py-16 lg:py-24 overflow-hidden border-t border-border/50">
+      {/* Dot Pattern Background */}
+      <DotPattern
+        width={20}
+        height={20}
+        cx={1}
+        cy={1}
+        cr={1}
+        className="opacity-30 dark:opacity-20"
+      />
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
-          {/* Brand */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+          
+          {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 space-y-6"
           >
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 rounded-xl gradient-primary p-0.5">
-                <div className="w-full h-full rounded-xl bg-background flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-primary" />
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-0.5">
+                <div className="w-full h-full rounded-2xl bg-background flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-primary" />
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-gradient">Waveify</span>
-                <Badge variant="secondary" className="text-xs px-1 py-0 h-4 w-fit">
-                  v2.0
+                <ShimmerText 
+                  text="Waveify" 
+                  className="text-2xl font-bold !p-0"
+                />
+                <Badge variant="secondary" className="text-xs px-2 py-0.5 h-5 w-fit">
+                  Open Source
                 </Badge>
               </div>
             </div>
-            <p className="text-muted-foreground mb-6 max-w-sm">
-              Professional animated SVG components for GitHub READMEs. Create stunning banners, typing effects,
-              terminals, and loaders in seconds.
+            
+            <p className="text-muted-foreground leading-relaxed max-w-sm">
+              Professional animated SVG components for GitHub READMEs. Create stunning banners, 
+              typing effects, terminals, and loaders in seconds. Built by developers, for developers.
             </p>
-            <div className="flex space-x-3">
-              {socialLinks.map((social) => (
-                <Link
+            
+            {/* Social Links with Liquid Buttons */}
+            <div className="flex flex-wrap gap-3">
+              {socialLinks.map((social, index) => (
+                <motion.div
                   key={social.name}
-                  href={social.href}
-                  className={`w-10 h-10 rounded-xl glass-card hover:bg-muted/50 flex items-center justify-center transition-all duration-300 hover:scale-110 ${social.color}`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  viewport={{ once: true }}
                 >
-                  <social.icon className="w-5 h-5" />
-                  <span className="sr-only">{social.name}</span>
-                </Link>
+                  <Link 
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.description}
+                  >
+                    <LiquidButton
+                      variant="outline"
+                      size="sm"
+                      className="group flex items-center gap-2"
+                    >
+                      <social.icon className="w-4 h-4" />
+                      <span className="hidden sm:inline text-sm">{social.name.split(' ')[0]}</span>
+                    </LiquidButton>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([category, links], index) => (
+          {/* Footer Links */}
+          {Object.entries(footerLinks).map(([category, links], categoryIndex) => (
             <motion.div
               key={category}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
+              className="space-y-4"
             >
-              <h4 className="font-semibold mb-4">{category}</h4>
+              <h4 className="font-semibold text-foreground">{category}</h4>
               <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.name}>
+                {links.map((link, linkIndex) => (
+                  <motion.li 
+                    key={link.name}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: (categoryIndex * 0.1) + (linkIndex * 0.05) }}
+                    viewport={{ once: true }}
+                  >
                     <Link
                       href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+                      className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                      {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     >
-                      {link.name}
+                      {typeof link.icon === 'string' ? (
+                        <span className="text-sm">{link.icon}</span>
+                      ) : link.icon ? (
+                        <link.icon className="w-4 h-4" />
+                      ) : null}
+                      <span className="group-hover:translate-x-0.5 transition-transform duration-200">
+                        {link.name}
+                      </span>
+                      {link.external && (
+                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      )}
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom Bar */}
+        <Separator className="mb-8" />
+
+        {/* Bottom Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="flex flex-col sm:flex-row items-center justify-between gap-4"
         >
-          <p className="text-sm text-muted-foreground flex items-center">
-            © {currentYear} Waveify. Made with <Heart className="w-4 h-4 mx-1 text-red-500 fill-red-500" /> for
-            developers worldwide.
-          </p>
-          <div className="flex items-center space-x-6 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
+            <p className="flex items-center gap-1">
+              © {currentYear} Waveify. Made with 
+              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" /> 
+              by 
+              <Link 
+                href="https://www.linkedin.com/in/aayush-vaghela/" 
+                className="font-medium text-foreground hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Aayush Vaghela
+              </Link>
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>All systems operational</span>
+              <span className="text-muted-foreground">All systems operational</span>
             </div>
+            <Link 
+              href="https://github.com/AAYUSH412/Waveify"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="w-4 h-4" />
+              <span>Star on GitHub</span>
+            </Link>
           </div>
         </motion.div>
       </div>
