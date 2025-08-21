@@ -1,0 +1,35 @@
+# 🚂 Railway Configuration for Waveify API (Root Level)
+# This file should be in the project root if you connected the entire repository
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "backend/Dockerfile"
+buildCommand = "echo 'Building Waveify backend from root'"
+
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# Railway automatically sets PORT, but we can specify custom env vars
+[env]
+NODE_ENV = "production"
+
+# Service configuration
+[service]
+name = "waveify-api"
+
+# Resource limits (adjust based on your Railway plan)
+[resources]
+memory = "512Mi"  # Adjust based on your plan (Railway Hobby: 512Mi, Pro: up to 8Gi)
+cpu = "500m"      # Adjust based on your plan (Railway Hobby: 500m, Pro: up to 4000m)
+
+# Set working directory to backend
+[build.env]
+RAILWAY_BUILD_COMMAND = "cd backend && docker build -t waveify-api ."
+
+# Networking configuration
+[networking]
+# Railway automatically handles this, but you can specify custom domains
+# customDomains = ["api.yourdomain.com"]
