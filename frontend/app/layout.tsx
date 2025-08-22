@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { SkipLink } from "@/components/ui/accessibility"
 import { Suspense } from "react"
 import { reportWebVitals, preloadCriticalResources } from "@/lib/performance"
+import ErrorBoundary from "@/components/error-boundary"
 
 // Lazy load development components
 const PerformanceDashboard = React.lazy(() => 
@@ -131,31 +132,33 @@ export default function RootLayout({
     </head>
       <body className={inter.className}>
         <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Suspense fallback={
-            <div className="flex items-center justify-center min-h-screen">
-              <div 
-                className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
-                role="status"
-                aria-label="Loading application"
-              >
-                <span className="sr-only">Loading...</span>
+        <ErrorBoundary>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <Suspense fallback={
+              <div className="flex items-center justify-center min-h-screen">
+                <div 
+                  className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
+                  role="status"
+                  aria-label="Loading application"
+                >
+                  <span className="sr-only">Loading...</span>
+                </div>
               </div>
-            </div>
-          }>
-            <main id="main-content" role="main">
-              {children}
-            </main>
-          </Suspense>
-          <Toaster />
-          
-          {/* Development performance dashboard */}
-          {process.env.NODE_ENV === 'development' && (
-            <Suspense fallback={null}>
-              <PerformanceDashboard />
+            }>
+              <main id="main-content" role="main">
+                {children}
+              </main>
             </Suspense>
-          )}
-        </ThemeProvider>
+            <Toaster />
+            
+            {/* Development performance dashboard */}
+            {process.env.NODE_ENV === 'development' && (
+              <Suspense fallback={null}>
+                <PerformanceDashboard />
+              </Suspense>
+            )}
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )
