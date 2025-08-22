@@ -67,6 +67,7 @@ app.use(cors({
       'https://waveify.onrender.com',
       'https://waveify.up.railway.app',
       'https://waveify.vercel.app',
+      'https://waveipfy.vercel.app', // Fix: Add your actual frontend domain
       'https://api.github.com'
     ];
     
